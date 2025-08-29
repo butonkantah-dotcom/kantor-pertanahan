@@ -43,6 +43,7 @@ export default function Home() {
             <p><b>Kelengkapan:</b> {data.kelengkapan}</p>
             <p><b>Dokumen:</b> {data.kelengkapan_berkas}</p>
             <p><b>Tanggal Selesai:</b> {data.tanggal_selesai}</p>
+            <p><b>Tahun:</b> {data.tahun}</p>
           </div>
         )}
       </div>
