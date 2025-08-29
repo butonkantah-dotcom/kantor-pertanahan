@@ -6,7 +6,8 @@ export default function Home() {
 
   const handleSearch = async () => {
     const res = await fetch(
-      `https://script.google.com/macros/s/AKfycbzY7NFMvt_lUWSBJaJ5CHB9BONrl3y4WpcG0vFGtTnDie_oMvyMOdJhgMTrQki8DAXi/exec?nomor_berkas=${encodeURIComponent(nomorBerkas)}`
+     // `https://script.google.com/macros/s/AKfycbzY7NFMvt_lUWSBJaJ5CHB9BONrl3y4WpcG0vFGtTnDie_oMvyMOdJhgMTrQki8DAXi/exec?nomor_berkas=${encodeURIComponent(nomorBerkas)}`
+    const res = await fetch(`/api/proxy?nomor_berkas=${encodeURIComponent(nomorBerkas)}`);
     );
     const json = await res.json();
     setData(json[0] || null);
