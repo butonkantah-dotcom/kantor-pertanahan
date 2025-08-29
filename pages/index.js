@@ -6,7 +6,7 @@ export default function Home() {
 
   const handleSearch = async () => {
     const res = await fetch(
-      `https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbzY7NFMvt_lUWSBJaJ5CHB9BONrl3y4WpcG0vFGtTnDie_oMvyMOdJhgMTrQki8DAXi/exec/exec?nomor_berkas=${nomorBerkas}`
+      `https://script.google.com/macros/s/AKfycbwxyz12345/exec?nomor_berkas=${https://script.google.com/macros/s/AKfycbzY7NFMvt_lUWSBJaJ5CHB9BONrl3y4WpcG0vFGtTnDie_oMvyMOdJhgMTrQki8DAXi/exec(nomorBerkas)}`
     );
     const json = await res.json();
     setData(json[0] || null);
