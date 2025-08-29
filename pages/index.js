@@ -37,6 +37,7 @@ export default function Home() {
         {data && (
           <div className="mt-4 p-4 border rounded-xl bg-gray-50">
             <p><b>Nomor Berkas:</b> {data.nomor_berkas}</p>
+            <p><b>Tanggal Permohonan:</b> {data.tanggal_permohonan}</p>
             <p><b>Nama Pemohon:</b> {data.nama_pemohon}</p>
             <p><b>Jenis Layanan:</b> {data.jenis_layanan}</p>
             <p><b>Status:</b> {data.status_berkas}</p>
