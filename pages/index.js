@@ -4,10 +4,10 @@ import { useState } from "react";
 export default function Home() {
   const [nomorBerkas, setNomorBerkas] = useState("");
   const [data, setData] = useState(null);
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // 🔹 Format tanggal panjang + fallback
+  // 🔧 Fungsi format tanggal (Indonesia panjang)
   const formatTanggal = (tgl) => {
     if (!tgl) return "Belum ditentukan";
     try {
@@ -21,47 +21,34 @@ export default function Home() {
     }
   };
 
-  // 🔹 Status kelengkapan dengan card berwarna
-  const KelengkapanStatus = ({ val }) => {
-    if (!val || val.trim() === "") {
-      return (
-        <div className="p-3 rounded-lg bg-green-50 border border-green-200 text-green-700 font-semibold">
-          ✅ Data Lengkap
-        </div>
-      );
-    }
-    return (
-      <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 font-semibold">
-        ❌ Masih ada kekurangan: {val}
-      </div>
-    );
-  };
-
   const handleSearch = async () => {
-    try {
-      setError("");
+    if (!nomorBerkas.trim()) {
+      setError("⚠️ Nomor berkas harus diisi!");
       setData(null);
-      setLoading(true);
+      return;
+    }
 
+    setLoading(true);
+    setError(null);
+    setData(null);
+
+    try {
       const res = await fetch(
-        `https://script.google.com/macros/s/AKfycbzY7NFMvt_lUWSBJaJ5CHB9BONrl3y4WpcG0vFGtTnDie_oMvyMOdJhgMTrQki8DAXi/exec?nomor_berkas=${encodeURIComponent(
-          nomorBerkas
-        )}`
+        `/api/proxy?nomor_berkas=${encodeURIComponent(nomorBerkas)}`
       );
-
       const json = await res.json();
 
-      if (!json || (Array.isArray(json) && json.length === 0)) {
-        setError(`⚠️ Nomor berkas "${nomorBerkas}" tidak ditemukan.`);
+      if (json && json.length > 0) {
+        setData(json[0]);
       } else {
-        setData(Array.isArray(json) ? json[0] : json);
+        setError("❌ Data tidak ditemukan untuk nomor berkas tersebut.");
       }
     } catch (err) {
-      console.error("Error fetching data:", err);
-      setError("Terjadi kesalahan saat mengambil data. Silakan coba lagi.");
-    } finally {
-      setLoading(false);
+      console.error(err);
+      setError("⚠️ Terjadi kesalahan saat mengambil data.");
     }
+
+    setLoading(false);
   };
 
   return (
@@ -75,7 +62,7 @@ export default function Home() {
         Cek Status & Kelengkapan Berkas ATR/BPN
       </h1>
 
-      {/* === Input Cari === */}
+      {/* === Input Pencarian === */}
       <div className="flex gap-2 mb-6">
         <input
           type="text"
@@ -86,32 +73,39 @@ export default function Home() {
         />
         <button
           onClick={handleSearch}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center justify-center"
-          disabled={loading}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg"
         >
-          {loading ? (
-            <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span>
-          ) : (
-            "Cari"
-          )}
+          Cari
         </button>
       </div>
 
-      {/* === Warning === */}
+      {/* === Loading Spinner === */}
+      {loading && (
+        <div className="text-blue-600 font-medium mb-4 animate-pulse">
+          🔄 Sedang mencari data...
+        </div>
+      )}
+
+      {/* === Error Message === */}
       {error && (
-        <div className="mt-4 p-4 border rounded-xl bg-red-50 text-red-700 w-full max-w-md text-center">
+        <div className="mb-4 p-3 rounded-lg bg-red-100 text-red-700">
           {error}
         </div>
       )}
 
       {/* === Hasil Data === */}
       {data && (
-        <div className="mt-4 p-4 border rounded-xl bg-white shadow w-full max-w-md space-y-2">
+        <div className="mt-4 p-5 border rounded-xl bg-white shadow w-full max-w-lg">
+          {/* Judul dengan ikon 📂 */}
+          <h2 className="text-lg font-bold mb-3 flex items-center gap-2 text-gray-700">
+            📂 Detail Informasi Berkas
+          </h2>
+
           <p>
             <b>Nomor Berkas:</b> {data.nomor_berkas}
           </p>
           <p>
-            <b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}
+            <b>Tanggal Permohonan:</b> {formatTanggal(data.tgl_permohonan)}
           </p>
           <p>
             <b>Nama Pemohon:</b> {data.nama_pemohon}
@@ -120,20 +114,40 @@ export default function Home() {
             <b>Jenis Layanan:</b> {data.jenis_layanan}
           </p>
           <p>
-            <b>Kelengkapan:</b> {data.kelengkapan}
+            <b>Status:</b> {data.status || "Belum diproses"}
           </p>
-          <div>
-            <b>Dokumen:</b>
-            <KelengkapanStatus val={data.kelengkapan_berkas} />
+
+          {/* === Box Status Kelengkapan === */}
+          <div
+            className={`p-3 mt-3 rounded-lg font-semibold ${
+              data.kelengkapan?.toLowerCase() === "lengkap"
+                ? "bg-green-100 text-green-700 border border-green-300"
+                : "bg-red-100 text-red-700 border border-red-300"
+            }`}
+          >
+            {data.kelengkapan?.toLowerCase() === "lengkap"
+              ? "✅ Kelengkapan: Lengkap"
+              : "❌ Kelengkapan: Tidak Lengkap"}
           </div>
-          <p>
-            <b>Status:</b> {data.status_berkas || "Belum diproses"}
-          </p>
-          <p>
+
+          {/* === Box Status Dokumen === */}
+          <div
+            className={`p-3 mt-3 rounded-lg font-semibold ${
+              !data.kelengkapan_berkas
+                ? "bg-green-100 text-green-700 border border-green-300"
+                : "bg-red-100 text-red-700 border border-red-300"
+            }`}
+          >
+            {!data.kelengkapan_berkas
+              ? "✅ Dokumen: Lengkap"
+              : `❌ Dokumen kurang: ${data.kelengkapan_berkas}`}
+          </div>
+
+          <p className="mt-3">
             <b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}
           </p>
           <p>
-            <b>Tahun:</b> {data.tahun_permohonan}
+            <b>Tahun:</b> {data.tahun}
           </p>
         </div>
       )}
