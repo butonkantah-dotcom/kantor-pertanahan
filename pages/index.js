@@ -7,7 +7,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // 🔧 Fungsi format tanggal (Indonesia panjang)
   const formatTanggal = (tgl) => {
     if (!tgl) return "Belum ditentukan";
     try {
@@ -96,10 +95,13 @@ export default function Home() {
       {/* === Hasil Data === */}
       {data && (
         <div className="mt-4 p-5 border rounded-xl bg-white shadow w-full max-w-lg">
-          {/* Judul dengan ikon 📂 */}
-          <h2 className="text-lg font-bold mb-3 flex items-center gap-2 text-gray-700">
-            📂 Detail Informasi Berkas
-          </h2>
+          {/* === Judul Card dengan Ikon 📂 === */}
+          <div className="flex items-center gap-2 mb-4 border-b pb-2">
+            <span className="text-2xl">📂</span>
+            <h2 className="text-lg font-bold text-gray-700">
+              Detail Informasi Berkas
+            </h2>
+          </div>
 
           <p>
             <b>Nomor Berkas:</b> {data.nomor_berkas}
