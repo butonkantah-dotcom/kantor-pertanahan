@@ -5,30 +5,11 @@ export default function Home() {
   const [nomorBerkas, setNomorBerkas] = useState("");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const formatTanggal = (tgl) => {
-    if (!tgl) return "Belum ditentukan";
-    try {
-      return new Date(tgl).toLocaleDateString("id-ID", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      });
-    } catch {
-      return "Belum ditentukan";
-    }
-  };
+  const [notFound, setNotFound] = useState(false);
 
   const handleSearch = async () => {
-    if (!nomorBerkas.trim()) {
-      setError("⚠️ Nomor berkas harus diisi!");
-      setData(null);
-      return;
-    }
-
     setLoading(true);
-    setError(null);
+    setNotFound(false);
     setData(null);
 
     try {
@@ -40,15 +21,28 @@ export default function Home() {
       if (json && json.length > 0) {
         setData(json[0]);
       } else {
-        setError("❌ Data tidak ditemukan untuk nomor berkas tersebut.");
+        setNotFound(true);
       }
     } catch (err) {
-      console.error(err);
-      setError("⚠️ Terjadi kesalahan saat mengambil data.");
+      console.error("Error:", err);
+      setNotFound(true);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
+
+  const formatTanggal = (tgl) => {
+    if (!tgl) return "-";
+    return new Date(tgl).toLocaleDateString("id-ID", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  const isLengkap = !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
+  const cardColor = isLengkap ? "green" : "red";
+  const cardIcon = isLengkap ? "✅" : "❌";
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start p-6 bg-gray-100">
@@ -57,11 +51,10 @@ export default function Home() {
         <Image src="/logo.png" alt="Logo ATR/BPN" width={120} height={120} />
       </div>
 
-      <h1 className="text-2xl font-bold mb-4 text-blue-700 text-center">
+      <h1 className="text-2xl font-bold mb-4 text-blue-700">
         Cek Status & Kelengkapan Berkas ATR/BPN
       </h1>
 
-      {/* === Input Pencarian === */}
       <div className="flex gap-2 mb-6">
         <input
           type="text"
@@ -78,79 +71,38 @@ export default function Home() {
         </button>
       </div>
 
-      {/* === Loading Spinner === */}
-      {loading && (
-        <div className="text-blue-600 font-medium mb-4 animate-pulse">
-          🔄 Sedang mencari data...
-        </div>
+      {loading && <p className="text-gray-600">🔄 Mencari data...</p>}
+
+      {notFound && (
+        <p className="text-red-600 font-semibold">
+          ⚠️ Data dengan nomor berkas "{nomorBerkas}" tidak ditemukan
+        </p>
       )}
 
-      {/* === Error Message === */}
-      {error && (
-        <div className="mb-4 p-3 rounded-lg bg-red-100 text-red-700">
-          {error}
-        </div>
-      )}
-
-      {/* === Hasil Data === */}
       {data && (
-        <div className="mt-4 p-5 border rounded-xl bg-white shadow w-full max-w-lg">
-          {/* === Judul Card dengan Ikon 📂 === */}
-          <div className="flex items-center gap-2 mb-4 border-b pb-2">
-            <span className="text-2xl">📂</span>
-            <h2 className="text-lg font-bold text-gray-700">
-              Detail Informasi Berkas
-            </h2>
-          </div>
+        <div
+          className={`mt-4 p-4 border rounded-xl bg-${cardColor}-50 border-${cardColor}-200 w-[400px]`}
+        >
+          {/* === Judul Card dengan Ikon === */}
+          <h2 className={`flex items-center gap-2 font-bold text-${cardColor}-700 mb-3`}>
+            <span role="img" aria-label="folder">📂</span>
+            {cardIcon} Detail Berkas
+          </h2>
 
+          <p><b>Nomor Berkas:</b> {data.nomor_berkas}</p>
+          <p><b>Tanggal Permohonan:</b> {formatTanggal(data.tgl_permohonan)}</p>
+          <p><b>Nama Pemohon:</b> {data.nama_pemohon}</p>
+          <p><b>Jenis Layanan:</b> {data.jenis_layanan}</p>
+          <p><b>Kelengkapan:</b> {data.kelengkapan}</p>
           <p>
-            <b>Nomor Berkas:</b> {data.nomor_berkas}
+            <b>Dokumen:</b>{" "}
+            <span className={isLengkap ? "text-green-700 font-semibold" : "text-red-700 font-semibold"}>
+              {isLengkap ? "Lengkap ✅" : `Kurang ❌ (${data.kelengkapan_berkas})`}
+            </span>
           </p>
-          <p>
-            <b>Tanggal Permohonan:</b> {formatTanggal(data.tgl_permohonan)}
-          </p>
-          <p>
-            <b>Nama Pemohon:</b> {data.nama_pemohon}
-          </p>
-          <p>
-            <b>Jenis Layanan:</b> {data.jenis_layanan}
-          </p>
-          <p>
-            <b>Status:</b> {data.status || "Belum diproses"}
-          </p>
-
-          {/* === Box Status Kelengkapan === */}
-          <div
-            className={`p-3 mt-3 rounded-lg font-semibold ${
-              data.kelengkapan?.toLowerCase() === "lengkap"
-                ? "bg-green-100 text-green-700 border border-green-300"
-                : "bg-red-100 text-red-700 border border-red-300"
-            }`}
-          >
-            {data.kelengkapan?.toLowerCase() === "lengkap"
-              ? "✅ Kelengkapan: Lengkap"
-              : "❌ Kelengkapan: Tidak Lengkap"}
-          </div>
-
-          {/* === Box Status Dokumen === */}
-          <div
-            className={`p-3 mt-3 rounded-lg font-semibold ${
-              !data.kelengkapan_berkas
-                ? "bg-green-100 text-green-700 border border-green-300"
-                : "bg-red-100 text-red-700 border border-red-300"
-            }`}
-          >
-            {!data.kelengkapan_berkas
-              ? "✅ Dokumen: Lengkap"
-              : `❌ Dokumen kurang: ${data.kelengkapan_berkas}`}
-          </div>
-
-          <p className="mt-3">
-            <b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}
-          </p>
-          <p>
-            <b>Tahun:</b> {data.tahun}
-          </p>
+          <p><b>Status:</b> {data.status}</p>
+          <p><b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}</p>
+          <p><b>Tahun:</b> {data.tahun}</p>
         </div>
       )}
     </div>
