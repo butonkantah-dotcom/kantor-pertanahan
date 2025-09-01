@@ -6,19 +6,35 @@ export default function Home() {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [formatPanjang, setFormatPanjang] = useState(true);
 
-  // 🔹 Fungsi format tanggal
+  // 🔹 Format tanggal panjang + fallback
   const formatTanggal = (tgl) => {
-    if (!tgl) return "-";
+    if (!tgl) return "Belum ditentukan";
     try {
-      const options = formatPanjang
-        ? { day: "2-digit", month: "long", year: "numeric" }
-        : undefined; // default → dd/mm/yyyy
-      return new Date(tgl).toLocaleDateString("id-ID", options);
+      return new Date(tgl).toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      });
     } catch {
-      return tgl;
+      return "Belum ditentukan";
     }
+  };
+
+  // 🔹 Status kelengkapan dengan card berwarna
+  const KelengkapanStatus = ({ val }) => {
+    if (!val || val.trim() === "") {
+      return (
+        <div className="p-3 rounded-lg bg-green-50 border border-green-200 text-green-700 font-semibold">
+          ✅ Data Lengkap
+        </div>
+      );
+    }
+    return (
+      <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 font-semibold">
+        ❌ Masih ada kekurangan: {val}
+      </div>
+    );
   };
 
   const handleSearch = async () => {
@@ -38,7 +54,6 @@ export default function Home() {
       if (!json || (Array.isArray(json) && json.length === 0)) {
         setError(`⚠️ Nomor berkas "${nomorBerkas}" tidak ditemukan.`);
       } else {
-        // kalau respons array → ambil [0], kalau object langsung pakai
         setData(Array.isArray(json) ? json[0] : json);
       }
     } catch (err) {
@@ -82,19 +97,6 @@ export default function Home() {
         </button>
       </div>
 
-      {/* === Toggle Format Tanggal === */}
-      <div className="mb-4 flex items-center gap-2">
-        <label className="text-sm text-gray-700">Format Tanggal:</label>
-        <select
-          className="border rounded-lg p-1"
-          value={formatPanjang ? "panjang" : "singkat"}
-          onChange={(e) => setFormatPanjang(e.target.value === "panjang")}
-        >
-          <option value="panjang">01 September 2025</option>
-          <option value="singkat">01/09/2025</option>
-        </select>
-      </div>
-
       {/* === Warning === */}
       {error && (
         <div className="mt-4 p-4 border rounded-xl bg-red-50 text-red-700 w-full max-w-md text-center">
@@ -104,13 +106,12 @@ export default function Home() {
 
       {/* === Hasil Data === */}
       {data && (
-        <div className="mt-4 p-4 border rounded-xl bg-gray-50 w-full max-w-md">
+        <div className="mt-4 p-4 border rounded-xl bg-white shadow w-full max-w-md space-y-2">
           <p>
             <b>Nomor Berkas:</b> {data.nomor_berkas}
           </p>
           <p>
-            <b>Tanggal Permohonan:</b>{" "}
-            {formatTanggal(data.tanggal_permohonan)}
+            <b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}
           </p>
           <p>
             <b>Nama Pemohon:</b> {data.nama_pemohon}
@@ -121,15 +122,15 @@ export default function Home() {
           <p>
             <b>Kelengkapan:</b> {data.kelengkapan}
           </p>
+          <div>
+            <b>Dokumen:</b>
+            <KelengkapanStatus val={data.kelengkapan_berkas} />
+          </div>
           <p>
-            <b>Dokumen:</b> {data.kelengkapan_berkas}
+            <b>Status:</b> {data.status_berkas || "Belum diproses"}
           </p>
           <p>
-            <b>Status:</b> {data.status_berkas}
-          </p>
-          <p>
-            <b>Tanggal Selesai:</b>{" "}
-            {formatTanggal(data.tanggal_selesai)}
+            <b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}
           </p>
           <p>
             <b>Tahun:</b> {data.tahun_permohonan}
