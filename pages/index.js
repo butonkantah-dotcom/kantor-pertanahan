@@ -6,15 +6,15 @@ export default function Home() {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [formatPanjang, setFormatPanjang] = useState(true); // 🔹 toggle format
+  const [formatPanjang, setFormatPanjang] = useState(true);
 
-  // 🔹 Helper format tanggal
+  // 🔹 Fungsi format tanggal
   const formatTanggal = (tgl) => {
     if (!tgl) return "-";
     try {
       const options = formatPanjang
         ? { day: "2-digit", month: "long", year: "numeric" }
-        : undefined; // default: dd/mm/yyyy
+        : undefined; // default → dd/mm/yyyy
       return new Date(tgl).toLocaleDateString("id-ID", options);
     } catch {
       return tgl;
@@ -32,12 +32,14 @@ export default function Home() {
           nomorBerkas
         )}`
       );
+
       const json = await res.json();
 
-      if (!json || json.length === 0) {
-        setError(`Nomor berkas "${nomorBerkas}" tidak ditemukan.`);
+      if (!json || (Array.isArray(json) && json.length === 0)) {
+        setError(`⚠️ Nomor berkas "${nomorBerkas}" tidak ditemukan.`);
       } else {
-        setData(json[0]);
+        // kalau respons array → ambil [0], kalau object langsung pakai
+        setData(Array.isArray(json) ? json[0] : json);
       }
     } catch (err) {
       console.error("Error fetching data:", err);
@@ -54,10 +56,11 @@ export default function Home() {
         <Image src="/logo.png" alt="Logo ATR/BPN" width={120} height={120} />
       </div>
 
-      <h1 className="text-2xl font-bold mb-4 text-blue-700">
+      <h1 className="text-2xl font-bold mb-4 text-blue-700 text-center">
         Cek Status & Kelengkapan Berkas ATR/BPN
       </h1>
 
+      {/* === Input Cari === */}
       <div className="flex gap-2 mb-6">
         <input
           type="text"
@@ -95,7 +98,7 @@ export default function Home() {
       {/* === Warning === */}
       {error && (
         <div className="mt-4 p-4 border rounded-xl bg-red-50 text-red-700 w-full max-w-md text-center">
-          ⚠️ {error}
+          {error}
         </div>
       )}
 
@@ -106,7 +109,8 @@ export default function Home() {
             <b>Nomor Berkas:</b> {data.nomor_berkas}
           </p>
           <p>
-            <b>Tanggal Permohonan:</b> {formatTanggal(data.tgl_permohonan)}
+            <b>Tanggal Permohonan:</b>{" "}
+            {formatTanggal(data.tanggal_permohonan)}
           </p>
           <p>
             <b>Nama Pemohon:</b> {data.nama_pemohon}
@@ -121,13 +125,14 @@ export default function Home() {
             <b>Dokumen:</b> {data.kelengkapan_berkas}
           </p>
           <p>
-            <b>Status:</b> {data.status}
+            <b>Status:</b> {data.status_berkas}
           </p>
           <p>
-            <b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}
+            <b>Tanggal Selesai:</b>{" "}
+            {formatTanggal(data.tanggal_selesai)}
           </p>
           <p>
-            <b>Tahun:</b> {data.tahun}
+            <b>Tahun:</b> {data.tahun_permohonan}
           </p>
         </div>
       )}
