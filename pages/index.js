@@ -93,51 +93,50 @@ export default function Home() {
         Cek Status & Kelengkapan Berkas ATR/BPN
       </h1>
 
-      {/* === Input Section === */}
-      <div className="flex flex-col items-center gap-2 mb-4 w-full max-w-md">
-        <div className="flex flex-col sm:flex-row w-full gap-2">
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder="Masukkan Nomor Berkas"
-            className="border rounded-lg p-3 w-full"
-            value={nomorBerkas}
-            onChange={(e) => setNomorBerkas(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          />
-          <div className="flex gap-2 sm:flex-col w-full sm:w-auto">
-            <button
-              onClick={handleSearch}
-              disabled={loading}
-              className={`flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg ${
-                loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-            >
-              {loading ? "Mencari..." : "Cari"}
-            </button>
-            <button
-              onClick={handleReset}
-              className="flex-1 bg-gray-500 text-white px-4 py-2 rounded-lg"
-              title="Shortcut: ESC"
-            >
-              Reset
-            </button>
-          </div>
+      {/* === Form Input === */}
+      <div className="w-full max-w-md mb-4 space-y-2">
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder="Masukkan Nomor Berkas"
+          className="border rounded-lg p-3 w-full text-base"
+          value={nomorBerkas}
+          onChange={(e) => setNomorBerkas(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+        />
+
+        <div className="flex flex-col sm:flex-row gap-2">
+          <button
+            onClick={handleSearch}
+            disabled={loading}
+            className={`w-full sm:w-auto px-4 py-3 rounded-lg text-white font-semibold bg-blue-600 hover:bg-blue-700 transition ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            {loading ? "Mencari..." : "🔍 Cari"}
+          </button>
+          <button
+            onClick={handleReset}
+            className="w-full sm:w-auto px-4 py-3 rounded-lg text-white font-semibold bg-gray-500 hover:bg-gray-600 transition"
+          >
+            🔄 Reset
+          </button>
         </div>
-        <small className="text-gray-500 text-sm text-center">
+
+        <small className="text-gray-500 text-sm text-center block">
           💡 Tekan <b>ESC</b> untuk reset cepat
         </small>
       </div>
 
       {/* === Alerts === */}
       {warning && (
-        <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg w-full max-w-md text-center">
+        <div className="w-full max-w-md mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg text-center">
           {warning}
         </div>
       )}
 
       {error && (
-        <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg w-full max-w-md text-center">
+        <div className="w-full max-w-md mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg text-center">
           {error}
         </div>
       )}
@@ -180,7 +179,7 @@ function DetailCard({ data }) {
     <div
       className={`mt-4 p-4 border rounded-xl w-full max-w-md ${cardStyles[cardColor]}`}
     >
-      <h2 className="flex items-center gap-2 font-bold mb-3">
+      <h2 className="flex items-center gap-2 font-bold mb-3 text-lg">
         <span role="img" aria-label="folder">
           📂
         </span>
