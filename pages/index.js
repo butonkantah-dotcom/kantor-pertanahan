@@ -11,14 +11,12 @@ export default function Home() {
 
   const inputRef = useRef(null);
 
-  // Auto focus saat halaman load
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, []);
 
-  // Listener tombol ESC untuk reset
   const handleKeyDown = useCallback((e) => {
     if (e.key === "Escape") {
       handleReset();
@@ -85,57 +83,61 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start p-6 bg-gray-100">
+    <div className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 bg-gray-100">
       {/* === LOGO === */}
       <div className="mb-6">
-        <Image src="/logo.png" alt="Logo ATR/BPN" width={120} height={120} />
+        <Image src="/logo.png" alt="Logo ATR/BPN" width={100} height={100} />
       </div>
 
-      <h1 className="text-2xl font-bold mb-4 text-blue-700">
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 text-blue-700 text-center">
         Cek Status & Kelengkapan Berkas ATR/BPN
       </h1>
 
-      <div className="flex flex-col items-center gap-2 mb-4">
-        <div className="flex gap-2">
+      {/* === Input Section === */}
+      <div className="flex flex-col items-center gap-2 mb-4 w-full max-w-md">
+        <div className="flex flex-col sm:flex-row w-full gap-2">
           <input
             ref={inputRef}
             type="text"
             placeholder="Masukkan Nomor Berkas"
-            className="border rounded-lg p-2 w-64"
+            className="border rounded-lg p-3 w-full"
             value={nomorBerkas}
             onChange={(e) => setNomorBerkas(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />
-          <button
-            onClick={handleSearch}
-            disabled={loading}
-            className={`px-4 py-2 rounded-lg text-white bg-blue-600 ${
-              loading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          >
-            {loading ? "Mencari..." : "Cari"}
-          </button>
-          <button
-            onClick={handleReset}
-            className="bg-gray-500 text-white px-4 py-2 rounded-lg"
-            title="Shortcut: ESC"
-          >
-            Reset
-          </button>
+          <div className="flex gap-2 sm:flex-col w-full sm:w-auto">
+            <button
+              onClick={handleSearch}
+              disabled={loading}
+              className={`flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              {loading ? "Mencari..." : "Cari"}
+            </button>
+            <button
+              onClick={handleReset}
+              className="flex-1 bg-gray-500 text-white px-4 py-2 rounded-lg"
+              title="Shortcut: ESC"
+            >
+              Reset
+            </button>
+          </div>
         </div>
-        <small className="text-gray-500 text-sm">
+        <small className="text-gray-500 text-sm text-center">
           💡 Tekan <b>ESC</b> untuk reset cepat
         </small>
       </div>
 
+      {/* === Alerts === */}
       {warning && (
-        <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg">
+        <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg w-full max-w-md text-center">
           {warning}
         </div>
       )}
 
       {error && (
-        <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg">
+        <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg w-full max-w-md text-center">
           {error}
         </div>
       )}
@@ -143,11 +145,12 @@ export default function Home() {
       {loading && <p className="text-gray-600">🔄 Mencari data...</p>}
 
       {notFound && (
-        <p className="text-red-600 font-semibold">
+        <p className="text-red-600 font-semibold text-center w-full max-w-md">
           ⚠️ Data dengan nomor berkas "{nomorBerkas}" tidak ditemukan
         </p>
       )}
 
+      {/* === Hasil === */}
       {data && <DetailCard data={data} />}
     </div>
   );
@@ -175,7 +178,7 @@ function DetailCard({ data }) {
 
   return (
     <div
-      className={`mt-4 p-4 border rounded-xl w-[400px] ${cardStyles[cardColor]}`}
+      className={`mt-4 p-4 border rounded-xl w-full max-w-md ${cardStyles[cardColor]}`}
     >
       <h2 className="flex items-center gap-2 font-bold mb-3">
         <span role="img" aria-label="folder">
@@ -184,40 +187,42 @@ function DetailCard({ data }) {
         {cardIcon} Detail Berkas
       </h2>
 
-      <p>
-        <b>Nomor Berkas:</b> {data.nomor_berkas}
-      </p>
-      <p>
-        <b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}
-      </p>
-      <p>
-        <b>Nama Pemohon:</b> {data.nama_pemohon}
-      </p>
-      <p>
-        <b>Jenis Layanan:</b> {data.jenis_layanan}
-      </p>
-      <p>
-        <b>Kelengkapan:</b> {data.kelengkapan}
-      </p>
-      <p>
-        <b>Dokumen:</b>{" "}
-        {isLengkap ? (
-          <span className="text-green-700 font-semibold">Lengkap ✅</span>
-        ) : (
-          <span className="text-red-700 font-semibold">
-            Kurang ❌ ({data.kelengkapan_berkas})
-          </span>
-        )}
-      </p>
-      <p>
-        <b>Status Berkas:</b> {data.status_berkas}
-      </p>
-      <p>
-        <b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}
-      </p>
-      <p>
-        <b>Tahun Permohonan:</b> {data.tahun_permohonan}
-      </p>
+      <div className="space-y-1 text-sm sm:text-base">
+        <p>
+          <b>Nomor Berkas:</b> {data.nomor_berkas}
+        </p>
+        <p>
+          <b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}
+        </p>
+        <p>
+          <b>Nama Pemohon:</b> {data.nama_pemohon}
+        </p>
+        <p>
+          <b>Jenis Layanan:</b> {data.jenis_layanan}
+        </p>
+        <p>
+          <b>Kelengkapan:</b> {data.kelengkapan || "-"}
+        </p>
+        <p>
+          <b>Dokumen:</b>{" "}
+          {isLengkap ? (
+            <span className="text-green-700 font-semibold">Lengkap ✅</span>
+          ) : (
+            <span className="text-red-700 font-semibold">
+              Kurang ❌ ({data.kelengkapan_berkas})
+            </span>
+          )}
+        </p>
+        <p>
+          <b>Status Berkas:</b> {data.status_berkas}
+        </p>
+        <p>
+          <b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}
+        </p>
+        <p>
+          <b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}
+        </p>
+      </div>
     </div>
   );
 }
