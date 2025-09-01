@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 
 export default function Home() {
   const [nomorBerkas, setNomorBerkas] = useState("");
@@ -7,6 +7,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [warning, setWarning] = useState("");
   const [notFound, setNotFound] = useState(false);
+  const [error, setError] = useState("");
 
   const inputRef = useRef(null);
 
@@ -18,23 +19,27 @@ export default function Home() {
   }, []);
 
   // Listener tombol ESC untuk reset
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === "Escape") {
+      handleReset();
+    }
+  }, []);
+
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape") {
-        handleReset();
-      }
-    };
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [handleKeyDown]);
 
   const handleSearch = async () => {
-    if (!nomorBerkas.trim()) {
+    const trimmedNomor = nomorBerkas.trim();
+
+    if (!trimmedNomor) {
       setWarning("⚠️ Harap masukkan nomor berkas");
       setData(null);
       setNotFound(false);
+      setError("");
       return;
     }
 
@@ -42,11 +47,17 @@ export default function Home() {
     setLoading(true);
     setNotFound(false);
     setData(null);
+    setError("");
 
     try {
       const res = await fetch(
-        `/api/proxy?nomor_berkas=${encodeURIComponent(nomorBerkas)}`
+        `/api/proxy?nomor_berkas=${encodeURIComponent(trimmedNomor)}`
       );
+
+      if (!res.ok) {
+        throw new Error("Gagal mengambil data dari server.");
+      }
+
       const json = await res.json();
 
       if (json && json.length > 0) {
@@ -56,7 +67,7 @@ export default function Home() {
       }
     } catch (err) {
       console.error("Error:", err);
-      setNotFound(true);
+      setError("❌ Terjadi kesalahan saat mengambil data. Silakan coba lagi.");
     } finally {
       setLoading(false);
     }
@@ -67,28 +78,10 @@ export default function Home() {
     setData(null);
     setWarning("");
     setNotFound(false);
+    setError("");
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  };
-
-  const formatTanggal = (tgl) => {
-    if (!tgl) return "-";
-    return new Date(tgl).toLocaleDateString("id-ID", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    });
-  };
-
-  const isLengkap =
-    !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
-  const cardColor = isLengkap ? "green" : "red";
-  const cardIcon = isLengkap ? "✅" : "❌";
-
-  const cardStyles = {
-    green: "bg-green-50 border-green-200 text-green-700",
-    red: "bg-red-50 border-red-200 text-red-700",
   };
 
   return (
@@ -115,9 +108,12 @@ export default function Home() {
           />
           <button
             onClick={handleSearch}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+            disabled={loading}
+            className={`px-4 py-2 rounded-lg text-white bg-blue-600 ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
-            Cari
+            {loading ? "Mencari..." : "Cari"}
           </button>
           <button
             onClick={handleReset}
@@ -138,6 +134,12 @@ export default function Home() {
         </div>
       )}
 
+      {error && (
+        <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg">
+          {error}
+        </div>
+      )}
+
       {loading && <p className="text-gray-600">🔄 Mencari data...</p>}
 
       {notFound && (
@@ -146,36 +148,76 @@ export default function Home() {
         </p>
       )}
 
-      {data && (
-        <div
-          className={`mt-4 p-4 border rounded-xl w-[400px] ${cardStyles[cardColor]}`}
-        >
-          {/* === Judul Card dengan Ikon === */}
-          <h2 className="flex items-center gap-2 font-bold mb-3">
-            <span role="img" aria-label="folder">📂</span>
-            {cardIcon} Detail Berkas
-          </h2>
+      {data && <DetailCard data={data} />}
+    </div>
+  );
+}
 
-          <p><b>Nomor Berkas:</b> {data.nomor_berkas}</p>
-          <p><b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}</p>
-          <p><b>Nama Pemohon:</b> {data.nama_pemohon}</p>
-          <p><b>Jenis Layanan:</b> {data.jenis_layanan}</p>
-          <p><b>Kelengkapan:</b> {data.kelengkapan}</p>
-          <p>
-            <b>Dokumen:</b>{" "}
-            {isLengkap ? (
-              <span className="text-green-700 font-semibold">Lengkap ✅</span>
-            ) : (
-              <span className="text-red-700 font-semibold">
-                Kurang ❌ ({data.kelengkapan_berkas})
-              </span>
-            )}
-          </p>
-          <p><b>Status Berkas:</b> {data.status_berkas}</p>
-          <p><b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}</p>
-          <p><b>Tahun Permohonan:</b> {data.tahun_permohonan}</p>
-        </div>
-      )}
+function DetailCard({ data }) {
+  const isLengkap =
+    !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
+  const cardColor = isLengkap ? "green" : "red";
+  const cardIcon = isLengkap ? "✅" : "❌";
+
+  const cardStyles = {
+    green: "bg-green-50 border-green-200 text-green-700",
+    red: "bg-red-50 border-red-200 text-red-700",
+  };
+
+  const formatTanggal = (tgl) => {
+    if (!tgl) return "-";
+    return new Date(tgl).toLocaleDateString("id-ID", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  return (
+    <div
+      className={`mt-4 p-4 border rounded-xl w-[400px] ${cardStyles[cardColor]}`}
+    >
+      <h2 className="flex items-center gap-2 font-bold mb-3">
+        <span role="img" aria-label="folder">
+          📂
+        </span>
+        {cardIcon} Detail Berkas
+      </h2>
+
+      <p>
+        <b>Nomor Berkas:</b> {data.nomor_berkas}
+      </p>
+      <p>
+        <b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}
+      </p>
+      <p>
+        <b>Nama Pemohon:</b> {data.nama_pemohon}
+      </p>
+      <p>
+        <b>Jenis Layanan:</b> {data.jenis_layanan}
+      </p>
+      <p>
+        <b>Kelengkapan:</b> {data.kelengkapan}
+      </p>
+      <p>
+        <b>Dokumen:</b>{" "}
+        {isLengkap ? (
+          <span className="text-green-700 font-semibold">Lengkap ✅</span>
+        ) : (
+          <span className="text-red-700 font-semibold">
+            Kurang ❌ ({data.kelengkapan_berkas})
+          </span>
+        )}
+      </p>
+      <p>
+        <b>Status Berkas:</b> {data.status_berkas}
+      </p>
+      <p>
+        <b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}
+      </p>
+      <p>
+        <b>Tahun Permohonan:</b> {data.tahun_permohonan}
+      </p>
     </div>
   );
 }
