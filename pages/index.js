@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useState } from "react";
 
 export default function Home() {
@@ -14,35 +15,41 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
-      <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-lg">
-        <h1 className="text-2xl font-bold text-blue-600 text-center mb-4">
-          Cek Status Berkas ATR/BPN
-        </h1>
+    <div className="min-h-screen flex flex-col items-center justify-start p-6 bg-gray-100">
+      {/* === LOGO === */}
+      <div className="mb-6">
+        <Image src="/logo.png" alt="Logo ATR/BPN" width={120} height={120} />
+      </div>
 
+      <h1 className="text-2xl font-bold mb-4 text-blue-700">
+        Cek Status & Kelengkapan Berkas ATR/BPN
+      </h1>
+
+      <div className="flex gap-2 mb-6">
         <input
           type="text"
+          placeholder="Masukkan Nomor Berkas"
+          className="border rounded-lg p-2 w-64"
           value={nomorBerkas}
           onChange={(e) => setNomorBerkas(e.target.value)}
-          placeholder="Masukkan Nomor Berkas"
-          className="w-full p-3 border rounded-xl mb-3"
         />
         <button
           onClick={handleSearch}
-          className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700"
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg"
         >
           Cari
         </button>
+      </div>
 
         {data && (
           <div className="mt-4 p-4 border rounded-xl bg-gray-50">
             <p><b>Nomor Berkas:</b> {data.nomor_berkas}</p>
-            <p><b>Tanggal Permohonan:</b> {data.tanggal_permohonan}</p>
+            <p><b>Tanggal Permohonan:</b> {data.tgl_permohonan}</p>
             <p><b>Nama Pemohon:</b> {data.nama_pemohon}</p>
             <p><b>Jenis Layanan:</b> {data.jenis_layanan}</p>
-            <p><b>Status:</b> {data.status_berkas}</p>
             <p><b>Kelengkapan:</b> {data.kelengkapan}</p>
             <p><b>Dokumen:</b> {data.kelengkapan_berkas}</p>
+            <p><b>Status:</b> {data.status}</p>
             <p><b>Tanggal Selesai:</b> {data.tanggal_selesai}</p>
             <p><b>Tahun:</b> {data.tahun}</p>
           </div>
