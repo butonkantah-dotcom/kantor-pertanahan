@@ -102,7 +102,7 @@ export default function Home() {
           </p>
           <p><b>Status:</b> {data.status}</p>
           <p><b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}</p>
-          <p><b>Tahun:</b> {data.tahun}</p>
+          <p><b>Tahun:</b> {data.tahun_permohonan}</p>
         </div>
       )}
     </div>
