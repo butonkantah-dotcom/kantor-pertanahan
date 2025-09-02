@@ -98,7 +98,7 @@ export default function Home() {
       </h1>
 
       {/* === Form Input === */}
-      <div className="w-full max-w-md mb-4 space-y-2">
+      <div className="w-full max-w-md mb-4 space-y-3">
         <input
           ref={inputRef}
           type="text"
@@ -109,11 +109,12 @@ export default function Home() {
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         />
 
-        <div className="flex flex-col sm:flex-row gap-2">
+        {/* Tombol di tengah */}
+        <div className="flex justify-center gap-3 mt-2">
           <button
             onClick={handleSearch}
             disabled={loading}
-            className={`w-full sm:w-auto px-4 py-3 rounded-lg text-white font-semibold bg-blue-600 hover:bg-blue-700 transition ${
+            className={`px-5 py-3 rounded-lg text-white font-semibold bg-blue-600 hover:bg-blue-700 transition ${
               loading ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
@@ -121,7 +122,7 @@ export default function Home() {
           </button>
           <button
             onClick={handleReset}
-            className="w-full sm:w-auto px-4 py-3 rounded-lg text-white font-semibold bg-gray-500 hover:bg-gray-600 transition"
+            className="px-5 py-3 rounded-lg text-white font-semibold bg-gray-500 hover:bg-gray-600 transition"
           >
             🔄 Reset
           </button>
