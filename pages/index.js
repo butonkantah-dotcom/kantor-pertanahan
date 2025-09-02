@@ -96,19 +96,18 @@ export default function Home() {
           <Card className="mt-4 animate-fadeIn transform transition-transform hover:scale-105">
             <CardContent className="p-4 space-y-2">
               <p>
-                <strong>Nama:</strong> {data.nama}
+                <strong>Nama Pemohon:</strong> {data.nama_pemohon}
               </p>
               <p>
-                <strong>Nomor Berkas:</strong> {data.berkas}
+                <strong>Nomor Berkas:</strong> {data.nomor_berkas}
               </p>
               <p>
-                <strong>Status:</strong> {data.status}
+                <strong>Status Berkas:</strong> {data.status_berkas}
               </p>
-              {data.tahun_permohonan && (
-                <p>
-                  <strong>Tahun Permohonan:</strong> {data.tahun_permohonan}
-                </p>
-              )}
+              <p>
+                <strong>Tahun Permohonan:</strong>{" "}
+                {data.tahun_permohonan ?? "Belum ada data"}
+              </p>
             </CardContent>
           </Card>
         )}
