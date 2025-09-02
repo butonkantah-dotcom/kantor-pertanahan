@@ -8,6 +8,7 @@ export default function Home() {
   const [warning, setWarning] = useState("");
   const [notFound, setNotFound] = useState(false);
   const [error, setError] = useState("");
+  const [shake, setShake] = useState(false);
 
   const inputRef = useRef(null);
 
@@ -38,6 +39,10 @@ export default function Home() {
       setData(null);
       setNotFound(false);
       setError("");
+
+      // trigger animasi shake
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
       return;
     }
 
@@ -99,7 +104,10 @@ export default function Home() {
           ref={inputRef}
           type="text"
           placeholder="Masukkan Nomor Berkas"
-          className="border rounded-lg p-3 w-full text-base"
+          className={`border rounded-lg p-3 w-full text-base 
+            focus:outline-none focus:ring-2 focus:ring-blue-500 
+            focus:border-blue-500 transition
+            ${shake ? "animate-shake border-red-500" : ""}`}
           value={nomorBerkas}
           onChange={(e) => setNomorBerkas(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
@@ -177,7 +185,8 @@ function DetailCard({ data }) {
 
   return (
     <div
-      className={`mt-4 p-4 border rounded-xl w-full max-w-md ${cardStyles[cardColor]}`}
+      className={`mt-4 p-4 border rounded-xl w-full max-w-md ${cardStyles[cardColor]} 
+        transform transition-transform duration-300 hover:scale-105 animate-fadeIn`}
     >
       <h2 className="flex items-center gap-2 font-bold mb-3 text-lg">
         <span role="img" aria-label="folder">
