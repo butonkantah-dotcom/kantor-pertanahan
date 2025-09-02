@@ -32,7 +32,7 @@ export default function Home() {
     setNotFound(false);
 
     // Simulasi pencarian (dummy)
-    if (trimmedNomor === "12345") {
+  /*  if (trimmedNomor === "12345") {
       setData({
         nama: "Andi Saputra",
         berkas: "12345",
@@ -42,7 +42,7 @@ export default function Home() {
       setData(null);
       setNotFound(true);
     }
-  };
+  };*/
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-gray-50">
