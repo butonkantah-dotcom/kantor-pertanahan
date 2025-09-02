@@ -12,12 +12,10 @@ export default function Home() {
 
   const inputRef = useRef(null);
 
-  // Auto focus input saat pertama kali load
   useEffect(() => {
     if (inputRef.current) inputRef.current.focus();
   }, []);
 
-  // Shortcut ESC untuk reset
   const handleKeyDown = useCallback((e) => {
     if (e.key === "Escape") {
       handleReset();
@@ -29,7 +27,6 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
-  // Fungsi cari data
   const handleSearch = async () => {
     const trimmedNomor = nomorBerkas.trim();
 
@@ -64,7 +61,6 @@ export default function Home() {
     }
   };
 
-  // Reset form
   const handleReset = () => {
     setNomorBerkas("");
     setData(null);
@@ -78,7 +74,10 @@ export default function Home() {
     <>
       <Head>
         <title>Cek Status Berkas ATR/BPN</title>
-        <meta name="description" content="Lihat status dan kelengkapan berkas Anda secara cepat & mudah" />
+        <meta
+          name="description"
+          content="Lihat status dan kelengkapan berkas Anda secara cepat & mudah"
+        />
       </Head>
 
       <div className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 bg-gray-100">
@@ -118,7 +117,7 @@ export default function Home() {
                   loading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
             >
-              {/* Ikon Search */}
+              {/* SVG Icon Search */}
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
                 viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round"
@@ -133,7 +132,7 @@ export default function Home() {
                 bg-gray-600 hover:bg-gray-700 shadow-md hover:shadow-lg w-full sm:w-auto
                 transition focus:outline-none focus:ring-2 focus:ring-gray-400 text-sm sm:text-base"
             >
-              {/* Ikon Reset */}
+              {/* SVG Icon Reset */}
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
                 viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round"
@@ -179,14 +178,15 @@ export default function Home() {
 // Komponen DetailCard
 function DetailCard({ data }) {
   const isLengkap = !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
+
+  // Mapping fix warna card (tidak hilang di smartphone)
+  const cardStyles = {
+    green: "bg-green-50 border border-green-200 text-green-700",
+    red: "bg-red-50 border border-red-200 text-red-700",
+  };
+
   const cardColor = isLengkap ? "green" : "red";
   const cardIcon = isLengkap ? "✅" : "❌";
-
-  // Mapping warna fix (tidak dinamis)
-  const cardStyles = {
-    green: "bg-green-50 border-green-200 text-green-700",
-    red: "bg-red-50 border-red-200 text-red-700",
-  };
 
   const formatTanggal = (tgl) => {
     if (!tgl) return "-";
@@ -198,7 +198,7 @@ function DetailCard({ data }) {
   };
 
   return (
-    <div className={`mt-4 p-4 border rounded-xl w-full max-w-md ${cardStyles[cardColor]}`}>
+    <div className={`mt-4 p-4 rounded-xl w-full max-w-md ${cardStyles[cardColor]}`}>
       <h2 className="flex items-center gap-2 font-bold mb-3 text-lg">
         <span role="img" aria-label="folder">📂</span>
         {cardIcon} Detail Berkas
