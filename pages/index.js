@@ -11,12 +11,14 @@ export default function Home() {
 
   const inputRef = useRef(null);
 
+  // Autofocus input
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, []);
 
+  // Reset pakai tombol ESC
   const handleKeyDown = useCallback((e) => {
     if (e.key === "Escape") {
       handleReset();
@@ -30,6 +32,7 @@ export default function Home() {
     };
   }, [handleKeyDown]);
 
+  // Cari data
   const handleSearch = async () => {
     const trimmedNomor = nomorBerkas.trim();
 
@@ -71,6 +74,7 @@ export default function Home() {
     }
   };
 
+  // Reset semua
   const handleReset = () => {
     setNomorBerkas("");
     setData(null);
@@ -90,7 +94,7 @@ export default function Home() {
       </div>
 
       <h1 className="text-xl sm:text-2xl font-bold mb-4 text-blue-700 text-center">
-        Cek Status & Kelengkapan Berkas ATR/BPN
+        Cek Status &amp; Kelengkapan Berkas ATR/BPN
       </h1>
 
       {/* === Form Input === */}
@@ -145,7 +149,7 @@ export default function Home() {
 
       {notFound && (
         <p className="text-red-600 font-semibold text-center w-full max-w-md">
-          ⚠️ Data dengan nomor berkas "{nomorBerkas}" tidak ditemukan
+          ⚠️ Data dengan nomor berkas &quot;{nomorBerkas}&quot; tidak ditemukan
         </p>
       )}
 
