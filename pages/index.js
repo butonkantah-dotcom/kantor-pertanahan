@@ -80,7 +80,7 @@ export default function Home() {
         />
       </Head>
 
-      <div className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 bg-gray-100 text-gray-900">
+      <div className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 bg-gray-100">
         {/* Logo */}
         <div className="mb-6">
           <Image src="/logo.png" alt="Logo ATR/BPN" width={100} height={100} />
@@ -94,7 +94,7 @@ export default function Home() {
           Lihat status dan kelengkapan berkas Anda secara cepat & mudah
         </p>
 
-        {/* Input & Tombol */}
+        {/* Input dan Tombol */}
         <div className="w-full max-w-md mb-4 space-y-3">
           <input
             ref={inputRef}
@@ -106,28 +106,39 @@ export default function Home() {
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />
 
+          {/* Tombol Cari & Reset */}
           <div className="flex flex-col sm:flex-row justify-center gap-3 mt-2 w-full max-w-md">
             <button
               onClick={handleSearch}
               disabled={loading}
-              title="Cari berdasarkan nomor berkas"
               className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-white font-semibold 
                 bg-blue-600 hover:bg-blue-700 shadow-md hover:shadow-lg w-full sm:w-auto
                 transition focus:outline-none focus:ring-2 focus:ring-blue-300 text-sm sm:text-base ${
                   loading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
             >
-              🔍 <span className="truncate">Cari</span>
+              {/* SVG Icon Search */}
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round"
+                  d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z" />
+              </svg>
+              <span className="truncate">Cari</span>
             </button>
 
             <button
               onClick={handleReset}
-              title="Hapus input & atur ulang pencarian"
               className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-white font-semibold 
                 bg-gray-600 hover:bg-gray-700 shadow-md hover:shadow-lg w-full sm:w-auto
                 transition focus:outline-none focus:ring-2 focus:ring-gray-400 text-sm sm:text-base"
             >
-              ↩️ <span className="truncate">Reset</span>
+              {/* SVG Icon Reset */}
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round"
+                  d="M4 4v5h.582M20 20v-5h-.582M4.582 9A7.975 7.975 0 0112 4a8 8 0 018 8" />
+              </svg>
+              <span className="truncate">Reset</span>
             </button>
           </div>
 
@@ -142,12 +153,15 @@ export default function Home() {
             {warning}
           </div>
         )}
+
         {error && (
           <div className="w-full max-w-md mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg text-center">
             {error}
           </div>
         )}
+
         {loading && <p className="text-gray-600">🔄 Mencari data...</p>}
+
         {notFound && (
           <p className="text-red-600 font-semibold text-center w-full max-w-md">
             ⚠️ Data dengan nomor berkas &quot;{nomorBerkas}&quot; tidak ditemukan
@@ -163,14 +177,15 @@ export default function Home() {
 
 // Komponen DetailCard
 function DetailCard({ data }) {
-  const isLengkap = !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
-  const cardColor = isLengkap ? "green" : "red";
-  const cardIcon = isLengkap ? "✅" : "❌";
+  const isLengkap =
+    !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
 
-  const cardStyles = {
-    green: "bg-green-50 border-green-200 text-green-700",
-    red: "bg-red-50 border-red-200 text-red-700",
-  };
+  const cardClasses = isLengkap
+    ? "bg-green-50 border border-green-200"
+    : "bg-red-50 border border-red-200";
+
+  const titleClasses = isLengkap ? "text-green-700" : "text-red-700";
+  const cardIcon = isLengkap ? "✅" : "❌";
 
   const formatTanggal = (tgl) => {
     if (!tgl) return "-";
@@ -182,8 +197,8 @@ function DetailCard({ data }) {
   };
 
   return (
-    <div className={`mt-4 p-4 border rounded-xl w-full max-w-md ${cardStyles[cardColor]}`}>
-      <h2 className="flex items-center gap-2 font-bold mb-3 text-lg">
+    <div className={`mt-4 p-4 rounded-xl w-full max-w-md shadow-md ${cardClasses}`}>
+      <h2 className={`flex items-center gap-2 font-bold mb-3 text-lg ${titleClasses}`}>
         <span role="img" aria-label="folder">📂</span>
         {cardIcon} Detail Berkas
       </h2>
