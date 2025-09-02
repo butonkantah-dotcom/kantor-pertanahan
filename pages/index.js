@@ -119,22 +119,7 @@ export default function Home() {
                   loading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
             >
-              {/* Icon Search */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z"
-                />
-              </svg>
-              <span className="truncate">Cari</span>
+              🔍 Cari
             </button>
 
             <button
@@ -143,22 +128,7 @@ export default function Home() {
                 bg-gray-600 hover:bg-gray-700 shadow-md hover:shadow-lg w-full sm:w-auto
                 transition focus:outline-none focus:ring-2 focus:ring-gray-400 text-sm sm:text-base"
             >
-              {/* Icon Reset */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 4v5h.582M20 20v-5h-.582M4.582 9A7.975 7.975 0 0112 4a8 8 0 018 8"
-                />
-              </svg>
-              <span className="truncate">Reset</span>
+              ♻️ Reset
             </button>
           </div>
 
@@ -195,7 +165,7 @@ export default function Home() {
   );
 }
 
-// === DetailCard ===
+// Komponen DetailCard
 function DetailCard({ data }) {
   const isLengkap =
     !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
@@ -211,54 +181,35 @@ function DetailCard({ data }) {
 
   return (
     <div
-      className={`mt-4 p-4 rounded-xl w-full max-w-md border ${
+      className={`mt-4 p-4 rounded-xl w-full max-w-md shadow-lg ${
         isLengkap
-          ? "bg-green-50 border-green-200 text-green-700"
-          : "bg-red-50 border-red-200 text-red-700"
+          ? "bg-green-600 text-white border border-green-700"
+          : "bg-red-600 text-white border border-red-700"
       }`}
     >
       <h2 className="flex items-center gap-2 font-bold mb-3 text-lg">
-        <span role="img" aria-label="folder">
-          📂
-        </span>
-        {isLengkap ? "✅ Detail Berkas (Lengkap)" : "❌ Detail Berkas (Kurang)"}
+        📂 {isLengkap ? "✅" : "❌"} Detail Berkas
       </h2>
 
       <div className="space-y-1 text-sm sm:text-base">
-        <p>
-          <b>Nomor Berkas:</b> {data.nomor_berkas}
-        </p>
-        <p>
-          <b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}
-        </p>
-        <p>
-          <b>Nama Pemohon:</b> {data.nama_pemohon}
-        </p>
-        <p>
-          <b>Jenis Layanan:</b> {data.jenis_layanan}
-        </p>
-        <p>
-          <b>Kelengkapan:</b> {data.kelengkapan || "-"}
-        </p>
+        <p><b>Nomor Berkas:</b> {data.nomor_berkas}</p>
+        <p><b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}</p>
+        <p><b>Nama Pemohon:</b> {data.nama_pemohon}</p>
+        <p><b>Jenis Layanan:</b> {data.jenis_layanan}</p>
+        <p><b>Kelengkapan:</b> {data.kelengkapan || "-"}</p>
         <p>
           <b>Dokumen:</b>{" "}
           {isLengkap ? (
-            <span className="text-green-700 font-semibold">Lengkap ✅</span>
+            <span className="font-semibold">Lengkap ✅</span>
           ) : (
-            <span className="text-red-700 font-semibold">
+            <span className="font-semibold">
               Kurang ❌ ({data.kelengkapan_berkas})
             </span>
           )}
         </p>
-        <p>
-          <b>Status Berkas:</b> {data.status_berkas}
-        </p>
-        <p>
-          <b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}
-        </p>
-        <p>
-          <b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}
-        </p>
+        <p><b>Status Berkas:</b> {data.status_berkas}</p>
+        <p><b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}</p>
+        <p><b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}</p>
       </div>
     </div>
   );
