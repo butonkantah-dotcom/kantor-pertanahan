@@ -8,11 +8,12 @@ export default function Home() {
   const [notFound, setNotFound] = useState(false);
   const [error, setError] = useState("");
   const [warning, setWarning] = useState("");
+  const [loading, setLoading] = useState(false);
   const [shake, setShake] = useState(false);
 
   const inputRef = useRef(null);
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     const trimmedNomor = nomorBerkas.trim();
 
     if (!trimmedNomor) {
@@ -30,19 +31,29 @@ export default function Home() {
     setWarning("");
     setError("");
     setNotFound(false);
+    setLoading(true);
 
-    // Simulasi pencarian (dummy)
-  /*  if (trimmedNomor === "12345") {
-      setData({
-        nama: "Andi Saputra",
-        berkas: "12345",
-        status: "✅ Disetujui",
-      });
-    } else {
+    try {
+      const res = await fetch(`/api/getData?berkas=${trimmedNomor}`);
+      const result = await res.json();
+
+      if (!res.ok) {
+        if (res.status === 404) {
+          setNotFound(true);
+        } else {
+          setError(result.error || "Terjadi kesalahan");
+        }
+        setData(null);
+      } else {
+        setData(result);
+      }
+    } catch (err) {
+      setError("Gagal terhubung ke server");
       setData(null);
-      setNotFound(true);
+    } finally {
+      setLoading(false);
     }
-  };*/
+  };
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-gray-50">
@@ -62,15 +73,16 @@ export default function Home() {
             ${shake ? "animate-shake border-red-500" : ""}`}
           value={nomorBerkas}
           onChange={(e) => setNomorBerkas(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         />
 
         {/* Tombol Cari */}
         <Button
           onClick={handleSearch}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base py-2 rounded-xl shadow-md transition-transform transform hover:scale-105"
+          disabled={loading}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base py-2 rounded-xl shadow-md transition-transform transform hover:scale-105 disabled:opacity-50"
         >
-          Cari
+          {loading ? "Mencari..." : "Cari"}
         </Button>
 
         {/* Warning */}
@@ -95,6 +107,9 @@ export default function Home() {
               </p>
               <p>
                 <strong>Status:</strong> {data.status}
+              </p>
+              <p>
+                <strong>Tahun Permohonan:</strong> {data.tahun_permohonan}
               </p>
             </CardContent>
           </Card>
