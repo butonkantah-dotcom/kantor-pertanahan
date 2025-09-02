@@ -180,10 +180,15 @@ function DetailCard({ data }) {
   const isLengkap = !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
 
   // Mapping fix warna card (tidak hilang di smartphone)
-  const cardStyles = {
+  /*const cardStyles = {
     green: "bg-green-50 border border-green-200 text-green-700",
     red: "bg-red-50 border border-red-200 text-red-700",
+  };*/
+  const cardStyles = {
+  green: "bg-green-100 border border-green-400 text-green-800", // hijau lebih tebal, pasti kelihatan
+  red: "bg-red-100 border border-red-400 text-red-800",         // merah lebih tebal, pasti kelihatan
   };
+
 
   const cardColor = isLengkap ? "green" : "red";
   const cardIcon = isLengkap ? "✅" : "❌";
