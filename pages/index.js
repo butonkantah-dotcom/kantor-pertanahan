@@ -47,7 +47,6 @@ export default function Home() {
     try {
       const res = await fetch(`/api/proxy?nomor_berkas=${encodeURIComponent(trimmedNomor)}`);
       if (!res.ok) throw new Error("Gagal mengambil data dari server.");
-
       const json = await res.json();
       if (json && json.length > 0) {
         setData(json[0]);
@@ -75,27 +74,24 @@ export default function Home() {
     <>
       <Head>
         <title>Cek Status Berkas ATR/BPN</title>
-        <meta
-          name="description"
-          content="Lihat status dan kelengkapan berkas Anda secara cepat & mudah"
-        />
+        <meta name="description" content="Lihat status dan kelengkapan berkas Anda secara cepat & mudah" />
       </Head>
 
       <div className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 bg-gray-100">
-        {/* === Logo === */}
+        {/* Logo */}
         <div className="mb-6">
           <Image src="/logo.png" alt="Logo ATR/BPN" width={100} height={100} />
         </div>
 
-        {/* === Judul === */}
+        {/* Judul */}
         <h1 className="text-xl sm:text-2xl font-bold mb-2 text-blue-700 text-center">
-          Cek Status & Kelengkapan Berkas ATR/BPN
+          Cek Status &amp; Kelengkapan Berkas ATR/BPN
         </h1>
         <p className="text-sm text-center text-gray-600 mb-6">
           Lihat status dan kelengkapan berkas Anda secara cepat & mudah
         </p>
 
-        {/* === Form Input === */}
+        {/* Input dan Tombol */}
         <div className="w-full max-w-md mb-4 space-y-3">
           <input
             ref={inputRef}
@@ -107,19 +103,18 @@ export default function Home() {
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />
 
-          {/* === Tombol Aksi === */}
-          <div className="flex justify-center gap-3 mt-2 flex-wrap w-full max-w-md">
-            {/* Tombol Cari */}
+          {/* Tombol Cari & Reset */}
+          <div className="flex flex-col sm:flex-row justify-center gap-3 mt-2 w-full max-w-md">
             <button
               onClick={handleSearch}
               disabled={loading}
-              className={`flex items-center gap-2 px-5 py-3 rounded-lg text-white font-semibold 
-                bg-blue-700 hover:bg-blue-800 active:bg-blue-900 shadow-md hover:shadow-lg
-                focus:outline-none focus:ring-2 focus:ring-blue-300 transition text-base w-full sm:w-auto justify-center ${
+              className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-white font-semibold 
+                bg-blue-600 hover:bg-blue-700 shadow-md hover:shadow-lg w-full sm:w-auto
+                transition focus:outline-none focus:ring-2 focus:ring-blue-300 text-sm sm:text-base ${
                   loading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
             >
-              {/* Ikon SVG Cari */}
+              {/* SVG Icon Search */}
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
                 viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round"
@@ -128,14 +123,13 @@ export default function Home() {
               <span className="truncate">Cari</span>
             </button>
 
-            {/* Tombol Reset */}
             <button
               onClick={handleReset}
-              className="flex items-center gap-2 px-5 py-3 rounded-lg text-white font-semibold 
-                bg-gray-700 hover:bg-gray-800 active:bg-gray-900 shadow-md hover:shadow-lg
-                focus:outline-none focus:ring-2 focus:ring-gray-400 transition text-base w-full sm:w-auto justify-center"
+              className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-white font-semibold 
+                bg-gray-600 hover:bg-gray-700 shadow-md hover:shadow-lg w-full sm:w-auto
+                transition focus:outline-none focus:ring-2 focus:ring-gray-400 text-sm sm:text-base"
             >
-              {/* Ikon SVG Reset */}
+              {/* SVG Icon Reset */}
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
                 viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round"
@@ -150,7 +144,7 @@ export default function Home() {
           </small>
         </div>
 
-        {/* === Alerts === */}
+        {/* Notifikasi */}
         {warning && (
           <div className="w-full max-w-md mb-4 p-3 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-lg text-center">
             {warning}
@@ -171,17 +165,16 @@ export default function Home() {
           </p>
         )}
 
-        {/* === Hasil Pencarian === */}
+        {/* Hasil */}
         {data && <DetailCard data={data} />}
       </div>
     </>
   );
 }
 
-// === Komponen Detail ===
+// Komponen DetailCard
 function DetailCard({ data }) {
-  const isLengkap =
-    !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
+  const isLengkap = !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
   const cardColor = isLengkap ? "green" : "red";
   const cardIcon = isLengkap ? "✅" : "❌";
 
@@ -200,9 +193,7 @@ function DetailCard({ data }) {
   };
 
   return (
-    <div
-      className={`mt-4 p-4 border rounded-xl w-full max-w-md ${cardStyles[cardColor]}`}
-    >
+    <div className={`mt-4 p-4 border rounded-xl w-full max-w-md ${cardStyles[cardColor]}`}>
       <h2 className="flex items-center gap-2 font-bold mb-3 text-lg">
         <span role="img" aria-label="folder">📂</span>
         {cardIcon} Detail Berkas
@@ -211,4 +202,23 @@ function DetailCard({ data }) {
       <div className="space-y-1 text-sm sm:text-base">
         <p><b>Nomor Berkas:</b> {data.nomor_berkas}</p>
         <p><b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}</p>
-        <p><b>Nama Pemohon:</b> {data.nama_pemohon}</
+        <p><b>Nama Pemohon:</b> {data.nama_pemohon}</p>
+        <p><b>Jenis Layanan:</b> {data.jenis_layanan}</p>
+        <p><b>Kelengkapan:</b> {data.kelengkapan || "-"}</p>
+        <p>
+          <b>Dokumen:</b>{" "}
+          {isLengkap ? (
+            <span className="text-green-700 font-semibold">Lengkap ✅</span>
+          ) : (
+            <span className="text-red-700 font-semibold">
+              Kurang ❌ ({data.kelengkapan_berkas})
+            </span>
+          )}
+        </p>
+        <p><b>Status Berkas:</b> {data.status_berkas}</p>
+        <p><b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}</p>
+        <p><b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}</p>
+      </div>
+    </div>
+  );
+}
