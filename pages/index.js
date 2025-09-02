@@ -120,20 +120,20 @@ export default function Home() {
             <button
               onClick={handleSearch}
               disabled={loading}
-              className={`flex items-center gap-2 px-5 py-3 rounded-lg text-white font-semibold bg-blue-600 hover:bg-blue-700 transition text-base w-full sm:w-auto justify-center ${
+              className={`flex items-center gap-2 px-5 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 transition w-full sm:w-auto justify-center ${
                 loading ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
-              <span role="img" aria-label="Cari">🔍</span>
-              <span className="truncate">Cari</span>
+              <span role="img" aria-label="Cari" className="text-white text-lg">🔍</span>
+              <span className="text-white font-semibold text-base">Cari</span>
             </button>
 
             <button
               onClick={handleReset}
-              className="flex items-center gap-2 px-5 py-3 rounded-lg text-white font-semibold bg-gray-600 hover:bg-gray-700 transition text-base w-full sm:w-auto justify-center"
+              className="flex items-center gap-2 px-5 py-3 rounded-lg bg-gray-600 hover:bg-gray-700 transition w-full sm:w-auto justify-center"
             >
-              <span role="img" aria-label="Reset">🔄</span>
-              <span className="truncate">Reset</span>
+              <span role="img" aria-label="Reset" className="text-white text-lg">🔄</span>
+              <span className="text-white font-semibold text-base">Reset</span>
             </button>
           </div>
 
@@ -170,7 +170,7 @@ export default function Home() {
   );
 }
 
-// === Komponen Detail Hasil ===
+// === Komponen Detail ===
 function DetailCard({ data }) {
   const isLengkap =
     !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
