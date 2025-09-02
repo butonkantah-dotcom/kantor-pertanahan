@@ -1,119 +1,232 @@
-// pages/index.js
-import { useState, useEffect } from "react";
+import Image from "next/image";
+import { useState, useRef, useEffect, useCallback } from "react";
 
 export default function Home() {
-  const [nomor, setNomor] = useState("");
+  const [nomorBerkas, setNomorBerkas] = useState("");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [warning, setWarning] = useState("");
+  const [notFound, setNotFound] = useState(false);
+  const [error, setError] = useState("");
 
-  // Fungsi cari data
+  const inputRef = useRef(null);
+
+  // Autofocus input
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  // Reset pakai tombol ESC
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === "Escape") {
+      handleReset();
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
+  // Cari data
   const handleSearch = async () => {
-    if (!nomor.trim()) {
-      setError("Nomor berkas wajib diisi");
+    const trimmedNomor = nomorBerkas.trim();
+
+    if (!trimmedNomor) {
+      setWarning("⚠️ Harap masukkan nomor berkas");
       setData(null);
+      setNotFound(false);
+      setError("");
       return;
     }
+
+    setWarning("");
     setLoading(true);
-    setError(null);
+    setNotFound(false);
     setData(null);
+    setError("");
 
     try {
-      const res = await fetch(`/api/getData?nomor=${nomor}`);
-      const result = await res.json();
+      const res = await fetch(
+        `/api/proxy?nomor_berkas=${encodeURIComponent(trimmedNomor)}`
+      );
 
       if (!res.ok) {
-        throw new Error(result.error || "Terjadi kesalahan");
+        throw new Error("Gagal mengambil data dari server.");
       }
 
-      setData(result);
+      const json = await res.json();
+
+      if (json && json.length > 0) {
+        setData(json[0]);
+      } else {
+        setNotFound(true);
+      }
     } catch (err) {
-      setError(err.message);
+      console.error("Error:", err);
+      setError("❌ Terjadi kesalahan saat mengambil data. Silakan coba lagi.");
     } finally {
       setLoading(false);
     }
   };
 
-  // Fungsi reset
+  // Reset semua
   const handleReset = () => {
-    setNomor("");
+    setNomorBerkas("");
     setData(null);
-    setError(null);
+    setWarning("");
+    setNotFound(false);
+    setError("");
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
 
-  // Reset cepat dengan tombol ESC
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape") {
-        handleReset();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
-
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-50">
-      {/* Logo */}
-      <img
-        src="/logo.png"
-        alt="Logo ATR/BPN"
-        className="w-32 h-32 mb-4"
-      />
-
-      {/* Judul */}
-      <h1 className="text-2xl font-bold text-center mb-2">
-        Cek Status & Kelengkapan Berkas ATR/BPN
-      </h1>
-      <p className="text-sm text-center text-gray-600 mb-6">
-        Lihat status dan kelengkapan berkas Anda secara cepat & mudah
-      </p>
-
-      {/* Input */}
-      <input
-        type="text"
-        placeholder="Masukkan Nomor Berkas"
-        value={nomor}
-        onChange={(e) => setNomor(e.target.value)}
-        className="w-full max-w-md border border-gray-400 rounded-lg p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-
-      {/* Tombol Aksi */}
-      <div className="flex gap-4 justify-center mb-6">
-        <button
-          onClick={handleSearch}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
-        >
-          🔍 Cari
-        </button>
-        <button
-          onClick={handleReset}
-          className="px-4 py-2 bg-gray-500 text-white rounded-lg shadow hover:bg-gray-600 transition"
-        >
-          ⏪ Reset
-        </button>
+    <div className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 bg-gray-100">
+      {/* === LOGO === */}
+      <div className="mb-6">
+        <Image src="/logo.png" alt="Logo ATR/BPN" width={100} height={100} />
       </div>
 
-      {/* Info Reset Cepat */}
-      <p className="text-gray-600 text-sm mb-6">
-        💡 Tekan <b>ESC</b> untuk mengatur ulang dengan cepat
-      </p>
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 text-blue-700 text-center">
+        Cek Status &amp; Kelengkapan Berkas ATR/BPN
+      </h1>
 
-      {/* Status Loading */}
-      {loading && <p className="text-blue-600 font-medium">🔄 Sedang mencari...</p>}
+      {/* === Form Input === */}
+      <div className="w-full max-w-md mb-4 space-y-3">
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder="Masukkan Nomor Berkas"
+          className="border rounded-lg p-3 w-full text-base"
+          value={nomorBerkas}
+          onChange={(e) => setNomorBerkas(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+        />
 
-      {/* Error */}
-      {error && <p className="text-red-600 font-medium">❌ {error}</p>}
+        {/* Tombol di tengah */}
+        <div className="flex justify-center gap-3 mt-2">
+          <button
+            onClick={handleSearch}
+            disabled={loading}
+            className={`px-5 py-3 rounded-lg text-white font-semibold bg-blue-600 hover:bg-blue-700 transition ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            {loading ? "Mencari..." : "🔍 Cari"}
+          </button>
+          <button
+            onClick={handleReset}
+            className="px-5 py-3 rounded-lg text-white font-semibold bg-gray-500 hover:bg-gray-600 transition"
+          >
+            🔄 Reset
+          </button>
+        </div>
 
-      {/* Hasil */}
-      {data && (
-        <div className="bg-white shadow-md rounded-lg p-4 border w-full max-w-md text-center">
-          <p><b>Nomor Berkas:</b> {data.berkas}</p>
-          <p><b>Nama:</b> {data.nama}</p>
-          <p><b>Status:</b> {data.status}</p>
-          <p><b>Tahun Permohonan:</b> {data.tahun_permohonan}</p>
+        <small className="text-gray-500 text-sm text-center block">
+          💡 Tekan <b>ESC</b> untuk reset cepat
+        </small>
+      </div>
+
+      {/* === Alerts === */}
+      {warning && (
+        <div className="w-full max-w-md mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg text-center">
+          {warning}
         </div>
       )}
+
+      {error && (
+        <div className="w-full max-w-md mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg text-center">
+          {error}
+        </div>
+      )}
+
+      {loading && <p className="text-gray-600">🔄 Mencari data...</p>}
+
+      {notFound && (
+        <p className="text-red-600 font-semibold text-center w-full max-w-md">
+          ⚠️ Data dengan nomor berkas &quot;{nomorBerkas}&quot; tidak ditemukan
+        </p>
+      )}
+
+      {/* === Hasil === */}
+      {data && <DetailCard data={data} />}
+    </div>
+  );
+}
+
+function DetailCard({ data }) {
+  const isLengkap =
+    !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
+  const cardColor = isLengkap ? "green" : "red";
+  const cardIcon = isLengkap ? "✅" : "❌";
+
+  const cardStyles = {
+    green: "bg-green-50 border-green-200 text-green-700",
+    red: "bg-red-50 border-red-200 text-red-700",
+  };
+
+  const formatTanggal = (tgl) => {
+    if (!tgl) return "-";
+    return new Date(tgl).toLocaleDateString("id-ID", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  return (
+    <div
+      className={`mt-4 p-4 border rounded-xl w-full max-w-md ${cardStyles[cardColor]}`}
+    >
+      <h2 className="flex items-center gap-2 font-bold mb-3 text-lg">
+        <span role="img" aria-label="folder">
+          📂
+        </span>
+        {cardIcon} Detail Berkas
+      </h2>
+
+      <div className="space-y-1 text-sm sm:text-base">
+        <p>
+          <b>Nomor Berkas:</b> {data.nomor_berkas}
+        </p>
+        <p>
+          <b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}
+        </p>
+        <p>
+          <b>Nama Pemohon:</b> {data.nama_pemohon}
+        </p>
+        <p>
+          <b>Jenis Layanan:</b> {data.jenis_layanan}
+        </p>
+        <p>
+          <b>Kelengkapan:</b> {data.kelengkapan || "-"}
+        </p>
+        <p>
+          <b>Dokumen:</b>{" "}
+          {isLengkap ? (
+            <span className="text-green-700 font-semibold">Lengkap ✅</span>
+          ) : (
+            <span className="text-red-700 font-semibold">
+              Kurang ❌ ({data.kelengkapan_berkas})
+            </span>
+          )}
+        </p>
+        <p>
+          <b>Status Berkas:</b> {data.status_berkas}
+        </p>
+        <p>
+          <b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}
+        </p>
+        <p>
+          <b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}
+        </p>
+      </div>
     </div>
   );
 }
