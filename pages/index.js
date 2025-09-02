@@ -96,7 +96,10 @@ export default function Home() {
       <h1 className="text-xl sm:text-2xl font-bold mb-4 text-blue-700 text-center">
         Cek Status &amp; Kelengkapan Berkas ATR/BPN
       </h1>
-
+      <p className="text-sm text-center text-gray-600 mb-6">
+      Lihat status dan kelengkapan berkas Anda secara cepat & mudah
+      </p>
+      
       {/* === Form Input === */}
       <div className="w-full max-w-md mb-4 space-y-3">
         <input
