@@ -12,12 +12,10 @@ export default function Home() {
 
   const inputRef = useRef(null);
 
-  // Autofocus input saat halaman dibuka
   useEffect(() => {
     if (inputRef.current) inputRef.current.focus();
   }, []);
 
-  // Reset pakai tombol ESC
   const handleKeyDown = useCallback((e) => {
     if (e.key === "Escape") {
       handleReset();
@@ -29,7 +27,6 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
-  // Fungsi cari
   const handleSearch = async () => {
     const trimmedNomor = nomorBerkas.trim();
 
@@ -49,13 +46,9 @@ export default function Home() {
 
     try {
       const res = await fetch(`/api/proxy?nomor_berkas=${encodeURIComponent(trimmedNomor)}`);
-
-      if (!res.ok) {
-        throw new Error("Gagal mengambil data dari server.");
-      }
+      if (!res.ok) throw new Error("Gagal mengambil data dari server.");
 
       const json = await res.json();
-
       if (json && json.length > 0) {
         setData(json[0]);
       } else {
@@ -69,7 +62,6 @@ export default function Home() {
     }
   };
 
-  // Reset form
   const handleReset = () => {
     setNomorBerkas("");
     setData(null);
@@ -97,7 +89,7 @@ export default function Home() {
 
         {/* === Judul === */}
         <h1 className="text-xl sm:text-2xl font-bold mb-2 text-blue-700 text-center">
-          Cek Status &amp; Kelengkapan Berkas ATR/BPN
+          Cek Status & Kelengkapan Berkas ATR/BPN
         </h1>
         <p className="text-sm text-center text-gray-600 mb-6">
           Lihat status dan kelengkapan berkas Anda secara cepat & mudah
@@ -117,23 +109,39 @@ export default function Home() {
 
           {/* === Tombol Aksi === */}
           <div className="flex justify-center gap-3 mt-2 flex-wrap w-full max-w-md">
+            {/* Tombol Cari */}
             <button
               onClick={handleSearch}
               disabled={loading}
-              className={`flex items-center gap-2 px-5 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 transition w-full sm:w-auto justify-center ${
-                loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className={`flex items-center gap-2 px-5 py-3 rounded-lg text-white font-semibold 
+                bg-blue-700 hover:bg-blue-800 active:bg-blue-900 shadow-md hover:shadow-lg
+                focus:outline-none focus:ring-2 focus:ring-blue-300 transition text-base w-full sm:w-auto justify-center ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
             >
-              <span role="img" aria-label="Cari" className="text-white text-lg">🔍</span>
-              <span className="text-white font-semibold text-base">Cari</span>
+              {/* Ikon SVG Cari */}
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round"
+                  d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z" />
+              </svg>
+              <span className="truncate">Cari</span>
             </button>
 
+            {/* Tombol Reset */}
             <button
               onClick={handleReset}
-              className="flex items-center gap-2 px-5 py-3 rounded-lg bg-gray-600 hover:bg-gray-700 transition w-full sm:w-auto justify-center"
+              className="flex items-center gap-2 px-5 py-3 rounded-lg text-white font-semibold 
+                bg-gray-700 hover:bg-gray-800 active:bg-gray-900 shadow-md hover:shadow-lg
+                focus:outline-none focus:ring-2 focus:ring-gray-400 transition text-base w-full sm:w-auto justify-center"
             >
-              <span role="img" aria-label="Reset" className="text-white text-lg">🔄</span>
-              <span className="text-white font-semibold text-base">Reset</span>
+              {/* Ikon SVG Reset */}
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round"
+                  d="M4 4v5h.582M20 20v-5h-.582M4.582 9A7.975 7.975 0 0112 4a8 8 0 018 8" />
+              </svg>
+              <span className="truncate">Reset</span>
             </button>
           </div>
 
@@ -203,23 +211,4 @@ function DetailCard({ data }) {
       <div className="space-y-1 text-sm sm:text-base">
         <p><b>Nomor Berkas:</b> {data.nomor_berkas}</p>
         <p><b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}</p>
-        <p><b>Nama Pemohon:</b> {data.nama_pemohon}</p>
-        <p><b>Jenis Layanan:</b> {data.jenis_layanan}</p>
-        <p><b>Kelengkapan:</b> {data.kelengkapan || "-"}</p>
-        <p>
-          <b>Dokumen:</b>{" "}
-          {isLengkap ? (
-            <span className="text-green-700 font-semibold">Lengkap ✅</span>
-          ) : (
-            <span className="text-red-700 font-semibold">
-              Kurang ❌ ({data.kelengkapan_berkas})
-            </span>
-          )}
-        </p>
-        <p><b>Status Berkas:</b> {data.status_berkas}</p>
-        <p><b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}</p>
-        <p><b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}</p>
-      </div>
-    </div>
-  );
-}
+        <p><b>Nama Pemohon:</b> {data.nama_pemohon}</
