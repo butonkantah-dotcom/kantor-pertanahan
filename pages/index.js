@@ -12,7 +12,7 @@ export default function Home() {
 
   const inputRef = useRef(null);
 
-  // Auto fokus saat halaman dibuka
+  // Auto focus input saat pertama kali load
   useEffect(() => {
     if (inputRef.current) inputRef.current.focus();
   }, []);
@@ -29,6 +29,7 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
+  // Fungsi cari data
   const handleSearch = async () => {
     const trimmedNomor = nomorBerkas.trim();
 
@@ -47,9 +48,7 @@ export default function Home() {
     setError("");
 
     try {
-      const res = await fetch(
-        `/api/proxy?nomor_berkas=${encodeURIComponent(trimmedNomor)}`
-      );
+      const res = await fetch(`/api/proxy?nomor_berkas=${encodeURIComponent(trimmedNomor)}`);
       if (!res.ok) throw new Error("Gagal mengambil data dari server.");
       const json = await res.json();
       if (json && json.length > 0) {
@@ -65,6 +64,7 @@ export default function Home() {
     }
   };
 
+  // Reset form
   const handleReset = () => {
     setNomorBerkas("");
     setData(null);
@@ -78,10 +78,7 @@ export default function Home() {
     <>
       <Head>
         <title>Cek Status Berkas ATR/BPN</title>
-        <meta
-          name="description"
-          content="Lihat status dan kelengkapan berkas Anda secara cepat & mudah"
-        />
+        <meta name="description" content="Lihat status dan kelengkapan berkas Anda secara cepat & mudah" />
       </Head>
 
       <div className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 bg-gray-100">
@@ -122,14 +119,12 @@ export default function Home() {
                 }`}
             >
               {/* Ikon Search */}
-              <svg xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" strokeWidth={2}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round"
                   d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z" />
               </svg>
-              <span>Cari</span>
+              <span className="truncate">Cari</span>
             </button>
 
             <button
@@ -139,14 +134,12 @@ export default function Home() {
                 transition focus:outline-none focus:ring-2 focus:ring-gray-400 text-sm sm:text-base"
             >
               {/* Ikon Reset */}
-              <svg xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" strokeWidth={2}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round"
                   d="M4 4v5h.582M20 20v-5h-.582M4.582 9A7.975 7.975 0 0112 4a8 8 0 018 8" />
               </svg>
-              <span>Reset</span>
+              <span className="truncate">Reset</span>
             </button>
           </div>
 
@@ -185,14 +178,15 @@ export default function Home() {
 
 // Komponen DetailCard
 function DetailCard({ data }) {
-  const isLengkap =
-    !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
-
-  const cardClasses = isLengkap
-    ? "bg-green-50 border border-green-200 text-green-700"
-    : "bg-red-50 border border-red-200 text-red-700";
-
+  const isLengkap = !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
+  const cardColor = isLengkap ? "green" : "red";
   const cardIcon = isLengkap ? "✅" : "❌";
+
+  // Mapping warna fix (tidak dinamis)
+  const cardStyles = {
+    green: "bg-green-50 border-green-200 text-green-700",
+    red: "bg-red-50 border-red-200 text-red-700",
+  };
 
   const formatTanggal = (tgl) => {
     if (!tgl) return "-";
@@ -204,13 +198,9 @@ function DetailCard({ data }) {
   };
 
   return (
-    <div
-      className={`mt-4 p-4 rounded-xl w-full max-w-md shadow-md ${cardClasses}`}
-    >
+    <div className={`mt-4 p-4 border rounded-xl w-full max-w-md ${cardStyles[cardColor]}`}>
       <h2 className="flex items-center gap-2 font-bold mb-3 text-lg">
-        <span role="img" aria-label="folder">
-          📂
-        </span>
+        <span role="img" aria-label="folder">📂</span>
         {cardIcon} Detail Berkas
       </h2>
 
