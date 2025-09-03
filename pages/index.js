@@ -1,3 +1,4 @@
+// pages/index.js
 import Head from "next/head";
 import Image from "next/image";
 import { useState, useRef, useEffect, useCallback } from "react";
@@ -12,7 +13,7 @@ export default function Home() {
   const inputRef = useRef(null);
 
   useEffect(() => {
-    if (inputRef.current) inputRef.current.focus();
+    inputRef.current?.focus();
   }, []);
 
   const handleReset = useCallback(() => {
@@ -21,7 +22,7 @@ export default function Home() {
     setWarning("");
     setNotFound(false);
     setError("");
-    if (inputRef.current) inputRef.current.focus();
+    inputRef.current?.focus();
   }, []);
 
   const handleKeyDown = useCallback(
@@ -37,8 +38,8 @@ export default function Home() {
   }, [handleKeyDown]);
 
   const handleSearch = async () => {
-    const trimmedNomor = nomorBerkas.trim();
-    if (!trimmedNomor) {
+    const trimmed = nomorBerkas.trim();
+    if (!trimmed) {
       setWarning("⚠️ Harap masukkan nomor berkas");
       setData(null);
       setNotFound(false);
@@ -53,15 +54,13 @@ export default function Home() {
     setError("");
 
     try {
-      const res = await fetch(
-        `/api/proxy?nomor_berkas=${encodeURIComponent(trimmedNomor)}`
-      );
+      const res = await fetch(`/api/proxy?nomor_berkas=${encodeURIComponent(trimmed)}`);
       if (!res.ok) throw new Error("Gagal mengambil data dari server.");
       const json = await res.json();
       if (json && json.length > 0) setData(json[0]);
       else setNotFound(true);
     } catch (err) {
-      console.error("Error:", err);
+      console.error(err);
       setError("❌ Terjadi kesalahan saat mengambil data. Silakan coba lagi.");
     } finally {
       setLoading(false);
@@ -72,10 +71,7 @@ export default function Home() {
     <>
       <Head>
         <title>SI-BERKAT | Sistem Informasi Berkas Kantor Pertanahan</title>
-        <meta
-          name="description"
-          content="Cek Status & Kelengkapan Berkas ATR/BPN secara cepat & mudah"
-        />
+        <meta name="description" content="Cek Status & Kelengkapan Berkas ATR/BPN secara cepat & mudah" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
@@ -92,7 +88,7 @@ export default function Home() {
         </header>
 
         <main className="flex-1 w-full max-w-2xl px-4 sm:px-6 py-6">
-          {/* Hero Section */}
+          {/* Hero */}
           <section className="text-center mb-6 sm:mb-8">
             <h2
               className="
@@ -107,8 +103,7 @@ export default function Home() {
               Cek Status &amp; Kelengkapan Berkas Anda
             </h2>
             <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-              Masukkan nomor berkas, tekan <b>Enter</b> untuk mencari. Tekan{" "}
-              <b>ESC</b> untuk reset.
+              Masukkan nomor berkas, tekan <b>Enter</b> untuk mencari. Tekan <b>ESC</b> untuk reset.
             </p>
           </section>
 
@@ -149,30 +144,32 @@ export default function Home() {
               {error}
             </div>
           )}
-          {loading && (
-            <p className="text-slate-600 dark:text-slate-300">
-              🔄 Mencari data...
-            </p>
-          )}
+          {loading && <p className="text-slate-600 dark:text-slate-300">🔄 Mencari data...</p>}
           {notFound && (
             <p className="text-red-600 font-semibold text-center">
-              ⚠️ Data dengan nomor berkas &quot;{nomorBerkas}&quot; tidak
-              ditemukan
+              ⚠️ Data dengan nomor berkas &quot;{nomorBerkas}&quot; tidak ditemukan
             </p>
           )}
 
           {/* Hasil */}
           {data && <DetailCard data={data} />}
+
+          {/* FAQ Section */}
+          <section className="mt-10">
+            <h3 className="text-lg font-bold mb-4 text-slate-800 dark:text-slate-100 text-center">
+              ❓ Pertanyaan yang Sering Diajukan
+            </h3>
+            <Faq />
+          </section>
         </main>
       </div>
     </>
   );
 }
 
-/* Komponen DetailCard */
+/* ===== Detail Card ===== */
 function DetailCard({ data }) {
-  const isLengkap =
-    !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
+  const isLengkap = !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
 
   const formatTanggal = (tgl) => {
     if (!tgl) return "-";
@@ -202,9 +199,7 @@ function DetailCard({ data }) {
 
   return (
     <div className="mt-6 p-5 rounded-xl bg-white dark:bg-slate-800 shadow-lg border border-slate-200 dark:border-slate-700">
-      <h3 className="flex items-center gap-2 font-bold text-lg mb-3">
-        📂 Detail Berkas
-      </h3>
+      <h3 className="flex items-center gap-2 font-bold text-lg mb-3">📂 Detail Berkas</h3>
 
       <div className="space-y-1 text-sm sm:text-base">
         <p>
@@ -219,7 +214,9 @@ function DetailCard({ data }) {
         <p>
           <b>Jenis Layanan:</b> {data.jenis_layanan}
         </p>
-        <p>
+
+        {/* Kelengkapan */}
+        <div>
           <b>Kelengkapan:</b>{" "}
           {isLengkap ? (
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold">
@@ -227,11 +224,13 @@ function DetailCard({ data }) {
             </span>
           ) : (
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">
-              ❌ Kurang ({data.kelengkapan_berkas})
+              ❌ Kurang
             </span>
           )}
-        </p>
-        <p>
+        </div>
+
+        {/* Dokumen */}
+        <div>
           <b>Dokumen:</b>{" "}
           {isLengkap ? (
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold">
@@ -242,7 +241,8 @@ function DetailCard({ data }) {
               ❌ Masih ada kekurangan: {data.kelengkapan_berkas}
             </span>
           )}
-        </p>
+        </div>
+
         <p>
           <b>Status Berkas:</b> {data.status_berkas}
         </p>
@@ -275,6 +275,52 @@ function DetailCard({ data }) {
           🖨️ <span className="text-xs">Cetak</span>
         </button>
       </div>
+    </div>
+  );
+}
+
+/* ===== FAQ (Accordion) ===== */
+function Faq() {
+  const items = [
+    {
+      q: "Apa itu SI-BERKAT?",
+      a: "SI-BERKAT (Sistem Informasi Berkas Kantor Pertanahan) adalah aplikasi untuk mengecek status & kelengkapan berkas permohonan di ATR/BPN.",
+    },
+    {
+      q: "Bagaimana cara mencari berkas saya?",
+      a: "Masukkan nomor berkas pada kolom pencarian, lalu tekan tombol Cari atau Enter. Jika data tersedia, detail berkas akan ditampilkan.",
+    },
+    {
+      q: "Kenapa data saya tidak ditemukan?",
+      a: "Pastikan nomor berkas sudah benar. Jika masih tidak ditemukan, kemungkinan data belum masuk sistem atau sedang diproses manual di kantor.",
+    },
+    {
+      q: "Apakah bisa digunakan di HP?",
+      a: "Ya, SI-BERKAT sudah responsif dan mendukung tampilan di smartphone maupun desktop, serta mendukung mode gelap otomatis.",
+    },
+  ];
+
+  const [openIndex, setOpenIndex] = useState(null);
+
+  return (
+    <div className="space-y-3">
+      {items.map((item, i) => (
+        <div
+          key={i}
+          className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm"
+        >
+          <button
+            onClick={() => setOpenIndex(openIndex === i ? null : i)}
+            className="w-full flex justify-between items-center p-4 text-left font-medium text-slate-800 dark:text-slate-100"
+          >
+            {item.q}
+            <span className="ml-2">{openIndex === i ? "−" : "+"}</span>
+          </button>
+          {openIndex === i && (
+            <div className="px-4 pb-4 text-sm text-slate-600 dark:text-slate-300">{item.a}</div>
+          )}
+        </div>
+      ))}
     </div>
   );
 }
