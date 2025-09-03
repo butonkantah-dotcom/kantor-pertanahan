@@ -1,8 +1,9 @@
+// pages/index.js
 import Head from "next/head";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-/** ========= Util kecil ========= */
+/* ==== Util ==== */
 const fmtTanggal = (tgl) =>
   !tgl
     ? "-"
@@ -31,7 +32,7 @@ const shareLink = async (url) => {
   return false;
 };
 
-/** ========= Halaman ========= */
+/* ==== Halaman ==== */
 export default function Home() {
   const [nomor, setNomor] = useState("");
   const [data, setData] = useState(null);
@@ -44,7 +45,7 @@ export default function Home() {
 
   const inputRef = useRef(null);
 
-  // Ambil nomor berkas dari query URL (?n=XXXX) saat halaman dibuka
+  // Ambil query ?n= saat open
   useEffect(() => {
     if (typeof window === "undefined") return;
     const url = new URL(window.location.href);
@@ -55,12 +56,10 @@ export default function Home() {
     }
   }, []);
 
-  // Fokus otomatis input
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+  // Fokus input
+  useEffect(() => void inputRef.current?.focus(), []);
 
-  // Simpan & muat riwayat pencarian (localStorage)
+  // History
   const history = useMemo(() => {
     if (typeof window === "undefined") return [];
     try {
@@ -77,7 +76,7 @@ export default function Home() {
     localStorage.setItem("sib-berkat-history", JSON.stringify(next));
   };
 
-  // Reset cepat
+  // Reset
   const handleReset = useCallback(() => {
     setNomor("");
     setData(null);
@@ -121,25 +120,18 @@ export default function Home() {
     setData(null);
     setLoading(true);
     try {
-      // Simpan query ke URL (deep link)
       if (typeof window !== "undefined") {
         const url = new URL(window.location.href);
         url.searchParams.set("n", query);
         window.history.replaceState({}, "", url.toString());
       }
-
-      // Panggil API kamu
       const res = await fetch(`/api/proxy?nomor_berkas=${encodeURIComponent(query)}`);
       if (!res.ok) throw new Error("Gagal mengambil data dari server.");
       const json = await res.json();
-
       if (json && json.length > 0) {
-        const row = json[0];
-        setData(row);
+        setData(json[0]);
         pushHistory(query);
-      } else {
-        setNotFound(true);
-      }
+      } else setNotFound(true);
     } catch (err) {
       console.error(err);
       setError("❌ Terjadi kesalahan saat mengambil data. Silakan coba lagi.");
@@ -178,7 +170,7 @@ export default function Home() {
         <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)" />
       </Head>
 
-      {/* HEADER BRANDING */}
+      {/* Header */}
       <header className="sticky top-0 z-20 backdrop-blur bg-white/60 dark:bg-slate-900/60 border-b border-slate-200/60 dark:border-slate-800">
         <div className="mx-auto max-w-screen-lg px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -192,7 +184,6 @@ export default function Home() {
               </p>
             </div>
           </div>
-
           <button
             onClick={() => setHelpOpen((v) => !v)}
             className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-slate-700 dark:text-slate-200 ring-1 ring-slate-300 dark:ring-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800"
@@ -204,10 +195,10 @@ export default function Home() {
         </div>
       </header>
 
-      {/* MAIN */}
+      {/* Main */}
       <main className="min-h-[calc(100vh-56px)] bg-gradient-to-b from-slate-50 via-sky-50 to-indigo-50 dark:from-[#0b1220] dark:via-[#0b1220] dark:to-[#0b1220]">
         <div className="mx-auto max-w-screen-lg px-4 py-6 sm:py-10">
-          {/* HERO */}
+          {/* Hero */}
           <section className="text-center mb-6 sm:mb-8">
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-indigo-600 dark:from-indigo-300 dark:to-fuchsia-300">
               Cek Status &amp; Kelengkapan Berkas Anda
@@ -217,11 +208,12 @@ export default function Home() {
             </p>
           </section>
 
-          {/* SEARCH PANEL */}
+          {/* Search Panel (mobile-friendly) */}
           <section className="mx-auto max-w-xl">
             <div className="rounded-2xl border border-slate-200 bg-white/80 dark:bg-slate-900/60 dark:border-slate-800 shadow-sm p-4 sm:p-5 backdrop-blur">
               <div className="flex flex-col gap-3">
-                <div className="flex gap-2">
+                {/* Input + tombol: bertumpuk di HP, sejajar di desktop */}
+                <div className="flex flex-col sm:flex-row gap-3">
                   <input
                     ref={inputRef}
                     type="text"
@@ -234,13 +226,13 @@ export default function Home() {
                   <button
                     onClick={() => handleSearch()}
                     disabled={loading}
-                    className="whitespace-nowrap rounded-xl px-5 py-3 font-semibold text-white bg-gradient-to-br from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 disabled:opacity-60"
+                    className="rounded-xl px-5 py-3 font-semibold text-white bg-gradient-to-br from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 disabled:opacity-60"
                   >
                     🔍 Cari
                   </button>
                 </div>
 
-                {/* Quick actions */}
+                {/* Tips & Bantuan */}
                 <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                   <kbd className="rounded border px-1.5 py-0.5 bg-slate-50 border-slate-200">Enter</kbd>
                   untuk cari ·
@@ -254,7 +246,7 @@ export default function Home() {
                   </button>
                 </div>
 
-                {/* Riwayat pencarian */}
+                {/* Riwayat */}
                 {history?.length > 0 && (
                   <div className="pt-2">
                     <div className="text-xs mb-1 font-medium text-slate-500 dark:text-slate-400">
@@ -292,7 +284,7 @@ export default function Home() {
             )}
           </section>
 
-          {/* LOADING */}
+          {/* Loading */}
           {loading && (
             <section className="mx-auto max-w-xl mt-6">
               <div className="animate-pulse rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/50 p-4">
@@ -306,14 +298,12 @@ export default function Home() {
             </section>
           )}
 
-          {/* NOT FOUND */}
+          {/* Not Found */}
           {notFound && !loading && (
             <section className="mx-auto max-w-xl mt-6">
               <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 text-center">
                 <div className="text-3xl mb-2">🧐</div>
-                <p className="font-semibold text-slate-800 dark:text-slate-100">
-                  Data tidak ditemukan
-                </p>
+                <p className="font-semibold text-slate-800 dark:text-slate-100">Data tidak ditemukan</p>
                 <p className="text-sm text-slate-600 dark:text-slate-300">
                   Periksa kembali nomor berkas atau coba beberapa saat lagi.
                 </p>
@@ -321,21 +311,23 @@ export default function Home() {
             </section>
           )}
 
-          {/* HASIL */}
-          {data && !loading && <ResultCard data={data} onCopy={doCopy} onShare={doShare} copied={copied} />}
-          
+          {/* Hasil */}
+          {data && !loading && (
+            <ResultCard data={data} onCopy={doCopy} onShare={doShare} copied={copied} />
+          )}
+
           {/* FAQ */}
           <FAQ />
         </div>
       </main>
 
-      {/* HELP MODAL */}
+      {/* Help modal */}
       {helpOpen && <Help onClose={() => setHelpOpen(false)} />}
     </>
   );
 }
 
-/** ========= KOMPONEN: Hasil ========= */
+/* ==== Komponen Hasil ==== */
 function ResultCard({ data, onCopy, onShare, copied }) {
   const isLengkap = !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
 
@@ -349,38 +341,37 @@ function ResultCard({ data, onCopy, onShare, copied }) {
               📂
             </span>
             <div>
-              <h3 className="font-bold text-slate-800 dark:text-slate-100 leading-tight">
-                Detail Berkas
-              </h3>
+              <h3 className="font-bold text-slate-800 dark:text-slate-100 leading-tight">Detail Berkas</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 Nomor: <b>{data.nomor_berkas}</b>
               </p>
             </div>
           </div>
+        </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={onCopy}
-              className="text-xs px-2.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-600"
-              title="Salin nomor berkas"
-            >
-              {copied ? "✅ Disalin" : "📋 Salin"}
-            </button>
-            <button
-              onClick={onShare}
-              className="text-xs px-2.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-600"
-              title="Bagikan tautan"
-            >
-              🔗 Bagikan
-            </button>
-            <button
-              onClick={() => window.print()}
-              className="text-xs px-2.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-600"
-              title="Cetak"
-            >
-              🖨️ Cetak
-            </button>
-          </div>
+        {/* Aksi cepat — tombol besar untuk HP */}
+        <div className="mt-4 grid grid-cols-3 gap-3 text-center">
+          <button
+            onClick={onCopy}
+            className="flex flex-col items-center gap-1 p-3 rounded-lg bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700"
+            title="Salin nomor berkas"
+          >
+            📋 <span className="text-xs">{copied ? "Disalin" : "Salin"}</span>
+          </button>
+          <button
+            onClick={onShare}
+            className="flex flex-col items-center gap-1 p-3 rounded-lg bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700"
+            title="Bagikan tautan"
+          >
+            🔗 <span className="text-xs">Bagikan</span>
+          </button>
+          <button
+            onClick={() => window.print()}
+            className="flex flex-col items-center gap-1 p-3 rounded-lg bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700"
+            title="Cetak"
+          >
+            🖨️ <span className="text-xs">Cetak</span>
+          </button>
         </div>
 
         {/* Body */}
@@ -389,7 +380,6 @@ function ResultCard({ data, onCopy, onShare, copied }) {
           <Row label="Nama Pemohon" value={data.nama_pemohon} />
           <Row label="Jenis Layanan" value={data.jenis_layanan} />
 
-          {/* Kelengkapan */}
           <div>
             <div className="font-bold">Kelengkapan</div>
             {isLengkap ? (
@@ -399,7 +389,6 @@ function ResultCard({ data, onCopy, onShare, copied }) {
             )}
           </div>
 
-          {/* Dokumen */}
           <div>
             <div className="font-bold">Dokumen</div>
             {isLengkap ? (
@@ -414,7 +403,6 @@ function ResultCard({ data, onCopy, onShare, copied }) {
           <Row label="Tahun Permohonan" value={data.tahun_permohonan || "-"} />
         </div>
 
-        {/* Timeline proses (opsional, contoh sederhana) */}
         <Timeline status={data.status_berkas} />
       </div>
     </section>
@@ -445,9 +433,8 @@ function Alert({ type = "success", text }) {
   );
 }
 
-/** ========= Timeline sederhana ========= */
+/* ==== Timeline sederhana ==== */
 function Timeline({ status = "" }) {
-  // Sesuaikan mapping dengan status backend kamu
   const steps = ["Diajukan", "Verifikasi", "Proses", "Selesai"];
   const activeIdx = Math.max(
     0,
@@ -491,7 +478,7 @@ function Timeline({ status = "" }) {
   );
 }
 
-/** ========= Bantuan ========= */
+/* ==== Bantuan ==== */
 function Help({ onClose }) {
   return (
     <div
@@ -515,7 +502,7 @@ function Help({ onClose }) {
             <li>Tekan <b>ESC</b> untuk mengosongkan pencarian.</li>
             <li>Tombol <b>📋 Salin</b> menyalin nomor berkas ke clipboard.</li>
             <li>Tombol <b>🔗 Bagikan</b> membagikan URL khusus berisi nomor berkas.</li>
-            <li>Gunakan fitur <b>Pencarian Terakhir</b> untuk mengulang cepat.</li>
+            <li>Gunakan <b>Pencarian Terakhir</b> untuk mengulang cepat.</li>
           </ul>
         </div>
       </div>
@@ -523,7 +510,7 @@ function Help({ onClose }) {
   );
 }
 
-/** ========= FAQ ========= */
+/* ==== FAQ ==== */
 function FAQ() {
   const items = [
     {
@@ -539,7 +526,6 @@ function FAQ() {
       a: "Pastikan nomor berkas benar. Bila tetap tidak muncul, coba beberapa saat lagi atau hubungi kantor pertanahan setempat.",
     },
   ];
-
   const [open, setOpen] = useState(null);
 
   return (
