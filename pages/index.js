@@ -26,12 +26,9 @@ export default function Home() {
     if (inputRef.current) inputRef.current.focus();
   }, []);
 
-  const handleKeyDown = useCallback(
-    (e) => {
-      if (e.key === "Escape") handleReset();
-    },
-    [handleReset]
-  );
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === "Escape") handleReset();
+  }, [handleReset]);
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
@@ -84,9 +81,9 @@ export default function Home() {
         />
       </Head>
 
-      {/* BG: light = gradient lembut, dark = slate gelap */}
+      {/* BG: light gradient lembut, dark solid gelap */}
       <div className="min-h-screen bg-gradient-to-b from-slate-50 via-sky-50 to-indigo-50 dark:from-[#0b1220] dark:via-[#0b1220] dark:to-[#0b1220]">
-        {/* Container sempit + aman untuk notch */}
+        {/* Container sempit + safe area */}
         <div className="mx-auto max-w-screen-sm safe-px safe-pt safe-pb flex flex-col items-center">
           {/* Logo responsif */}
           <div className="mb-5">
@@ -116,7 +113,7 @@ export default function Home() {
               type="text"
               inputMode="numeric"
               placeholder="Masukkan Nomor Berkas"
-              className="w-full rounded-xl border border-slate-300 bg-white/80 shadow-sm px-4 py-3 text-base
+              className="w-full rounded-xl border border-slate-300 bg-white/85 shadow-sm px-4 py-3 text-base
                          focus:outline-none focus:ring-4 focus:ring-sky-200 focus:border-sky-400
                          dark:bg-white/10 dark:border-white/10 dark:placeholder-slate-400 dark:text-slate-100"
               value={nomorBerkas}
@@ -132,7 +129,7 @@ export default function Home() {
                 className={`col-span-2 sm:col-span-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-white
                             bg-gradient-to-br from-sky-500 to-indigo-500 hover:from-sky-600 hover:to-indigo-600
                             shadow-sm hover:shadow-md ring-1 ring-inset ring-white/40 transition-all duration-200
-                            active:scale-[0.98] sm:w-auto ${
+                            active:scale-[0.98] sm:w-auto dark:from-indigo-500 dark:to-fuchsia-500 dark:hover:from-indigo-600 dark:hover:to-fuchsia-600 ${
                               loading ? 'opacity-60 cursor-not-allowed' : 'col-span-1'
                             }`}
               >
@@ -186,7 +183,7 @@ export default function Home() {
   );
 }
 
-/** DetailCard (soft, kreatif, dark-mode) */
+/** DetailCard: teks lebih terlihat (text-shadow) + varian dark */
 function DetailCard({ data }) {
   const isLengkap =
     !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
@@ -204,16 +201,16 @@ function DetailCard({ data }) {
     <div
       className={`mt-5 w-full rounded-2xl p-4 sm:p-5 shadow-sm ring-1 backdrop-blur-sm ${
         isLengkap
-          ? "bg-gradient-to-br from-emerald-400/90 to-emerald-500/90 text-white ring-emerald-600/30 dark:from-emerald-500/30 dark:to-emerald-600/30 dark:text-emerald-50 dark:ring-emerald-400/20"
-          : "bg-gradient-to-br from-rose-400/90 to-rose-500/90 text-white ring-rose-600/30 dark:from-rose-500/30 dark:to-rose-600/30 dark:text-rose-50 dark:ring-rose-400/20"
+          ? "bg-gradient-to-br from-emerald-400 to-emerald-500 text-slate-50 ring-emerald-600/30 dark:from-emerald-600/30 dark:to-emerald-700/30 dark:text-emerald-50 dark:ring-emerald-400/20"
+          : "bg-gradient-to-br from-rose-400 to-rose-500 text-slate-50 ring-rose-600/30 dark:from-rose-600/30 dark:to-rose-700/30 dark:text-rose-50 dark:ring-rose-400/20"
       }`}
     >
-      <div className="flex items-center gap-2 text-lg font-bold mb-3">
-        <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/20 dark:bg-white/10">📁</span>
+      <div className="flex items-center gap-2 text-lg font-bold mb-3 text-shadow">
+        <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/25 dark:bg-white/10">📁</span>
         <span>{isLengkap ? "✅" : "❌"} Detail Berkas</span>
       </div>
 
-      <div className="grid gap-1.5 text-[15px] leading-relaxed">
+      <div className="grid gap-1.5 text-[15px] leading-relaxed text-shadow">
         <p><b>Nomor Berkas:</b> {data.nomor_berkas}</p>
         <p><b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}</p>
         <p><b>Nama Pemohon:</b> {data.nama_pemohon}</p>
@@ -222,9 +219,11 @@ function DetailCard({ data }) {
         <p>
           <b>Dokumen:</b>{" "}
           {isLengkap ? (
-            <span className="font-semibold">Lengkap ✅</span>
+            <span className="font-semibold bg-white/25 px-1 rounded text-shadow-soft">Lengkap ✅</span>
           ) : (
-            <span className="font-semibold">Kurang ❌ ({data.kelengkapan_berkas})</span>
+            <span className="font-semibold bg-white/25 px-1 rounded text-shadow-soft">
+              Kurang ❌ ({data.kelengkapan_berkas})
+            </span>
           )}
         </p>
         <p><b>Status Berkas:</b> {data.status_berkas}</p>
