@@ -1,3 +1,4 @@
+// pages/index.js
 import Head from "next/head";
 import Image from "next/image";
 import { useState, useRef, useEffect, useCallback } from "react";
@@ -103,12 +104,9 @@ export default function Home() {
             className="border rounded-lg p-3 w-full text-base focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-800 dark:text-slate-100"
             value={nomorBerkas}
             onChange={(e) => setNomorBerkas(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleSearch();
-            }}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />
 
-          {/* Tombol Cari & Reset */}
           <div className="flex flex-col sm:flex-row justify-center gap-3 mt-2 w-full max-w-md">
             <button
               onClick={handleSearch}
@@ -117,9 +115,7 @@ export default function Home() {
                 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 
                 shadow-md hover:shadow-lg w-full sm:w-auto
                 transition transform active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-300 
-                text-sm sm:text-base ${
-                  loading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                text-sm sm:text-base ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               🔍 Cari
             </button>
@@ -147,15 +143,12 @@ export default function Home() {
             {warning}
           </div>
         )}
-
         {error && (
           <div className="w-full max-w-md mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg text-center dark:bg-red-900 dark:border-red-700 dark:text-red-200">
             {error}
           </div>
         )}
-
         {loading && <p className="text-gray-600 dark:text-gray-300">🔄 Mencari data...</p>}
-
         {notFound && (
           <p className="text-red-600 dark:text-red-400 font-semibold text-center w-full max-w-md">
             ⚠️ Data dengan nomor berkas &quot;{nomorBerkas}&quot; tidak ditemukan
@@ -169,7 +162,7 @@ export default function Home() {
   );
 }
 
-// Komponen DetailCard
+/* ===== DetailCard: Card putih; Kelengkapan/Dokumen ala alert box ===== */
 function DetailCard({ data }) {
   const isLengkap =
     !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
@@ -184,59 +177,53 @@ function DetailCard({ data }) {
   };
 
   return (
-    <div
-      className={`mt-5 w-full rounded-2xl p-4 sm:p-5 shadow-sm ring-1 backdrop-blur-sm ${
-        isLengkap
-          ? "bg-gradient-to-br from-emerald-400 to-emerald-500 text-slate-50 ring-emerald-600/30 dark:from-emerald-600/30 dark:to-emerald-700/30 dark:text-emerald-50 dark:ring-emerald-400/20"
-          : "bg-gradient-to-br from-rose-400 to-rose-500 text-slate-50 ring-rose-600/30 dark:from-rose-600/30 dark:to-rose-700/30 dark:text-rose-50 dark:ring-rose-400/20"
-      }`}
-    >
+    <div className="mt-5 w-full rounded-2xl p-5 shadow-md ring-1 ring-slate-200 bg-white dark:bg-slate-800 dark:ring-slate-700">
       {/* Judul */}
-      <div className="flex items-center gap-2 text-lg font-bold mb-3 text-shadow">
-        <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/25 dark:bg-white/10">
+      <div className="flex items-center gap-2 text-lg font-bold mb-4 text-slate-800 dark:text-slate-100">
+        <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700">
           📁
         </span>
-        <span>{isLengkap ? "✅" : "❌"} Detail Berkas</span>
+        <span>Detail Berkas</span>
       </div>
 
       {/* Isi */}
-      <div className="grid gap-1.5 text-[15px] leading-relaxed text-shadow">
-        <p>
-          <b>Nomor Berkas:</b> {data.nomor_berkas}
-        </p>
-        <p>
-          <b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}
-        </p>
-        <p>
-          <b>Nama Pemohon:</b> {data.nama_pemohon}
-        </p>
-        <p>
-          <b>Jenis Layanan:</b> {data.jenis_layanan}
-        </p>
-        <p>
-          <b>Kelengkapan:</b> {data.kelengkapan || "-"}
-        </p>
-        <p>
-          <b>Dokumen:</b>{" "}
+      <div className="grid gap-2 text-[15px] leading-relaxed text-slate-700 dark:text-slate-200">
+        <p><b>Nomor Berkas:</b> {data.nomor_berkas}</p>
+        <p><b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}</p>
+        <p><b>Nama Pemohon:</b> {data.nama_pemohon}</p>
+        <p><b>Jenis Layanan:</b> {data.jenis_layanan}</p>
+
+        {/* Kelengkapan */}
+        <div>
+          <b>Kelengkapan:</b>
           {isLengkap ? (
-            <span className="font-semibold bg-white/25 px-1 rounded text-shadow-soft">
-              Lengkap ✅
-            </span>
+            <div className="mt-1 flex items-center gap-2 p-3 rounded-md bg-green-50 border border-green-200 text-green-700 font-semibold dark:bg-green-900/30 dark:border-green-700 dark:text-green-300">
+              ✅ Semua Data Lengkap
+            </div>
           ) : (
-            <span className="font-semibold bg-white/25 px-1 rounded text-shadow-soft">
-              Kurang ❌ ({data.kelengkapan_berkas})
-            </span>
+            <div className="mt-1 flex items-center gap-2 p-3 rounded-md bg-red-50 border border-red-200 text-red-700 font-semibold dark:bg-red-900/30 dark:border-red-700 dark:text-red-300">
+              ❌ Masih ada kekurangan
+            </div>
           )}
-        </p>
-        <p>
-          <b>Status Berkas:</b> {data.status_berkas}
-        </p>
-        <p>
-          <b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}
-        </p>
-        <p>
-          <b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}
-        </p>
+        </div>
+
+        {/* Dokumen */}
+        <div>
+          <b>Dokumen:</b>
+          {isLengkap ? (
+            <div className="mt-1 flex items-center gap-2 p-3 rounded-md bg-green-50 border border-green-200 text-green-700 font-semibold dark:bg-green-900/30 dark:border-green-700 dark:text-green-300">
+              ✅ Data Lengkap
+            </div>
+          ) : (
+            <div className="mt-1 flex items-center gap-2 p-3 rounded-md bg-red-50 border border-red-200 text-red-700 font-semibold dark:bg-red-900/30 dark:border-red-700 dark:text-red-300">
+              ❌ Data yang kurang: {data.kelengkapan_berkas}
+            </div>
+          )}
+        </div>
+
+        <p><b>Status Berkas:</b> {data.status_berkas}</p>
+        <p><b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}</p>
+        <p><b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}</p>
       </div>
     </div>
   );
