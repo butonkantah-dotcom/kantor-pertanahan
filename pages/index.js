@@ -1,7 +1,7 @@
 // pages/index.js
 import Head from "next/head";
 import Image from "next/image";
-import { useState, useRef, useEffect, useCallback } from "react"
+import { useState, useRef, useEffect, useCallback } from "react";
 
 export default function Home() {
   const [nomorBerkas, setNomorBerkas] = useState("");
@@ -26,9 +26,12 @@ export default function Home() {
     if (inputRef.current) inputRef.current.focus();
   }, []);
 
-  const handleKeyDown = useCallback((e) => {
-    if (e.key === "Escape") handleReset();
-  }, [handleReset]);
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (e.key === "Escape") handleReset();
+    },
+    [handleReset]
+  );
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
@@ -72,98 +75,118 @@ export default function Home() {
       <Head>
         <title>Cek Status Berkas ATR/BPN</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {/* warna address bar */}
+        <meta name="theme-color" content="#e2e8f0" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)" />
         <meta
           name="description"
           content="Lihat status dan kelengkapan berkas Anda secara cepat & mudah"
         />
       </Head>
 
-      <div className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 bg-gray-100">
-        {/* Logo */}
-        <div className="mb-6">
-          <Image src="/logo.png" alt="Logo ATR/BPN" width={100} height={100} />
-        </div>
-
-        {/* Judul */}
-        <h1 className="text-xl sm:text-2xl font-bold mb-2 text-blue-700 text-center">
-          Cek Status &amp; Kelengkapan Berkas ATR/BPN
-        </h1>
-        <p className="text-sm text-center text-gray-600 mb-6">
-          Lihat status dan kelengkapan berkas Anda secara cepat & mudah
-        </p>
-
-        {/* Input dan Tombol */}
-        <div className="w-full max-w-md mb-4 space-y-3">
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder="Masukkan Nomor Berkas"
-            className="border rounded-lg p-3 w-full text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={nomorBerkas}
-            onChange={(e) => setNomorBerkas(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleSearch();
-            }}
-          />
-
-          {/* Tombol Cari & Reset */}
-          <div className="flex flex-col sm:flex-row justify-center gap-3 mt-2 w-full max-w-md">
-            <button
-              onClick={handleSearch}
-              disabled={loading}
-              className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-white font-semibold
-                bg-blue-600 hover:bg-blue-700 shadow-md hover:shadow-lg w-full sm:w-auto
-                transition focus:outline-none focus:ring-2 focus:ring-blue-300 text-sm sm:text-base ${
-                  loading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-            >
-              🔍 Cari
-            </button>
-
-            <button
-              onClick={handleReset}
-              className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-white font-semibold
-                bg-gray-600 hover:bg-gray-700 shadow-md hover:shadow-lg w-full sm:w-auto
-                transition focus:outline-none focus:ring-2 focus:ring-gray-400 text-sm sm:text-base"
-            >
-              ♻️ Reset
-            </button>
+      {/* BG: light = gradient lembut, dark = slate gelap */}
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 via-sky-50 to-indigo-50 dark:from-[#0b1220] dark:via-[#0b1220] dark:to-[#0b1220]">
+        {/* Container sempit + aman untuk notch */}
+        <div className="mx-auto max-w-screen-sm safe-px safe-pt safe-pb flex flex-col items-center">
+          {/* Logo responsif */}
+          <div className="mb-5">
+            <Image
+              src="/logo.png"
+              alt="Logo ATR/BPN"
+              width={100}
+              height={100}
+              priority
+              sizes="(max-width: 640px) 64px, 100px"
+              className="w-16 h-16 sm:w-[100px] sm:h-[100px]"
+            />
           </div>
 
-          <small className="text-gray-500 text-sm text-center block">
-            💡 Tekan <b>ESC</b> untuk reset cepat
-          </small>
-        </div>
-
-        {/* Notifikasi */}
-        {warning && (
-          <div className="w-full max-w-md mb-4 p-3 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-lg text-center">
-            {warning}
-          </div>
-        )}
-
-        {error && (
-          <div className="w-full max-w-md mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg text-center">
-            {error}
-          </div>
-        )}
-
-        {loading && <p className="text-gray-600">🔄 Mencari data...</p>}
-
-        {notFound && (
-          <p className="text-red-600 font-semibold text-center w-full max-w-md">
-            ⚠️ Data dengan nomor berkas &quot;{nomorBerkas}&quot; tidak ditemukan
+          {/* Judul + deskripsi */}
+          <h1 className="text-[20px] sm:text-3xl font-extrabold mb-2 text-center text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-indigo-600 dark:from-indigo-300 dark:to-fuchsia-300 tracking-tight">
+            Cek Status &amp; Kelengkapan Berkas ATR/BPN
+          </h1>
+          <p className="text-[13px] sm:text-sm text-center text-slate-600 dark:text-slate-300 mb-5">
+            Lihat status dan kelengkapan berkas Anda secara cepat & mudah
           </p>
-        )}
 
-        {/* Hasil */}
-        {data && <DetailCard data={data} />}
+          {/* Input & tombol */}
+          <div className="w-full mb-4 space-y-3">
+            <input
+              ref={inputRef}
+              type="text"
+              inputMode="numeric"
+              placeholder="Masukkan Nomor Berkas"
+              className="w-full rounded-xl border border-slate-300 bg-white/80 shadow-sm px-4 py-3 text-base
+                         focus:outline-none focus:ring-4 focus:ring-sky-200 focus:border-sky-400
+                         dark:bg-white/10 dark:border-white/10 dark:placeholder-slate-400 dark:text-slate-100"
+              value={nomorBerkas}
+              onChange={(e) => setNomorBerkas(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+            />
+
+            {/* Grid tombol: 2 kolom di HP, berjejer di layar besar */}
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:justify-center sm:gap-3 mt-1">
+              <button
+                onClick={handleSearch}
+                disabled={loading}
+                className={`col-span-2 sm:col-span-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-white
+                            bg-gradient-to-br from-sky-500 to-indigo-500 hover:from-sky-600 hover:to-indigo-600
+                            shadow-sm hover:shadow-md ring-1 ring-inset ring-white/40 transition-all duration-200
+                            active:scale-[0.98] sm:w-auto ${
+                              loading ? 'opacity-60 cursor-not-allowed' : 'col-span-1'
+                            }`}
+              >
+                🔍 Cari
+              </button>
+
+              <button
+                onClick={handleReset}
+                className="col-span-2 sm:col-span-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold
+                           bg-white text-slate-700 hover:text-slate-900 ring-1 ring-slate-200 hover:ring-slate-300
+                           shadow-sm hover:shadow-md transition-all duration-200 sm:w-auto
+                           dark:bg-white/10 dark:text-slate-100 dark:ring-white/10 dark:hover:bg-white/15"
+              >
+                ♻️ Reset
+              </button>
+            </div>
+
+            <small className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm text-center block">
+              💡 Tekan <b>ESC</b> untuk reset cepat
+            </small>
+          </div>
+
+          {/* Notifikasi */}
+          {warning && (
+            <div className="w-full mb-3 p-3 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl text-center shadow-sm
+                            dark:bg-amber-400/10 dark:border-amber-300/20 dark:text-amber-200">
+              {warning}
+            </div>
+          )}
+
+          {error && (
+            <div className="w-full mb-3 p-3 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-center shadow-sm
+                            dark:bg-rose-400/10 dark:border-rose-300/20 dark:text-rose-200">
+              {error}
+            </div>
+          )}
+
+          {loading && <p className="text-slate-600 dark:text-slate-300">🔄 Mencari data...</p>}
+
+          {notFound && (
+            <p className="text-rose-600 dark:text-rose-300 font-semibold text-center w-full">
+              ⚠️ Data dengan nomor berkas &quot;{nomorBerkas}&quot; tidak ditemukan
+            </p>
+          )}
+
+          {/* Hasil */}
+          {data && <DetailCard data={data} />}
+        </div>
       </div>
     </>
   );
 }
 
-// Komponen DetailCard
+/** DetailCard (soft, kreatif, dark-mode) */
 function DetailCard({ data }) {
   const isLengkap =
     !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
@@ -179,51 +202,34 @@ function DetailCard({ data }) {
 
   return (
     <div
-      className={`mt-4 p-4 rounded-xl w-full max-w-md shadow-lg ${
+      className={`mt-5 w-full rounded-2xl p-4 sm:p-5 shadow-sm ring-1 backdrop-blur-sm ${
         isLengkap
-          ? "bg-green-600 text-white border border-green-700"
-          : "bg-red-600 text-white border border-red-700"
+          ? "bg-gradient-to-br from-emerald-400/90 to-emerald-500/90 text-white ring-emerald-600/30 dark:from-emerald-500/30 dark:to-emerald-600/30 dark:text-emerald-50 dark:ring-emerald-400/20"
+          : "bg-gradient-to-br from-rose-400/90 to-rose-500/90 text-white ring-rose-600/30 dark:from-rose-500/30 dark:to-rose-600/30 dark:text-rose-50 dark:ring-rose-400/20"
       }`}
     >
-      <h2 className="flex items-center gap-2 font-bold mb-3 text-lg">
-        📂 {isLengkap ? "✅" : "❌"} Detail Berkas
-      </h2>
+      <div className="flex items-center gap-2 text-lg font-bold mb-3">
+        <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/20 dark:bg-white/10">📁</span>
+        <span>{isLengkap ? "✅" : "❌"} Detail Berkas</span>
+      </div>
 
-      <div className="space-y-1 text-sm sm:text-base">
-        <p>
-          <b>Nomor Berkas:</b> {data.nomor_berkas}
-        </p>
-        <p>
-          <b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}
-        </p>
-        <p>
-          <b>Nama Pemohon:</b> {data.nama_pemohon}
-        </p>
-        <p>
-          <b>Jenis Layanan:</b> {data.jenis_layanan}
-        </p>
-        <p>
-          <b>Kelengkapan:</b> {data.kelengkapan || "-"}
-        </p>
+      <div className="grid gap-1.5 text-[15px] leading-relaxed">
+        <p><b>Nomor Berkas:</b> {data.nomor_berkas}</p>
+        <p><b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}</p>
+        <p><b>Nama Pemohon:</b> {data.nama_pemohon}</p>
+        <p><b>Jenis Layanan:</b> {data.jenis_layanan}</p>
+        <p><b>Kelengkapan:</b> {data.kelengkapan || "-"}</p>
         <p>
           <b>Dokumen:</b>{" "}
           {isLengkap ? (
             <span className="font-semibold">Lengkap ✅</span>
           ) : (
-            <span className="font-semibold">
-              Kurang ❌ ({data.kelengkapan_berkas})
-            </span>
+            <span className="font-semibold">Kurang ❌ ({data.kelengkapan_berkas})</span>
           )}
         </p>
-        <p>
-          <b>Status Berkas:</b> {data.status_berkas}
-        </p>
-        <p>
-          <b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}
-        </p>
-        <p>
-          <b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}
-        </p>
+        <p><b>Status Berkas:</b> {data.status_berkas}</p>
+        <p><b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}</p>
+        <p><b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}</p>
       </div>
     </div>
   );
