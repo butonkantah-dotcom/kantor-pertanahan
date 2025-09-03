@@ -72,22 +72,22 @@ export default function Home() {
     if (inputRef.current) inputRef.current.focus();
   };
 
-  return (
-    <>
-      <Head>
-        <title>Cek Status Berkas ATR/BPN</title>
-        <meta
-          name="description"
-          content="Lihat status dan kelengkapan berkas Anda secara cepat & mudah"
-        />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
+ return (
+  <>
+    <Head>
+      <title>Cek Status Berkas ATR/BPN</title>
+      <meta
+        name="description"
+        content="Lihat status dan kelengkapan berkas Anda secara cepat & mudah"
+      />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </Head>
 
-      <div className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 bg-gray-100">
-        {/* Logo */}
-        <div className="mb-6">
-          <Image src="/logo.png" alt="Logo ATR/BPN" width={100} height={100} />
-        </div>
+    <div className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 bg-gray-100">
+      {/* Logo */}
+      <div className="mb-6">
+        <Image src="/logo.png" alt="Logo ATR/BPN" width={100} height={100} />
+      </div>
 
         {/* Judul */}
         <h1 className="text-xl sm:text-2xl font-bold mb-2 text-blue-700 text-center">
