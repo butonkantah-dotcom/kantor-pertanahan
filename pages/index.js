@@ -80,6 +80,7 @@ export default function Home() {
           name="description"
           content="Lihat status dan kelengkapan berkas Anda secara cepat & mudah"
         />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
       <div className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 bg-gray-100">
