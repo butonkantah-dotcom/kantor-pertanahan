@@ -1,3 +1,4 @@
+// pages/index.js
 import Head from "next/head";
 import Image from "next/image";
 import { useState, useRef, useEffect, useCallback } from "react";
@@ -16,11 +17,18 @@ export default function Home() {
     if (inputRef.current) inputRef.current.focus();
   }, []);
 
-  const handleKeyDown = useCallback((e) => {
-    if (e.key === "Escape") {
-      handleReset();
-    }
+  const handleReset = useCallback(() => {
+    setNomorBerkas("");
+    setData(null);
+    setWarning("");
+    setNotFound(false);
+    setError("");
+    if (inputRef.current) inputRef.current.focus();
   }, []);
+
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === "Escape") handleReset();
+  }, [handleReset]);
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
@@ -29,7 +37,6 @@ export default function Home() {
 
   const handleSearch = async () => {
     const trimmedNomor = nomorBerkas.trim();
-
     if (!trimmedNomor) {
       setWarning("⚠️ Harap masukkan nomor berkas");
       setData(null);
@@ -50,11 +57,8 @@ export default function Home() {
       );
       if (!res.ok) throw new Error("Gagal mengambil data dari server.");
       const json = await res.json();
-      if (json && json.length > 0) {
-        setData(json[0]);
-      } else {
-        setNotFound(true);
-      }
+      if (json && json.length > 0) setData(json[0]);
+      else setNotFound(true);
     } catch (err) {
       console.error("Error:", err);
       setError("❌ Terjadi kesalahan saat mengambil data. Silakan coba lagi.");
@@ -63,31 +67,22 @@ export default function Home() {
     }
   };
 
-  const handleReset = () => {
-    setNomorBerkas("");
-    setData(null);
-    setWarning("");
-    setNotFound(false);
-    setError("");
-    if (inputRef.current) inputRef.current.focus();
-  };
+  return (
+    <>
+      <Head>
+        <title>Cek Status Berkas ATR/BPN</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="description"
+          content="Lihat status dan kelengkapan berkas Anda secara cepat & mudah"
+        />
+      </Head>
 
- return (
-  <>
-    <Head>
-      <title>Cek Status Berkas ATR/BPN</title>
-      <meta
-        name="description"
-        content="Lihat status dan kelengkapan berkas Anda secara cepat & mudah"
-      />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-    </Head>
-
-    <div className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 bg-gray-100">
-      {/* Logo */}
-      <div className="mb-6">
-        <Image src="/logo.png" alt="Logo ATR/BPN" width={100} height={100} />
-      </div>
+      <div className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 bg-gray-100">
+        {/* Logo */}
+        <div className="mb-6">
+          <Image src="/logo.png" alt="Logo ATR/BPN" width={100} height={100} />
+        </div>
 
         {/* Judul */}
         <h1 className="text-xl sm:text-2xl font-bold mb-2 text-blue-700 text-center">
@@ -106,7 +101,9 @@ export default function Home() {
             className="border rounded-lg p-3 w-full text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={nomorBerkas}
             onChange={(e) => setNomorBerkas(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSearch();
+            }}
           />
 
           {/* Tombol Cari & Reset */}
@@ -114,7 +111,7 @@ export default function Home() {
             <button
               onClick={handleSearch}
               disabled={loading}
-              className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-white font-semibold 
+              className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-white font-semibold
                 bg-blue-600 hover:bg-blue-700 shadow-md hover:shadow-lg w-full sm:w-auto
                 transition focus:outline-none focus:ring-2 focus:ring-blue-300 text-sm sm:text-base ${
                   loading ? "opacity-50 cursor-not-allowed" : ""
@@ -125,7 +122,7 @@ export default function Home() {
 
             <button
               onClick={handleReset}
-              className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-white font-semibold 
+              className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-white font-semibold
                 bg-gray-600 hover:bg-gray-700 shadow-md hover:shadow-lg w-full sm:w-auto
                 transition focus:outline-none focus:ring-2 focus:ring-gray-400 text-sm sm:text-base"
             >
@@ -193,11 +190,21 @@ function DetailCard({ data }) {
       </h2>
 
       <div className="space-y-1 text-sm sm:text-base">
-        <p><b>Nomor Berkas:</b> {data.nomor_berkas}</p>
-        <p><b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}</p>
-        <p><b>Nama Pemohon:</b> {data.nama_pemohon}</p>
-        <p><b>Jenis Layanan:</b> {data.jenis_layanan}</p>
-        <p><b>Kelengkapan:</b> {data.kelengkapan || "-"}</p>
+        <p>
+          <b>Nomor Berkas:</b> {data.nomor_berkas}
+        </p>
+        <p>
+          <b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}
+        </p>
+        <p>
+          <b>Nama Pemohon:</b> {data.nama_pemohon}
+        </p>
+        <p>
+          <b>Jenis Layanan:</b> {data.jenis_layanan}
+        </p>
+        <p>
+          <b>Kelengkapan:</b> {data.kelengkapan || "-"}
+        </p>
         <p>
           <b>Dokumen:</b>{" "}
           {isLengkap ? (
@@ -208,9 +215,15 @@ function DetailCard({ data }) {
             </span>
           )}
         </p>
-        <p><b>Status Berkas:</b> {data.status_berkas}</p>
-        <p><b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}</p>
-        <p><b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}</p>
+        <p>
+          <b>Status Berkas:</b> {data.status_berkas}
+        </p>
+        <p>
+          <b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}
+        </p>
+        <p>
+          <b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}
+        </p>
       </div>
     </div>
   );
