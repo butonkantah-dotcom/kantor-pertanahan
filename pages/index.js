@@ -71,14 +71,17 @@ export default function Home() {
     <>
       <Head>
         <title>SI-BERKAT | Sistem Informasi Berkas Kantor Pertanahan</title>
-        <meta name="description" content="Cek Status & Kelengkapan Berkas ATR/BPN secara cepat & mudah" />
+        <meta
+          name="description"
+          content="Cek Status & Kelengkapan Berkas ATR/BPN secara cepat & mudah"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
       <div className="min-h-screen flex flex-col items-center bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100">
-        {/* Header Brand (dibesarkan) */}
+        {/* Header Brand — diperbesar */}
         <header className="w-full flex items-center gap-4 p-5 sm:p-6 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-          <Image src="/logo.png" alt="Logo ATR/BPN" width={56} height={56} />
+          <Image src="/logo.png" alt="Logo ATR/BPN" width={56} height={56} priority />
           <div>
             <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight">SI-BERKAT</h1>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
@@ -120,6 +123,7 @@ export default function Home() {
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
             <button
+              type="button"
               onClick={handleSearch}
               disabled={loading}
               className="rounded-xl px-5 py-3 font-semibold text-white bg-gradient-to-br from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 disabled:opacity-60"
@@ -127,6 +131,7 @@ export default function Home() {
               🔍 Cari
             </button>
             <button
+              type="button"
               onClick={handleReset}
               className="rounded-xl px-5 py-3 font-semibold bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-600"
             >
@@ -146,10 +151,10 @@ export default function Home() {
             </div>
           )}
 
-          {/* Loading: spinner tengah tanpa teks */}
+          {/* Loading: jam pasir di tengah tanpa teks */}
           {loading && (
-            <div className="flex justify-center items-center py-10">
-              <div className="w-12 h-12 rounded-full border-4 border-slate-300 dark:border-slate-700 border-t-indigo-600 dark:border-t-indigo-400 animate-spin" />
+            <div className="flex justify-center items-center py-10" role="status" aria-label="Memuat">
+              <span className="text-4xl animate-pulse">⏳</span>
             </div>
           )}
 
@@ -177,7 +182,7 @@ export default function Home() {
 
 /* ===== Detail Card ===== */
 function DetailCard({ data }) {
-  const isLengkap = !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
+  const isLengkap = !data?.kelengkapan_berkas || String(data.kelengkapan_berkas).trim() === "";
 
   const formatTanggal = (tgl) => {
     if (!tgl) return "-";
@@ -188,10 +193,13 @@ function DetailCard({ data }) {
     });
   };
 
-  // Pecah kekurangan menjadi list bernomor jika lebih dari satu
-  const parseKekurangan = (text) => {
-    if (!text) return [];
-    return text
+  // Menerima string ATAU array dari API
+  const parseKekurangan = (val) => {
+    if (!val) return [];
+    if (Array.isArray(val)) {
+      return val.map((s) => String(s).trim()).filter(Boolean);
+    }
+    return String(val)
       .split(/[,;\n]+/g)
       .map((s) => s.trim())
       .filter(Boolean);
@@ -201,7 +209,7 @@ function DetailCard({ data }) {
 
   return (
     <div className="mt-6 p-5 rounded-xl bg-white dark:bg-slate-800 shadow-lg border border-slate-200 dark:border-slate-700">
-      <h3 className="flex items-center gap-2 font-bold text-lg mb-3">📂 Detail Berkas</h3>
+      <h3 className="font-bold text-lg mb-3">📂 Detail Berkas</h3>
 
       <div className="space-y-1 text-sm sm:text-base">
         <p>
@@ -253,7 +261,7 @@ function DetailCard({ data }) {
             </div>
           ) : (
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">
-              ❌ Masih ada kekurangan: {kekuranganList[0] || data.kelengkapan_berkas}
+              ❌ Masih ada kekurangan: {kekuranganList[0] || String(data.kelengkapan_berkas)}
             </span>
           )}
         </div>
@@ -287,7 +295,7 @@ function Faq() {
       q: "Kenapa data saya tidak ditemukan?",
       a: "Pastikan nomor berkas sudah benar. Jika masih tidak ditemukan, kemungkinan data belum masuk sistem atau sedang diproses manual di kantor.",
     },
-    // Poin #4 (Apakah bisa digunakan di HP?) DIHAPUS sesuai permintaan
+    // Poin #4 dihapus sesuai permintaan
   ];
 
   const [openIndex, setOpenIndex] = useState(null);
@@ -300,14 +308,19 @@ function Faq() {
           className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm"
         >
           <button
+            type="button"
             onClick={() => setOpenIndex(openIndex === i ? null : i)}
             className="w-full flex justify-between items-center p-4 text-left font-medium text-slate-800 dark:text-slate-100"
+            aria-expanded={openIndex === i}
+            aria-controls={`faq-panel-${i}`}
           >
             {item.q}
             <span className="ml-2">{openIndex === i ? "−" : "+"}</span>
           </button>
           {openIndex === i && (
-            <div className="px-4 pb-4 text-sm text-slate-600 dark:text-slate-300">{item.a}</div>
+            <div id={`faq-panel-${i}`} className="px-4 pb-4 text-sm text-slate-600 dark:text-slate-300">
+              {item.a}
+            </div>
           )}
         </div>
       ))}
