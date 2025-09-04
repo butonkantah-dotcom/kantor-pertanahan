@@ -249,7 +249,7 @@ function DetailCard({ data }) {
           ) : kekuranganList.length > 1 ? (
             <div className="mt-1">
               <p className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">
-                ❌ Masih ada kekurangan:
+                ❌ List dokumen yang kurang:
               </p>
               <ol className="list-decimal pl-5 mt-2 space-y-1 text-red-700">
                 {kekuranganList.map((item, idx) => (
