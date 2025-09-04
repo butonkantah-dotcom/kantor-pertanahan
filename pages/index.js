@@ -76,8 +76,9 @@ export default function Home() {
       </Head>
 
       <div className="min-h-screen flex flex-col items-center bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100">
+        {/* Header Brand (dibesarkan) */}
         <header className="w-full flex items-center gap-4 p-5 sm:p-6 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-          <Image src="/logo.png" alt="Logo ATR/BPN" width={56} height={56} priority />
+          <Image src="/logo.png" alt="Logo ATR/BPN" width={56} height={56} />
           <div>
             <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight">SI-BERKAT</h1>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
@@ -87,6 +88,7 @@ export default function Home() {
         </header>
 
         <main className="flex-1 w-full max-w-2xl px-4 sm:px-6 py-6">
+          {/* Hero */}
           <section className="text-center mb-6 sm:mb-8">
             <h2
               className="
@@ -106,6 +108,7 @@ export default function Home() {
             </p>
           </section>
 
+          {/* Input & Tombol */}
           <div className="flex flex-col sm:flex-row gap-3 mb-4">
             <input
               ref={inputRef}
@@ -131,6 +134,7 @@ export default function Home() {
             </button>
           </div>
 
+          {/* Notifikasi */}
           {warning && (
             <div className="mb-4 p-3 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-lg text-center">
               {warning}
@@ -142,9 +146,10 @@ export default function Home() {
             </div>
           )}
 
+          {/* Loading: spinner tengah tanpa teks */}
           {loading && (
             <div className="flex justify-center items-center py-10">
-              <HourglassLoader />
+              <div className="w-12 h-12 rounded-full border-4 border-slate-300 dark:border-slate-700 border-t-indigo-600 dark:border-t-indigo-400 animate-spin" />
             </div>
           )}
 
@@ -154,8 +159,10 @@ export default function Home() {
             </p>
           )}
 
+          {/* Hasil */}
           {!loading && data && <DetailCard data={data} />}
 
+          {/* FAQ Section */}
           <section className="mt-10">
             <h3 className="text-lg font-bold mb-4 text-slate-800 dark:text-slate-100 text-center">
               Pertanyaan yang Sering Diajukan
@@ -168,77 +175,9 @@ export default function Home() {
   );
 }
 
-/* Loader: Jam Pasir */
-function HourglassLoader() {
-  return (
-    <>
-      <div
-        className="hourglass text-indigo-600 dark:text-indigo-400"
-        aria-label="Memuat data"
-        role="status"
-      >
-        <i />
-      </div>
-
-      <style jsx>{`
-        .hourglass {
-          position: relative;
-          width: 48px;
-          height: 48px;
-        }
-        .hourglass::before,
-        .hourglass::after {
-          content: "";
-          position: absolute;
-          left: 50%;
-          width: 0;
-          height: 0;
-          border-left: 12px solid transparent;
-          border-right: 12px solid transparent;
-          animation: sand 1.2s ease-in-out infinite;
-          transform: translateX(-50%);
-        }
-        .hourglass::before {
-          top: 6px;
-          border-bottom: 18px solid currentColor;
-        }
-        .hourglass::after {
-          bottom: 6px;
-          border-top: 18px solid currentColor;
-          animation-delay: 0.6s;
-        }
-        .hourglass i {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          width: 6px;
-          height: 6px;
-          border-radius: 9999px;
-          background: currentColor;
-          transform: translate(-50%, -50%);
-          animation: drip 1.2s ease-in-out infinite;
-        }
-        @keyframes sand {
-          0%, 100% { opacity: 1; transform: translateX(-50%) scaleY(1); }
-          50% { opacity: 0.35; transform: translateX(-50%) scaleY(0.65); }
-        }
-        @keyframes drip {
-          0% { opacity: 0; transform: translate(-50%, -12px) scale(0.6); }
-          50% { opacity: 1; transform: translate(-50%, 0) scale(1); }
-          100% { opacity: 0; transform: translate(-50%, 12px) scale(0.6); }
-        }
-      `}</style>
-    </>
-  );
-}
-
-/* Detail Card */
+/* ===== Detail Card ===== */
 function DetailCard({ data }) {
-  const isLengkap =
-    !data?.kelengkapan_berkas ||
-    (Array.isArray(data.kelengkapan_berkas)
-      ? data.kelengkapan_berkas.length === 0
-      : String(data.kelengkapan_berkas).trim() === "");
+  const isLengkap = !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
 
   const formatTanggal = (tgl) => {
     if (!tgl) return "-";
@@ -249,10 +188,10 @@ function DetailCard({ data }) {
     });
   };
 
-  const parseKekurangan = (val) => {
-    if (!val) return [];
-    if (Array.isArray(val)) return val.map((s) => String(s).trim()).filter(Boolean);
-    return String(val)
+  // Pecah kekurangan menjadi list bernomor jika lebih dari satu
+  const parseKekurangan = (text) => {
+    if (!text) return [];
+    return text
       .split(/[,;\n]+/g)
       .map((s) => s.trim())
       .filter(Boolean);
@@ -265,49 +204,75 @@ function DetailCard({ data }) {
       <h3 className="flex items-center gap-2 font-bold text-lg mb-3">📂 Detail Berkas</h3>
 
       <div className="space-y-1 text-sm sm:text-base">
-        <p><b>Nomor Berkas:</b> {data.nomor_berkas}</p>
-        <p><b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}</p>
-        <p><b>Nama Pemohon:</b> {data.nama_pemohon}</p>
-        <p><b>Jenis Layanan:</b> {data.jenis_layanan}</p>
+        <p>
+          <b>Nomor Berkas:</b> {data.nomor_berkas}
+        </p>
+        <p>
+          <b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}
+        </p>
+        <p>
+          <b>Nama Pemohon:</b> {data.nama_pemohon}
+        </p>
+        <p>
+          <b>Jenis Layanan:</b> {data.jenis_layanan}
+        </p>
 
+        {/* Kelengkapan */}
         <div>
           <b>Kelengkapan:</b>{" "}
           {isLengkap ? (
-            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold">✅ Lengkap</span>
+            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold">
+              ✅ Lengkap
+            </span>
           ) : (
-            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">❌ Kurang</span>
+            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">
+              ❌ Kurang
+            </span>
           )}
         </div>
 
+        {/* Dokumen */}
         <div>
           <b>Dokumen:</b>{" "}
           {isLengkap ? (
-            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold">✅ Data Lengkap</span>
+            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold">
+              ✅ Data Lengkap
+            </span>
           ) : kekuranganList.length > 1 ? (
             <div className="mt-1">
-              <p className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">❌ Masih ada kekurangan:</p>
+              <p className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">
+                ❌ Masih ada kekurangan:
+              </p>
               <ol className="list-decimal pl-5 mt-2 space-y-1 text-red-700">
                 {kekuranganList.map((item, idx) => (
-                  <li key={idx} className="marker:text-red-600">{item}</li>
+                  <li key={idx} className="marker:text-red-600">
+                    {item}
+                  </li>
                 ))}
               </ol>
             </div>
           ) : (
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">
-              ❌ Masih ada kekurangan: {kekuranganList[0] || String(data.kelengkapan_berkas)}
+              ❌ Masih ada kekurangan: {kekuranganList[0] || data.kelengkapan_berkas}
             </span>
           )}
         </div>
 
-        <p><b>Status Berkas:</b> {data.status_berkas}</p>
-        <p><b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}</p>
-        <p><b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}</p>
+        <p>
+          <b>Status Berkas:</b> {data.status_berkas}
+        </p>
+        <p>
+          <b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}
+        </p>
+        <p>
+          <b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}
+        </p>
       </div>
     </div>
   );
 }
 
-/* FAQ */
+/* ===== FAQ (Accordion) ===== */
 function Faq() {
   const items = [
     {
@@ -322,6 +287,7 @@ function Faq() {
       q: "Kenapa data saya tidak ditemukan?",
       a: "Pastikan nomor berkas sudah benar. Jika masih tidak ditemukan, kemungkinan data belum masuk sistem atau sedang diproses manual di kantor.",
     },
+    // Poin #4 (Apakah bisa digunakan di HP?) DIHAPUS sesuai permintaan
   ];
 
   const [openIndex, setOpenIndex] = useState(null);
@@ -336,7 +302,6 @@ function Faq() {
           <button
             onClick={() => setOpenIndex(openIndex === i ? null : i)}
             className="w-full flex justify-between items-center p-4 text-left font-medium text-slate-800 dark:text-slate-100"
-            aria-expanded={openIndex === i}
           >
             {item.q}
             <span className="ml-2">{openIndex === i ? "−" : "+"}</span>
