@@ -78,7 +78,7 @@ export default function Home() {
       <div className="min-h-screen flex flex-col items-center bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100">
         {/* Header Brand (diperbesar) */}
         <header className="w-full flex items-center gap-4 p-5 sm:p-6 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-          <Image src="/logo.png" alt="Logo ATR/BPN" width={56} height={56} priority />
+          <Image src="/logo.png" alt="Logo ATR/BPN" width={56} height={56} />
           <div>
             <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight">SI-BERKAT</h1>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
@@ -193,8 +193,6 @@ function HourglassLoader() {
           width: 48px;
           height: 48px;
         }
-
-        /* Segitiga atas & bawah (badan jam pasir) */
         .hourglass::before,
         .hourglass::after {
           content: "";
@@ -209,15 +207,13 @@ function HourglassLoader() {
         }
         .hourglass::before {
           top: 6px;
-          border-bottom: 18px solid currentColor; /* segitiga atas */
+          border-bottom: 18px solid currentColor;
         }
         .hourglass::after {
           bottom: 6px;
-          border-top: 18px solid currentColor; /* segitiga bawah */
+          border-top: 18px solid currentColor;
           animation-delay: 0.6s;
         }
-
-        /* Butiran pasir yang jatuh di tengah */
         .hourglass i {
           position: absolute;
           left: 50%;
@@ -229,32 +225,14 @@ function HourglassLoader() {
           transform: translate(-50%, -50%);
           animation: drip 1.2s ease-in-out infinite;
         }
-
         @keyframes sand {
-          0%,
-          100% {
-            opacity: 1;
-            transform: translateX(-50%) scaleY(1);
-          }
-          50% {
-            opacity: 0.35;
-            transform: translateX(-50%) scaleY(0.65);
-          }
+          0%, 100% { opacity: 1; transform: translateX(-50%) scaleY(1); }
+          50% { opacity: 0.35; transform: translateX(-50%) scaleY(0.65); }
         }
-
         @keyframes drip {
-          0% {
-            opacity: 0;
-            transform: translate(-50%, -12px) scale(0.6);
-          }
-          50% {
-            opacity: 1;
-            transform: translate(-50%, 0) scale(1);
-          }
-          100% {
-            opacity: 0;
-            transform: translate(-50%, 12px) scale(0.6);
-          }
+          0% { opacity: 0; transform: translate(-50%, -12px) scale(0.6); }
+          50% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+          100% { opacity: 0; transform: translate(-50%, 12px) scale(0.6); }
         }
       `}</style>
     </>
@@ -278,7 +256,7 @@ function DetailCard({ data }) {
     });
   };
 
-  // HYBRID: terima string ATAU array dari API
+  // HYBRID: terima string ATAU array
   const parseKekurangan = (val) => {
     if (!val) return [];
     if (Array.isArray(val)) return val.map((s) => String(s).trim()).filter(Boolean);
@@ -295,30 +273,18 @@ function DetailCard({ data }) {
       <h3 className="flex items-center gap-2 font-bold text-lg mb-3">📂 Detail Berkas</h3>
 
       <div className="space-y-1 text-sm sm:text-base">
-        <p>
-          <b>Nomor Berkas:</b> {data.nomor_berkas}
-        </p>
-        <p>
-          <b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}
-        </p>
-        <p>
-          <b>Nama Pemohon:</b> {data.nama_pemohon}
-        </p>
-        <p>
-          <b>Jenis Layanan:</b> {data.jenis_layanan}
-        </p>
+        <p><b>Nomor Berkas:</b> {data.nomor_berkas}</p>
+        <p><b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}</p>
+        <p><b>Nama Pemohon:</b> {data.nama_pemohon}</p>
+        <p><b>Jenis Layanan:</b> {data.jenis_layanan}</p>
 
         {/* Kelengkapan */}
         <div>
           <b>Kelengkapan:</b>{" "}
           {isLengkap ? (
-            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold">
-              ✅ Lengkap
-            </span>
+            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold">✅ Lengkap</span>
           ) : (
-            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">
-              ❌ Kurang
-            </span>
+            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">❌ Kurang</span>
           )}
         </div>
 
@@ -326,19 +292,13 @@ function DetailCard({ data }) {
         <div>
           <b>Dokumen:</b>{" "}
           {isLengkap ? (
-            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold">
-              ✅ Data Lengkap
-            </span>
+            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold">✅ Data Lengkap</span>
           ) : kekuranganList.length > 1 ? (
             <div className="mt-1">
-              <p className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">
-                ❌ Masih ada kekurangan:
-              </p>
+              <p className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">❌ Masih ada kekurangan:</p>
               <ol className="list-decimal pl-5 mt-2 space-y-1 text-red-700">
                 {kekuranganList.map((item, idx) => (
-                  <li key={idx} className="marker:text-red-600">
-                    {item}
-                  </li>
+                  <li key={idx} className="marker:text-red-600">{item}</li>
                 ))}
               </ol>
             </div>
@@ -349,15 +309,9 @@ function DetailCard({ data }) {
           )}
         </div>
 
-        <p>
-          <b>Status Berkas:</b> {data.status_berkas}
-        </p>
-        <p>
-          <b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}
-        </p>
-        <p>
-          <b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}
-        </p>
+        <p><b>Status Berkas:</b> {data.status_berkas}</p>
+        <p><b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}</p>
+        <p><b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}</p>
       </div>
     </div>
   );
