@@ -146,10 +146,10 @@ export default function Home() {
             </div>
           )}
 
-          {/* Loading: spinner tengah tanpa teks */}
+          {/* Loading: jam pasir di tengah tanpa teks */}
           {loading && (
             <div className="flex justify-center items-center py-10">
-              <div className="w-12 h-12 rounded-full border-4 border-slate-300 dark:border-slate-700 border-t-indigo-600 dark:border-t-indigo-400 animate-spin" />
+              <HourglassLoader />
             </div>
           )}
 
@@ -171,6 +171,92 @@ export default function Home() {
           </section>
         </main>
       </div>
+    </>
+  );
+}
+
+/* ===== Loader: Jam Pasir ===== */
+function HourglassLoader() {
+  return (
+    <>
+      <div
+        className="hourglass text-indigo-600 dark:text-indigo-400"
+        aria-label="Memuat data"
+        role="status"
+      >
+        <i />
+      </div>
+
+      <style jsx>{`
+        .hourglass {
+          position: relative;
+          width: 48px;
+          height: 48px;
+        }
+
+        /* Segitiga atas & bawah (badan jam pasir) */
+        .hourglass::before,
+        .hourglass::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          width: 0;
+          height: 0;
+          border-left: 12px solid transparent;
+          border-right: 12px solid transparent;
+          animation: sand 1.2s ease-in-out infinite;
+          transform: translateX(-50%);
+        }
+        .hourglass::before {
+          top: 6px;
+          border-bottom: 18px solid currentColor; /* segitiga atas */
+        }
+        .hourglass::after {
+          bottom: 6px;
+          border-top: 18px solid currentColor; /* segitiga bawah */
+          animation-delay: 0.6s;
+        }
+
+        /* Butiran pasir yang jatuh di tengah */
+        .hourglass i {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: 6px;
+          height: 6px;
+          border-radius: 9999px;
+          background: currentColor;
+          transform: translate(-50%, -50%);
+          animation: drip 1.2s ease-in-out infinite;
+        }
+
+        @keyframes sand {
+          0%,
+          100% {
+            opacity: 1;
+            transform: translateX(-50%) scaleY(1);
+          }
+          50% {
+            opacity: 0.35;
+            transform: translateX(-50%) scaleY(0.65);
+          }
+        }
+
+        @keyframes drip {
+          0% {
+            opacity: 0;
+            transform: translate(-50%, -12px) scale(0.6);
+          }
+          50% {
+            opacity: 1;
+            transform: translate(-50%, 0) scale(1);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(-50%, 12px) scale(0.6);
+          }
+        }
+      `}</style>
     </>
   );
 }
@@ -284,7 +370,7 @@ function Faq() {
       a: "Masukkan nomor berkas pada kolom pencarian, lalu tekan tombol Cari atau Enter. Jika data tersedia, detail berkas akan ditampilkan.",
     },
     {
-      q: "Kenapa data saya tidak ditemukan?",
+      q: "Mengapa data saya tidak ditemukan?",
       a: "Pastikan nomor berkas sudah benar. Jika masih tidak ditemukan, kemungkinan data belum masuk sistem atau sedang diproses manual di kantor.",
     },
     // Poin #4 (Apakah bisa digunakan di HP?) DIHAPUS sesuai permintaan
