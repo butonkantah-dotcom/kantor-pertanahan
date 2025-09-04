@@ -151,12 +151,10 @@ export default function Home() {
             </div>
           )}
 
-          {/* Loading: jam pasir berputar di tengah tanpa teks */}
+          {/* Loading: spinner tengah tanpa teks */}
           {loading && (
-            <div className="flex justify-center items-center py-10" role="status" aria-label="Memuat">
-              <span className="inline-block text-5xl animate-spin [animation-duration:900ms]">
-                ⌛
-              </span>
+            <div className="flex justify-center items-center py-10">
+              <div className="w-12 h-12 rounded-full border-4 border-slate-300 dark:border-slate-700 border-t-indigo-600 dark:border-t-indigo-400 animate-spin" />
             </div>
           )}
       
@@ -263,7 +261,7 @@ function DetailCard({ data }) {
             </div>
           ) : (
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">
-              ❌ Masih ada kekurangan: {kekuranganList[0] || String(data.kelengkapan_berkas)}
+              ❌ List dokumen yang kurang: {kekuranganList[0] || String(data.kelengkapan_berkas)}
             </span>
           )}
         </div>
