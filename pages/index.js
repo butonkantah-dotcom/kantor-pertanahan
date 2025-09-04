@@ -256,7 +256,7 @@ function DetailCard({ data }) {
     });
   };
 
-  // HYBRID: terima string ATAU array
+  // Terima string ATAU array
   const parseKekurangan = (val) => {
     if (!val) return [];
     if (Array.isArray(val)) return val.map((s) => String(s).trim()).filter(Boolean);
@@ -282,9 +282,13 @@ function DetailCard({ data }) {
         <div>
           <b>Kelengkapan:</b>{" "}
           {isLengkap ? (
-            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold">✅ Lengkap</span>
+            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold">
+              ✅ Lengkap
+            </span>
           ) : (
-            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">❌ Kurang</span>
+            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">
+              ❌ Kurang
+            </span>
           )}
         </div>
 
@@ -292,10 +296,14 @@ function DetailCard({ data }) {
         <div>
           <b>Dokumen:</b>{" "}
           {isLengkap ? (
-            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold">✅ Data Lengkap</span>
+            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold">
+              ✅ Data Lengkap
+            </span>
           ) : kekuranganList.length > 1 ? (
             <div className="mt-1">
-              <p className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">❌ Masih ada kekurangan:</p>
+              <p className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">
+                ❌ Masih ada kekurangan:
+              </p>
               <ol className="list-decimal pl-5 mt-2 space-y-1 text-red-700">
                 {kekuranganList.map((item, idx) => (
                   <li key={idx} className="marker:text-red-600">{item}</li>
