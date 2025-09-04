@@ -76,12 +76,12 @@ export default function Home() {
       </Head>
 
       <div className="min-h-screen flex flex-col items-center bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100">
-        {/* Header Brand */}
-        <header className="w-full flex items-center gap-3 p-4 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-          <Image src="/logo.png" alt="Logo ATR/BPN" width={40} height={40} />
+        {/* Header Brand (dibesarkan) */}
+        <header className="w-full flex items-center gap-4 p-5 sm:p-6 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+          <Image src="/logo.png" alt="Logo ATR/BPN" width={56} height={56} />
           <div>
-            <h1 className="text-lg font-bold">SI-BERKAT</h1>
-            <p className="text-xs text-slate-600 dark:text-slate-400">
+            <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight">SI-BERKAT</h1>
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
               Sistem Informasi Berkas Kantor Pertanahan
             </p>
           </div>
@@ -92,7 +92,7 @@ export default function Home() {
           <section className="text-center mb-6 sm:mb-8">
             <h2
               className="
-                text-2xl sm:text-3xl font-extrabold tracking-tight
+                text-2xl sm:text-4xl font-extrabold tracking-tight
                 text-slate-800 dark:text-slate-100
                 sm:text-transparent sm:bg-clip-text
                 sm:bg-gradient-to-r sm:from-sky-600 sm:to-indigo-600
@@ -100,7 +100,8 @@ export default function Home() {
                 sm:[-webkit-text-fill-color:transparent]
               "
             >
-              Cek Status &amp; Kelengkapan Berkas Anda
+              Cek Status &amp; Kelengkapan Berkas{" "}
+              <span className="whitespace-nowrap">Anda</span>
             </h2>
             <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
               Masukkan nomor berkas, tekan <b>Enter</b> untuk mencari. Tekan <b>ESC</b> untuk reset.
@@ -144,20 +145,27 @@ export default function Home() {
               {error}
             </div>
           )}
-          {loading && <p className="text-slate-600 dark:text-slate-300">🔄 Mencari data...</p>}
-          {notFound && (
+
+          {/* Loading: spinner tengah tanpa teks */}
+          {loading && (
+            <div className="flex justify-center items-center py-10">
+              <div className="w-12 h-12 rounded-full border-4 border-slate-300 dark:border-slate-700 border-t-indigo-600 dark:border-t-indigo-400 animate-spin" />
+            </div>
+          )}
+
+          {!loading && notFound && (
             <p className="text-red-600 font-semibold text-center">
               ⚠️ Data dengan nomor berkas &quot;{nomorBerkas}&quot; tidak ditemukan
             </p>
           )}
 
           {/* Hasil */}
-          {data && <DetailCard data={data} />}
+          {!loading && data && <DetailCard data={data} />}
 
           {/* FAQ Section */}
           <section className="mt-10">
             <h3 className="text-lg font-bold mb-4 text-slate-800 dark:text-slate-100 text-center">
-              ❓ Pertanyaan yang Sering Diajukan
+              Pertanyaan yang Sering Diajukan
             </h3>
             <Faq />
           </section>
@@ -180,22 +188,16 @@ function DetailCard({ data }) {
     });
   };
 
-  const onCopy = () => {
-    navigator.clipboard.writeText(JSON.stringify(data, null, 2));
-    alert("📋 Data disalin ke clipboard");
+  // Pecah kekurangan menjadi list bernomor jika lebih dari satu
+  const parseKekurangan = (text) => {
+    if (!text) return [];
+    return text
+      .split(/[,;\n]+/g)
+      .map((s) => s.trim())
+      .filter(Boolean);
   };
 
-  const onShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: "Detail Berkas",
-        text: `Detail Berkas ${data.nomor_berkas}`,
-        url: window.location.href,
-      });
-    } else {
-      alert("Fitur share tidak didukung di browser ini");
-    }
-  };
+  const kekuranganList = parseKekurangan(data?.kelengkapan_berkas);
 
   return (
     <div className="mt-6 p-5 rounded-xl bg-white dark:bg-slate-800 shadow-lg border border-slate-200 dark:border-slate-700">
@@ -236,9 +238,22 @@ function DetailCard({ data }) {
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold">
               ✅ Data Lengkap
             </span>
+          ) : kekuranganList.length > 1 ? (
+            <div className="mt-1">
+              <p className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">
+                ❌ Masih ada kekurangan:
+              </p>
+              <ol className="list-decimal pl-5 mt-2 space-y-1 text-red-700">
+                {kekuranganList.map((item, idx) => (
+                  <li key={idx} className="marker:text-red-600">
+                    {item}
+                  </li>
+                ))}
+              </ol>
+            </div>
           ) : (
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">
-              ❌ Masih ada kekurangan: {data.kelengkapan_berkas}
+              ❌ Masih ada kekurangan: {kekuranganList[0] || data.kelengkapan_berkas}
             </span>
           )}
         </div>
@@ -252,28 +267,6 @@ function DetailCard({ data }) {
         <p>
           <b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}
         </p>
-      </div>
-
-      {/* Aksi Cepat */}
-      <div className="mt-5 grid grid-cols-3 gap-3 text-center">
-        <button
-          onClick={onCopy}
-          className="flex flex-col items-center gap-1 p-3 rounded-lg bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600"
-        >
-          📋 <span className="text-xs">Salin</span>
-        </button>
-        <button
-          onClick={onShare}
-          className="flex flex-col items-center gap-1 p-3 rounded-lg bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600"
-        >
-          🔗 <span className="text-xs">Bagikan</span>
-        </button>
-        <button
-          onClick={() => window.print()}
-          className="flex flex-col items-center gap-1 p-3 rounded-lg bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600"
-        >
-          🖨️ <span className="text-xs">Cetak</span>
-        </button>
       </div>
     </div>
   );
@@ -294,10 +287,7 @@ function Faq() {
       q: "Kenapa data saya tidak ditemukan?",
       a: "Pastikan nomor berkas sudah benar. Jika masih tidak ditemukan, kemungkinan data belum masuk sistem atau sedang diproses manual di kantor.",
     },
-    {
-      q: "Apakah bisa digunakan di HP?",
-      a: "Ya, SI-BERKAT sudah responsif dan mendukung tampilan di smartphone maupun desktop, serta mendukung mode gelap otomatis.",
-    },
+    // Poin #4 (Apakah bisa digunakan di HP?) DIHAPUS sesuai permintaan
   ];
 
   const [openIndex, setOpenIndex] = useState(null);
