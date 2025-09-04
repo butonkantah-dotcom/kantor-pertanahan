@@ -76,9 +76,9 @@ export default function Home() {
       </Head>
 
       <div className="min-h-screen flex flex-col items-center bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100">
-        {/* Header Brand (dibesarkan) */}
+        {/* Header Brand (diperbesar) */}
         <header className="w-full flex items-center gap-4 p-5 sm:p-6 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-          <Image src="/logo.png" alt="Logo ATR/BPN" width={56} height={56} />
+          <Image src="/logo.png" alt="Logo ATR/BPN" width={56} height={56} priority />
           <div>
             <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight">SI-BERKAT</h1>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
@@ -263,7 +263,11 @@ function HourglassLoader() {
 
 /* ===== Detail Card ===== */
 function DetailCard({ data }) {
-  const isLengkap = !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
+  const isLengkap =
+    !data?.kelengkapan_berkas ||
+    (Array.isArray(data.kelengkapan_berkas)
+      ? data.kelengkapan_berkas.length === 0
+      : String(data.kelengkapan_berkas).trim() === "");
 
   const formatTanggal = (tgl) => {
     if (!tgl) return "-";
@@ -274,10 +278,11 @@ function DetailCard({ data }) {
     });
   };
 
-  // Pecah kekurangan menjadi list bernomor jika lebih dari satu
-  const parseKekurangan = (text) => {
-    if (!text) return [];
-    return text
+  // HYBRID: terima string ATAU array dari API
+  const parseKekurangan = (val) => {
+    if (!val) return [];
+    if (Array.isArray(val)) return val.map((s) => String(s).trim()).filter(Boolean);
+    return String(val)
       .split(/[,;\n]+/g)
       .map((s) => s.trim())
       .filter(Boolean);
@@ -339,7 +344,7 @@ function DetailCard({ data }) {
             </div>
           ) : (
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">
-              ❌ Masih ada kekurangan: {kekuranganList[0] || data.kelengkapan_berkas}
+              ❌ Masih ada kekurangan: {kekuranganList[0] || String(data.kelengkapan_berkas)}
             </span>
           )}
         </div>
@@ -370,10 +375,10 @@ function Faq() {
       a: "Masukkan nomor berkas pada kolom pencarian, lalu tekan tombol Cari atau Enter. Jika data tersedia, detail berkas akan ditampilkan.",
     },
     {
-      q: "Mengapa data saya tidak ditemukan?",
+      q: "Kenapa data saya tidak ditemukan?",
       a: "Pastikan nomor berkas sudah benar. Jika masih tidak ditemukan, kemungkinan data belum masuk sistem atau sedang diproses manual di kantor.",
     },
-    // Poin #4 (Apakah bisa digunakan di HP?) DIHAPUS sesuai permintaan
+    // Poin #4 dihapus sesuai permintaan
   ];
 
   const [openIndex, setOpenIndex] = useState(null);
@@ -388,6 +393,7 @@ function Faq() {
           <button
             onClick={() => setOpenIndex(openIndex === i ? null : i)}
             className="w-full flex justify-between items-center p-4 text-left font-medium text-slate-800 dark:text-slate-100"
+            aria-expanded={openIndex === i}
           >
             {item.q}
             <span className="ml-2">{openIndex === i ? "−" : "+"}</span>
