@@ -11,6 +11,7 @@ export default function Home() {
   const [notFound, setNotFound] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef(null);
+  const resultRef = useRef(null); // untuk auto-scroll
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -67,18 +68,31 @@ export default function Home() {
     }
   };
 
+  // Auto-scroll ke hasil setelah data tersedia dan loading selesai
+  useEffect(() => {
+    if (!loading && data && resultRef.current) {
+      // beri sedikit jeda agar elemen ter-render penuh
+      setTimeout(() => {
+        resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
+    }
+  }, [loading, data]);
+
   return (
     <>
       <Head>
         <title>SI-BERKAT | Sistem Informasi Berkas Kantor Pertanahan</title>
-        <meta name="description" content="Cek Status & Kelengkapan Berkas ATR/BPN secara cepat & mudah" />
+        <meta
+          name="description"
+          content="Cek Status & Kelengkapan Berkas ATR/BPN secara cepat & mudah"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
       <div className="min-h-screen flex flex-col items-center bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100">
-        {/* Header Brand (dibesarkan) */}
+        {/* Header Brand - diperbesar */}
         <header className="w-full flex items-center gap-4 p-5 sm:p-6 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-          <Image src="/logo.png" alt="Logo ATR/BPN" width={56} height={56} />
+          <Image src="/logo.png" alt="Logo ATR/BPN" width={56} height={56} priority />
           <div>
             <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight">SI-BERKAT</h1>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
@@ -146,11 +160,14 @@ export default function Home() {
             </div>
           )}
 
-          {/* Loading: spinner tengah tanpa teks */}
+          {/* Loading: spinner tengah tanpa teks + skeleton card */}
           {loading && (
-            <div className="flex justify-center items-center py-10">
-              <div className="w-12 h-12 rounded-full border-4 border-slate-300 dark:border-slate-700 border-t-indigo-600 dark:border-t-indigo-400 animate-spin" />
-            </div>
+            <>
+              <div className="flex justify-center items-center py-10" aria-label="Memuat data">
+                <div className="w-12 h-12 rounded-full border-4 border-slate-300 dark:border-slate-700 border-t-indigo-600 dark:border-t-indigo-400 animate-spin" />
+              </div>
+              <SkeletonCard />
+            </>
           )}
 
           {!loading && notFound && (
@@ -160,7 +177,11 @@ export default function Home() {
           )}
 
           {/* Hasil */}
-          {!loading && data && <DetailCard data={data} />}
+          {!loading && data && (
+            <div ref={resultRef}>
+              <DetailCard data={data} />
+            </div>
+          )}
 
           {/* FAQ Section */}
           <section className="mt-10">
@@ -175,9 +196,33 @@ export default function Home() {
   );
 }
 
+/* ===== Util: Status Badge ===== */
+function StatusBadge({ status }) {
+  const s = String(status || "").toLowerCase().trim();
+
+  // mapping warna/status (bisa disesuaikan dengan enum backend)
+  let classes =
+    "inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-slate-200 text-slate-800 font-semibold";
+  let label = status || "-";
+
+  if (s.includes("selesai") || s.includes("terbit")) {
+    classes = "inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold";
+  } else if (s.includes("verifikasi") || s.includes("validasi") || s.includes("pengukuran")) {
+    classes = "inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-blue-100 text-blue-700 font-semibold";
+  } else if (s.includes("proses") || s.includes("diproses") || s.includes("antrian")) {
+    classes = "inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-100 text-amber-700 font-semibold";
+  } else if (s.includes("tolak") || s.includes("gagal")) {
+    classes = "inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold";
+  } else if (s.includes("ambil") || s.includes("serah")) {
+    classes = "inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-indigo-100 text-indigo-700 font-semibold";
+  }
+
+  return <span className={classes}>{label}</span>;
+}
+
 /* ===== Detail Card ===== */
 function DetailCard({ data }) {
-  const isLengkap = !data?.kelengkapan_berkas || data.kelengkapan_berkas.trim() === "";
+  const isLengkap = !data?.kelengkapan_berkas || String(data.kelengkapan_berkas).trim() === "";
 
   const formatTanggal = (tgl) => {
     if (!tgl) return "-";
@@ -188,10 +233,13 @@ function DetailCard({ data }) {
     });
   };
 
-  // Pecah kekurangan menjadi list bernomor jika lebih dari satu
-  const parseKekurangan = (text) => {
-    if (!text) return [];
-    return text
+  // HYBRID: terima string atau array dari API
+  const parseKekurangan = (val) => {
+    if (!val) return [];
+    if (Array.isArray(val)) {
+      return val.map((s) => String(s).trim()).filter(Boolean);
+    }
+    return String(val)
       .split(/[,;\n]+/g)
       .map((s) => s.trim())
       .filter(Boolean);
@@ -253,20 +301,41 @@ function DetailCard({ data }) {
             </div>
           ) : (
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">
-              ❌ Masih ada kekurangan: {kekuranganList[0] || data.kelengkapan_berkas}
+              ❌ Masih ada kekurangan: {kekuranganList[0] || String(data.kelengkapan_berkas)}
             </span>
           )}
         </div>
 
-        <p>
-          <b>Status Berkas:</b> {data.status_berkas}
+        {/* Status Badge */}
+        <p className="flex items-center gap-2">
+          <b>Status Berkas:</b> <StatusBadge status={data.status_berkas} />
         </p>
+
         <p>
           <b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}
         </p>
         <p>
           <b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}
         </p>
+      </div>
+    </div>
+  );
+}
+
+/* ===== Skeleton (placeholder saat loading) ===== */
+function SkeletonCard() {
+  return (
+    <div className="mt-4 p-5 rounded-xl bg-white dark:bg-slate-800 shadow-lg border border-slate-200 dark:border-slate-700 animate-pulse">
+      <div className="h-5 w-40 bg-slate-200 dark:bg-slate-700 rounded mb-4" />
+      <div className="space-y-2">
+        <div className="h-4 w-64 bg-slate-200 dark:bg-slate-700 rounded" />
+        <div className="h-4 w-56 bg-slate-200 dark:bg-slate-700 rounded" />
+        <div className="h-4 w-72 bg-slate-200 dark:bg-slate-700 rounded" />
+        <div className="h-4 w-44 bg-slate-200 dark:bg-slate-700 rounded" />
+        <div className="h-6 w-36 bg-slate-200 dark:bg-slate-700 rounded mt-3" />
+        <div className="h-16 w-full bg-slate-200 dark:bg-slate-700 rounded" />
+        <div className="h-4 w-52 bg-slate-200 dark:bg-slate-700 rounded" />
+        <div className="h-4 w-40 bg-slate-200 dark:bg-slate-700 rounded" />
       </div>
     </div>
   );
@@ -287,7 +356,7 @@ function Faq() {
       q: "Kenapa data saya tidak ditemukan?",
       a: "Pastikan nomor berkas sudah benar. Jika masih tidak ditemukan, kemungkinan data belum masuk sistem atau sedang diproses manual di kantor.",
     },
-    // Poin #4 (Apakah bisa digunakan di HP?) DIHAPUS sesuai permintaan
+    // Poin #4 dihapus sesuai permintaan
   ];
 
   const [openIndex, setOpenIndex] = useState(null);
@@ -302,6 +371,7 @@ function Faq() {
           <button
             onClick={() => setOpenIndex(openIndex === i ? null : i)}
             className="w-full flex justify-between items-center p-4 text-left font-medium text-slate-800 dark:text-slate-100"
+            aria-expanded={openIndex === i}
           >
             {item.q}
             <span className="ml-2">{openIndex === i ? "−" : "+"}</span>
