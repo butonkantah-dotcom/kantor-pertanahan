@@ -2,10 +2,6 @@
 import Head from "next/head";
 import Image from "next/image";
 import { useState, useRef, useEffect, useCallback } from "react";
-// pages/index.js
-import Head from "next/head";
-import Image from "next/image";
-import { useState, useRef, useEffect, useCallback } from "react";
 
 export default function Home() {
   const [nomorBerkas, setNomorBerkas] = useState("");
