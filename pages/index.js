@@ -76,7 +76,6 @@ export default function Home() {
       </Head>
 
       <div className="min-h-screen flex flex-col items-center bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100">
-        {/* Header Brand (diperbesar) */}
         <header className="w-full flex items-center gap-4 p-5 sm:p-6 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
           <Image src="/logo.png" alt="Logo ATR/BPN" width={56} height={56} priority />
           <div>
@@ -88,7 +87,6 @@ export default function Home() {
         </header>
 
         <main className="flex-1 w-full max-w-2xl px-4 sm:px-6 py-6">
-          {/* Hero */}
           <section className="text-center mb-6 sm:mb-8">
             <h2
               className="
@@ -108,7 +106,6 @@ export default function Home() {
             </p>
           </section>
 
-          {/* Input & Tombol */}
           <div className="flex flex-col sm:flex-row gap-3 mb-4">
             <input
               ref={inputRef}
@@ -134,7 +131,6 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Notifikasi */}
           {warning && (
             <div className="mb-4 p-3 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-lg text-center">
               {warning}
@@ -146,7 +142,6 @@ export default function Home() {
             </div>
           )}
 
-          {/* Loading: jam pasir di tengah tanpa teks */}
           {loading && (
             <div className="flex justify-center items-center py-10">
               <HourglassLoader />
@@ -159,10 +154,8 @@ export default function Home() {
             </p>
           )}
 
-          {/* Hasil */}
           {!loading && data && <DetailCard data={data} />}
 
-          {/* FAQ Section */}
           <section className="mt-10">
             <h3 className="text-lg font-bold mb-4 text-slate-800 dark:text-slate-100 text-center">
               Pertanyaan yang Sering Diajukan
@@ -175,7 +168,7 @@ export default function Home() {
   );
 }
 
-/* ===== Loader: Jam Pasir ===== */
+/* Loader: Jam Pasir */
 function HourglassLoader() {
   return (
     <>
@@ -239,7 +232,7 @@ function HourglassLoader() {
   );
 }
 
-/* ===== Detail Card ===== */
+/* Detail Card */
 function DetailCard({ data }) {
   const isLengkap =
     !data?.kelengkapan_berkas ||
@@ -256,7 +249,6 @@ function DetailCard({ data }) {
     });
   };
 
-  // Terima string ATAU array
   const parseKekurangan = (val) => {
     if (!val) return [];
     if (Array.isArray(val)) return val.map((s) => String(s).trim()).filter(Boolean);
@@ -278,7 +270,6 @@ function DetailCard({ data }) {
         <p><b>Nama Pemohon:</b> {data.nama_pemohon}</p>
         <p><b>Jenis Layanan:</b> {data.jenis_layanan}</p>
 
-        {/* Kelengkapan */}
         <div>
           <b>Kelengkapan:</b>{" "}
           {isLengkap ? (
@@ -288,7 +279,6 @@ function DetailCard({ data }) {
           )}
         </div>
 
-        {/* Dokumen */}
         <div>
           <b>Dokumen:</b>{" "}
           {isLengkap ? (
@@ -317,7 +307,7 @@ function DetailCard({ data }) {
   );
 }
 
-/* ===== FAQ (Accordion) ===== */
+/* FAQ */
 function Faq() {
   const items = [
     {
@@ -332,7 +322,6 @@ function Faq() {
       q: "Kenapa data saya tidak ditemukan?",
       a: "Pastikan nomor berkas sudah benar. Jika masih tidak ditemukan, kemungkinan data belum masuk sistem atau sedang diproses manual di kantor.",
     },
-    // Poin #4 dihapus sesuai permintaan
   ];
 
   const [openIndex, setOpenIndex] = useState(null);
