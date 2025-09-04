@@ -1,6 +1,5 @@
 // postcss.config.js
-module.exports = {
-  plugins: {
-    tailwindcss: {}
-  }
-};
+const plugins = { tailwindcss: {} };
+// optional: aktifkan autoprefixer hanya jika terpasang
+try { require.resolve("autoprefixer"); plugins.autoprefixer = {}; } catch {}
+module.exports = { plugins };
