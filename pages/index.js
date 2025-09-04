@@ -152,11 +152,18 @@ export default function Home() {
           )}
 
           {/* Loading: jam pasir di tengah tanpa teks */}
-          {loading && (
-            <div className="flex justify-center items-center py-10" role="status" aria-label="Memuat">
-              <span className="text-4xl animate-pulse">⏳</span>
-            </div>
-          )}
+       //   {loading && (
+       //     <div className="flex justify-center items-center py-10" role="status" aria-label="Memuat">
+      //        <span className="text-4xl animate-pulse">⏳</span>
+       //     </div>
+       //   )}
+        {/* Loading: jam pasir berputar di tengah tanpa teks */}
+        {loading && (
+        <div className="flex justify-center items-center py-10" role="status" aria-label="Memuat">
+          <span className="inline-block text-5xl animate-spin [animation-duration:900ms]">⌛</span>
+        </div>
+        )}
+
 
           {!loading && notFound && (
             <p className="text-red-600 font-semibold text-center">
