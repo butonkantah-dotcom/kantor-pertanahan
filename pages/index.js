@@ -292,7 +292,7 @@ function Faq() {
       a: "Masukkan nomor berkas pada kolom pencarian, lalu tekan tombol Cari atau Enter. Jika data tersedia, detail berkas akan ditampilkan.",
     },
     {
-      q: "Kenapa data saya tidak ditemukan?",
+      q: "Mengapa data saya tidak ditemukan?",
       a: "Pastikan nomor berkas sudah benar. Jika masih tidak ditemukan, kemungkinan data belum masuk sistem atau sedang diproses manual di kantor.",
     },
     // Poin #4 dihapus sesuai permintaan
