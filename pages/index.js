@@ -5,7 +5,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 
 export default function Home() {
   // Ambil ENV dari Vercel (fallback jika kosong)
-  const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "6281234567890";
+  const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "6285322459918";
   const WA_GREETING =
     process.env.NEXT_PUBLIC_WHATSAPP_GREETING ||
     "Halo Admin Kantor Pertanahan Buton, saya ingin mengirim berkas tambahan (non-asli).";
