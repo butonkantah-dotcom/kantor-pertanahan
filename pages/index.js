@@ -83,7 +83,7 @@ export default function Home() {
         <header className="w-full flex items-center gap-4 p-5 sm:p-6 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
           <Image src="/logo.png" alt="Logo ATR/BPN" width={56} height={56} priority />
           <div>
-            <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight">SI-BERKAT</h1>
+            <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight">SI-BUTON</h1>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
               Sistem Informasi Berkas Kantor Pertanahan
             </p>
