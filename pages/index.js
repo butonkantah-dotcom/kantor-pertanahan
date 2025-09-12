@@ -70,7 +70,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>SI-BERKAT | Sistem Informasi Berkas Kantor Pertanahan</title>
+        <title>SI-BUTON | Sistem Informasi Berkas Kantor Pertanahan</title>
         <meta
           name="description"
           content="Cek Status & Kelengkapan Berkas ATR/BPN secara cepat & mudah"
