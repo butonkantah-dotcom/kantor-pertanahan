@@ -4,12 +4,12 @@ import Image from "next/image";
 import { useState, useRef, useEffect, useCallback } from "react";
 
 export default function Home() {
-  // Ambil ENV dari Vercel (fallback jika kosong)
-  const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "6285322459918";
+  // Konfigurasi ENV (fallback jika kosong)
+  const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "6281234567890";
   const WA_GREETING =
     process.env.NEXT_PUBLIC_WHATSAPP_GREETING ||
     "Halo Admin Kantor Pertanahan Buton, saya ingin mengirim berkas tambahan (non-asli).";
-  const WA_HOURS_TXT = "Layanan buka (WITA 08:00–15:59)";
+  const WA_HOURS_TXT = "Layanan buka (08:00–15:59 WITA)";
 
   const [nomorBerkas, setNomorBerkas] = useState("");
   const [data, setData] = useState(null);
@@ -161,7 +161,7 @@ export default function Home() {
 
           {!loading && data && <DetailCard data={data} />}
 
-          {/* Box WhatsApp Hotline */}
+          {/* WhatsApp Hotline */}
           <HotlineBox waHref={waHref} hoursText={WA_HOURS_TXT} />
 
           {/* FAQ */}
@@ -177,7 +177,7 @@ export default function Home() {
   );
 }
 
-// Helper: Normalisasi nomor WA
+/* ===== Utils ===== */
 function normalizeWa(numRaw) {
   let n = String(numRaw || "").replace(/[\s+()-]/g, "");
   if (n.startsWith("0")) n = "62" + n.slice(1);
@@ -185,7 +185,7 @@ function normalizeWa(numRaw) {
   return n;
 }
 
-// Komponen Box WA Hotline
+/* ===== WhatsApp Hotline ===== */
 function HotlineBox({ waHref, hoursText }) {
   return (
     <section className="mt-8">
@@ -194,30 +194,58 @@ function HotlineBox({ waHref, hoursText }) {
           Jika terdapat <b>berkas yang kurang dan tidak bersifat asli</b>, silakan kirim melalui{" "}
           <b>WhatsApp Hotline</b>.
         </p>
-        <p className="text-[15px] sm:text-base leading-relaxed mb-4">
+        <p className="text-[15px] sm:text-base leading-relaxed">
           Dokumen asli tetap dibawa langsung ke loket pelayanan.
         </p>
-        <div className="inline-block mb-4 px-3 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800">
-          <span className="text-emerald-700 dark:text-emerald-300 font-semibold">{hoursText}</span>
+
+        {/* Susunan vertikal: badge di atas, tombol di bawah */}
+        <div className="mt-4 flex flex-col items-start gap-3">
+          {/* Badge Layanan Buka */}
+          <div className="px-3 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800">
+            <span className="text-emerald-700 dark:text-emerald-300 font-semibold">
+              {hoursText}
+            </span>
+          </div>
+
+          {/* Tombol WhatsApp dengan ikon terlihat */}
+          <a
+            href={waHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-[#25D366] hover:brightness-95 
+                       text-white font-semibold shadow-md transition"
+            aria-label="Buka WhatsApp Hotline"
+          >
+            {/* Ikon WhatsApp (Font Awesome path lengkap) */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 448 512"
+              width="20"
+              height="20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M380.9 97.1C339 55.1 283.2 32 224.5 32 106 
+              32 9.1 128.9 9.1 247.4c0 42.6 11.2 84.1 32.5 120.5L0 480l115.3-40.9c34.8 
+              19 74.1 29 114.1 29h.1c118.5 0 215.4-96.9 215.4-215.4 0-58.6-23.1-114.4-65-156.4zM224.6 
+              438.6h-.1c-35.9 0-71.1-9.6-101.8-27.7l-7.3-4.3-68.4 24.3 23.5-70.2-4.8-7.4C46 
+              321.3 36.6 284.7 36.6 247.4 36.6 146 123 59.6 224.5 59.6c50.3 0 97.6 19.6 133.1 
+              55.1 35.5 35.6 55.1 82.9 55.1 133.1 0 101.5-86.5 190.8-188.1 190.8zm101.6-138.6c-5.6-2.8-33.1-16.3-38.2-18.2-5.1-1.9-8.8-2.8-12.6 
+              2.8s-14.4 18.2-17.7 22c-3.3 3.7-6.5 4.2-12.1 1.4-33.1-16.5-54.8-29.4-76.7-66.7-5.8-10 
+              5.8-9.3 16.5-31 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.6-30.2-17.2-41.3-4.5-10.9-9.1-9.4-12.6-9.6-3.3-.2-7.1-.2-10.9-.2s-10 1.4-15.2 
+              7.1c-5.2 5.6-19.9 19.4-19.9 47.3s20.4 54.8 23.2 58.6c2.8 3.7 40.1 61.4 96.9 86.1 13.5 
+              5.8 24.1 9.3 33 12 13.9 4.4 26.7 3.8 36.8 2.3 11.2-1.7 33.1-13.6 37.8-26.9 4.7-13.1 
+              4.7-24.3 3.3-26.8-1.3-2.4-5.1-3.9-10.7-6.7z"/>
+            </svg>
+            <span>WhatsApp Hotline</span>
+          </a>
         </div>
-        <a
-          href={waHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-[#25D366] hover:brightness-95 text-white font-semibold shadow-md transition"
-        >
-          {/* Ikon WA */}
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20" height="20" fill="currentColor">
-            <path d="M380.9 97.1C339 55.1..."></path>
-          </svg>
-          WhatsApp Hotline
-        </a>
       </div>
     </section>
   );
 }
 
-// DetailCard & FAQ sama seperti versi sebelumnya…
+/* ===== Detail Card ===== */
 function DetailCard({ data }) {
   const isLengkap = !data?.kelengkapan_berkas || String(data.kelengkapan_berkas).trim() === "";
 
@@ -249,6 +277,7 @@ function DetailCard({ data }) {
         <p><b>Tanggal Permohonan:</b> {formatTanggal(data.tanggal_permohonan)}</p>
         <p><b>Nama Pemohon:</b> {data.nama_pemohon}</p>
         <p><b>Jenis Layanan:</b> {data.jenis_layanan}</p>
+
         <div>
           <b>Kelengkapan:</b>{" "}
           {isLengkap ? (
@@ -261,6 +290,7 @@ function DetailCard({ data }) {
             </span>
           )}
         </div>
+
         <div>
           <b>Dokumen:</b>{" "}
           {isLengkap ? (
@@ -284,35 +314,58 @@ function DetailCard({ data }) {
             </span>
           )}
         </div>
+
         <p><b>Status Berkas:</b> {data.status_berkas}</p>
         <p><b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}</p>
         <p><b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}</p>
+
+        {/* Kalimat tambahan */}
+        <p className="mt-3 text-slate-600 dark:text-slate-300 text-sm">
+          🕒 Jika berkas Anda sudah lengkap, silakan menunggu proses.
+        </p>
       </div>
     </div>
   );
 }
 
+/* ===== FAQ ===== */
 function Faq() {
   const items = [
-    { q: "Apa itu SiKABut?", a: "SiKABut adalah aplikasi untuk mengecek status & kelengkapan berkas permohonan di ATR/BPN." },
-    { q: "Bagaimana cara mencari berkas saya?", a: "Masukkan nomor berkas pada kolom pencarian, lalu tekan Cari atau Enter." },
-    { q: "Mengapa data saya tidak ditemukan?", a: "Pastikan nomor berkas sudah benar. Jika masih tidak ditemukan, kemungkinan data belum masuk sistem atau diproses manual." },
+    {
+      q: "Apa itu SiKABut?",
+      a: "SiKABut ( Sistem Kelengkapan Arsip Buton) adalah aplikasi untuk mengecek status & kelengkapan berkas permohonan di ATR/BPN.",
+    },
+    {
+      q: "Bagaimana cara mencari berkas saya?",
+      a: "Masukkan nomor berkas pada kolom pencarian, lalu tekan tombol Cari atau Enter. Jika data tersedia, detail berkas akan ditampilkan.",
+    },
+    {
+      q: "Mengapa data saya tidak ditemukan?",
+      a: "Pastikan nomor berkas sudah benar. Jika masih tidak ditemukan, kemungkinan data belum masuk sistem atau sedang diproses manual di kantor.",
+    },
   ];
+
   const [openIndex, setOpenIndex] = useState(null);
 
   return (
     <div className="space-y-3">
       {items.map((item, i) => (
-        <div key={i} className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm">
+        <div
+          key={i}
+          className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm"
+        >
           <button
+            type="button"
             onClick={() => setOpenIndex(openIndex === i ? null : i)}
             className="w-full flex justify-between items-center p-4 text-left font-medium text-slate-800 dark:text-slate-100"
+            aria-expanded={openIndex === i}
+            aria-controls={`faq-panel-${i}`}
           >
             {item.q}
-            <span>{openIndex === i ? "−" : "+"}</span>
+            <span className="ml-2">{openIndex === i ? "−" : "+"}</span>
           </button>
           {openIndex === i && (
-            <div className="px-4 pb-4 text-sm text-slate-600 dark:text-slate-300">
+            <div id={`faq-panel-${i}`} className="px-4 pb-4 text-sm text-slate-600 dark:text-slate-300">
               {item.a}
             </div>
           )}
