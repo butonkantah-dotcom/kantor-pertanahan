@@ -111,17 +111,22 @@ export default function Home() {
             />
 
             {/* Tombol Cari: gradien + border */}
-            <button
+           <button
               onClick={handleSearch}
               disabled={loading}
-              className="appearance-none rounded-xl px-5 py-3 font-semibold text-white
-                         !bg-gradient-to-br !from-sky-500 !to-indigo-600
-                         hover:from-sky-600 hover:to-indigo-700
-                         border border-slate-300 dark:border-slate-600
-                         disabled:opacity-60 shadow-md"
+              className="appearance-none inline-flex items-center gap-2
+                         px-6 py-3 rounded-2xl font-bold text-white
+                          bg-gradient-to-br from-sky-400 to-indigo-600
+                          border border-white/40 dark:border-white/10
+                          shadow-lg hover:shadow-xl
+                          transition active:translate-y-px
+                          focus:outline-none focus:ring-4 focus:ring-sky-300/60 dark:focus:ring-indigo-500/40
+                          disabled:opacity-60"
             >
-              🔍 Cari
+            <span aria-hidden>🔎</span>
+            <span>Cari</span>
             </button>
+
 
             {/* Tombol Reset: abu-abu + border */}
             <button
