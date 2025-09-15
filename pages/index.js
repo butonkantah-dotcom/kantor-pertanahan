@@ -111,7 +111,7 @@ export default function Home() {
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
 
-            {/* Tombol Cari: kebal override CSS */}
+            {/* Tombol Cari: gradien tanpa border */}
             <button
               onClick={handleSearch}
               disabled={loading}
@@ -123,12 +123,11 @@ export default function Home() {
               🔍 Cari
             </button>
 
-            {/* Tombol Reset: solid + border */}
+            {/* Tombol Reset: tanpa border (biar konsisten) */}
             <button
               onClick={handleReset}
               className="appearance-none rounded-xl px-5 py-3 font-semibold 
                          bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200
-                         border border-slate-300 dark:border-slate-600
                          hover:bg-slate-300 dark:hover:bg-slate-600 shadow-sm"
             >
               ♻️ Reset
@@ -160,15 +159,9 @@ export default function Home() {
             </p>
           )}
 
-          {!loading && data && (
-            <DetailCard
-              data={data}
-              number={WA_NUMBER}
-              greeting={WA_GREETING}
-            />
-          )}
+          {!loading && data && <DetailCard data={data} />}
 
-          {/* WhatsApp Box */}
+          {/* WhatsApp Box (satu-satunya tombol WA) */}
           <HotlineBox number={WA_NUMBER} greeting={WA_GREETING} hoursText={WA_HOURS_TXT} />
 
           {/* FAQ */}
@@ -199,7 +192,7 @@ function buildWhatsAppUrl(numRaw, text) {
     : `https://web.whatsapp.com/send?phone=${n}&text=${encoded}`;
 }
 
-/* ===== Komponen: Satu-satunya tombol WhatsApp Hotline ===== */
+/* ===== Komponen: tombol WhatsApp Hotline (reusable) ===== */
 function WhatsAppHotlineButton({ number, greeting, className = "" }) {
   const handleOpenWA = (e) => {
     e.preventDefault();
@@ -223,7 +216,7 @@ function WhatsAppHotlineButton({ number, greeting, className = "" }) {
   );
 }
 
-/* ===== WhatsApp Hotline Box ===== */
+/* ===== WhatsApp Hotline Box (berisi tombol WA) ===== */
 function HotlineBox({ number, greeting, hoursText }) {
   return (
     <section className="mt-8">
@@ -235,12 +228,12 @@ function HotlineBox({ number, greeting, hoursText }) {
           Dokumen asli tetap dibawa langsung ke loket pelayanan.
         </p>
 
-        {/* Badge + tombol (satu-satunya tombol WA) */}
         <div className="mt-4 flex flex-col items-center gap-3">
           <div className="px-3 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800">
             <span className="text-emerald-700 dark:text-emerald-300 font-semibold">{hoursText}</span>
           </div>
 
+          {/* Satu-satunya tombol WA */}
           <WhatsAppHotlineButton number={number} greeting={greeting} />
         </div>
       </div>
@@ -248,9 +241,8 @@ function HotlineBox({ number, greeting, hoursText }) {
   );
 }
 
-/* ===== Detail Card ===== */
-function DetailCard({ data, number, greeting }) {
-  // "Lengkap" jika kolom kelengkapan_berkas kosong (tidak ada kekurangan)
+/* ===== Detail Card (tanpa tombol WA & tanpa kalimat "Dokumen non-asli …") ===== */
+function DetailCard({ data }) {
   const isLengkap =
     !data?.kelengkapan_berkas || String(data.kelengkapan_berkas).trim() === "";
 
@@ -316,14 +308,7 @@ function DetailCard({ data, number, greeting }) {
             <p className="font-semibold text-slate-800 dark:text-slate-200">
               ⚠️ Berkas Anda belum lengkap. Silakan lengkapi dokumen sesuai daftar di atas.
             </p>
-            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-              Dokumen <b>non-asli</b> dapat dikirim melalui WhatsApp Hotline.
-            </p>
-
-            {/* Pakai tombol WA yang sama (satu-satunya) */}
-            <div className="mt-3 flex justify-center">
-              <WhatsAppHotlineButton number={number} greeting={greeting} />
-            </div>
+            {/* Tidak ada kalimat "Dokumen non-asli …" dan tidak ada tombol WA */}
           </div>
         )}
       </div>
