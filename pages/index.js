@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useState, useRef, useEffect, useCallback } from "react";
 
 export default function Home() {
-  // ENV dari Vercel (fallback jika kosong)
   const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "6285322459918";
   const WA_GREETING =
     process.env.NEXT_PUBLIC_WHATSAPP_GREETING ||
@@ -111,23 +110,25 @@ export default function Home() {
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
 
-            {/* Tombol Cari: gradien tanpa border */}
+            {/* Tombol Cari: gradien + border */}
             <button
               onClick={handleSearch}
               disabled={loading}
               className="appearance-none rounded-xl px-5 py-3 font-semibold text-white
                          !bg-gradient-to-br !from-sky-500 !to-indigo-600
                          hover:from-sky-600 hover:to-indigo-700
+                         border border-slate-300 dark:border-slate-600
                          disabled:opacity-60 shadow-md"
             >
               🔍 Cari
             </button>
 
-            {/* Tombol Reset: tanpa border (biar konsisten) */}
+            {/* Tombol Reset: abu-abu + border */}
             <button
               onClick={handleReset}
               className="appearance-none rounded-xl px-5 py-3 font-semibold 
                          bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200
+                         border border-slate-300 dark:border-slate-600
                          hover:bg-slate-300 dark:hover:bg-slate-600 shadow-sm"
             >
               ♻️ Reset
@@ -192,14 +193,13 @@ function buildWhatsAppUrl(numRaw, text) {
     : `https://web.whatsapp.com/send?phone=${n}&text=${encoded}`;
 }
 
-/* ===== Komponen: tombol WhatsApp Hotline (reusable) ===== */
+/* ===== Komponen tombol WhatsApp ===== */
 function WhatsAppHotlineButton({ number, greeting, className = "" }) {
   const handleOpenWA = (e) => {
     e.preventDefault();
     const url = buildWhatsAppUrl(number, greeting);
     window.open(url, "_blank", "noopener,noreferrer");
   };
-
   return (
     <a
       href="#"
@@ -207,7 +207,6 @@ function WhatsAppHotlineButton({ number, greeting, className = "" }) {
       className={`inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-[#25D366] hover:brightness-95 text-white font-semibold shadow-md transition ${className}`}
       aria-label="Buka WhatsApp Hotline"
     >
-      {/* Ikon WhatsApp */}
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="22" height="22" fill="currentColor" aria-hidden="true">
         <path d="M380.9 97.1C339 55.1 283.2 32 224.5 32 106 32 9.1 128.9 9.1 247.4c0 42.6 11.2 84.1 32.5 120.5L0 480l115.3-40.9c34.8 19 74.1 29 114.1 29h.1c118.5 0 215.4-96.9 215.4-215.4 0-58.6-23.1-114.4-65-156.4zM224.6 438.6h-.1c-35.9 0-71.1-9.6-101.8-27.7l-7.3-4.3-68.4 24.3 23.5-70.2-4.8-7.4C46 321.3 36.6 284.7 36.6 247.4 36.6 146 123 59.6 224.5 59.6c50.3 0 97.6 19.6 133.1 55.1 35.5 35.6 55.1 82.9 55.1 133.1 0 101.5-86.5 190.8-188.1 190.8zm101.6-138.6c-5.6-2.8-33.1-16.3-38.2-18.2-5.1-1.9-8.8-2.8-12.6 2.8s-14.4 18.2-17.7 22c-3.3 3.7-6.5 4.2-12.1 1.4-33.1-16.5-54.8-29.4-76.7-66.7-5.8-10 5.8-9.3 16.5-31 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.6-30.2-17.2-41.3-4.5-10.9-9.1-9.4-12.6-9.6-3.3-.2-7.1-.2-10.9-.2s-10 1.4-15.2 7.1c-5.2 5.6-19.9 19.4-19.9 47.3s20.4 54.8 23.2 58.6c2.8 3.7 40.1 61.4 96.9 86.1 13.5 5.8 24.1 9.3 33 12 13.9 4.4 26.7 3.8 36.8 2.3 11.2-1.7 33.1-13.6 37.8-26.9 4.7-13.1 4.7-24.3 3.3-26.8-1.3-2.4-5.1-3.9-10.7-6.7z" />
       </svg>
@@ -216,24 +215,21 @@ function WhatsAppHotlineButton({ number, greeting, className = "" }) {
   );
 }
 
-/* ===== WhatsApp Hotline Box (berisi tombol WA) ===== */
+/* ===== Kotak Hotline ===== */
 function HotlineBox({ number, greeting, hoursText }) {
   return (
     <section className="mt-8">
       <div className="rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm p-5 text-center">
-        <p className="text-[15px] sm:text-base leading-relaxed mb-3 text-left">
+        <p className="text-[15px] sm:text-base leading-relaxed mb-3 text-center">
           Jika terdapat <b>berkas yang kurang dan tidak bersifat asli</b>, silakan kirim melalui <b>WhatsApp Hotline</b>.
         </p>
-        <p className="text-[15px] sm:text-base leading-relaxed text-left">
+        <p className="text-[15px] sm:text-base leading-relaxed text-center">
           Dokumen asli tetap dibawa langsung ke loket pelayanan.
         </p>
-
         <div className="mt-4 flex flex-col items-center gap-3">
           <div className="px-3 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800">
             <span className="text-emerald-700 dark:text-emerald-300 font-semibold">{hoursText}</span>
           </div>
-
-          {/* Satu-satunya tombol WA */}
           <WhatsAppHotlineButton number={number} greeting={greeting} />
         </div>
       </div>
@@ -241,7 +237,7 @@ function HotlineBox({ number, greeting, hoursText }) {
   );
 }
 
-/* ===== Detail Card (tanpa tombol WA & tanpa kalimat "Dokumen non-asli …") ===== */
+/* ===== Kartu Detail ===== */
 function DetailCard({ data }) {
   const isLengkap =
     !data?.kelengkapan_berkas || String(data.kelengkapan_berkas).trim() === "";
@@ -298,7 +294,6 @@ function DetailCard({ data }) {
         <p><b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}</p>
         <p><b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}</p>
 
-        {/* Pesan kontekstual */}
         {isLengkap ? (
           <p className="mt-4 text-center font-bold text-lg text-slate-800 dark:text-slate-200">
             🕒 Berkas Anda sudah lengkap. Mohon menunggu proses verifikasi dan tahapan layanan berikutnya. Status akan diperbarui di aplikasi.
@@ -306,7 +301,10 @@ function DetailCard({ data }) {
         ) : (
           <div className="mt-4 text-center">
             <p className="font-semibold text-slate-800 dark:text-slate-200">
-              ⚠️ Berkas Anda belum lengkap. Silakan lengkapi dokumen sesuai daftar di atas.
+              ⚠️ Berkas Anda belum lengkap.
+            </p>
+            <p className="font-semibold text-slate-800 dark:text-slate-200">
+              Silakan lengkapi dokumen sesuai daftar di atas.
             </p>
             {/* Tidak ada kalimat "Dokumen non-asli …" dan tidak ada tombol WA */}
           </div>
