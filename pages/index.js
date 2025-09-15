@@ -114,9 +114,9 @@ export default function Home() {
             <button
               onClick={handleSearch}
               disabled={loading}
-              className="appearance-none rounded-xl px-5 py-3 font-semibold text-white 
+              className="appearance-none rounded-xl px-5 py-3 font-semibold text-black 
                         !bg-gradient-to-br !from-sky-500 !to-indigo-600 
-                        hover:from-sky-600 hover:to-indigo-700 border border-black 
+                        hover:from-sky-600 hover:to-indigo-700 border border-slate-300 
                         dark:border-slate-600 disabled:opacity-60 shadow-md"
             >
               🔍 Cari
