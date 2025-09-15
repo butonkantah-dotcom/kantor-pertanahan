@@ -173,10 +173,10 @@ function HotlineBox({ waHref, hoursText }) {
   return (
     <section className="mt-8">
       <div className="rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm p-5 text-center">
-        <p className="text-[15px] sm:text-base leading-relaxed mb-3 text-align: left">
+        <p className="text-[15px] sm:text-base leading-relaxed mb-3">
           Jika terdapat <b>berkas yang kurang dan tidak bersifat asli</b>, silakan kirim melalui <b>WhatsApp Hotline</b>.
         </p>
-        <p className="text-[15px] sm:text-base leading-relaxed text-align: left">Dokumen asli tetap dibawa langsung ke loket pelayanan.</p>
+        <p className="text-[15px] sm:text-base leading-relaxed">Dokumen asli tetap dibawa langsung ke loket pelayanan.</p>
 
         {/* Centered badge + button */}
         <div className="mt-4 flex flex-col items-center gap-3">
@@ -261,7 +261,7 @@ function DetailCard({ data }) {
 
         {/* Kalimat tambahan: besar, bold, center */}
         <p className="mt-4 text-center font-bold text-lg text-slate-800 dark:text-slate-200">
-          🕒 Jika berkas Anda sudah lengkap, silakan menunggu proses.
+          🕒 Jika berkas Anda sudah lengkap, silakan menunggu proses selanjutnya.
         </p>
       </div>
     </div>
