@@ -11,6 +11,7 @@ export default function Home() {
     "Halo Admin Kantor Pertanahan Buton, saya ingin mengirim berkas tambahan (non-asli).";
   const WA_HOURS_TXT = "Layanan buka (08:00–16:00 WITA)";
 
+  const [waHref, setWaHref] = useState("");
   const [nomorBerkas, setNomorBerkas] = useState("");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -19,7 +20,10 @@ export default function Home() {
   const [error, setError] = useState("");
   const inputRef = useRef(null);
 
-  useEffect(() => inputRef.current?.focus(), []);
+  useEffect(() => {
+    inputRef.current?.focus();
+    setWaHref(buildWhatsAppUrl(WA_NUMBER, WA_GREETING));
+  }, [WA_NUMBER, WA_GREETING]);
 
   const handleReset = useCallback(() => {
     setNomorBerkas("");
@@ -70,7 +74,10 @@ export default function Home() {
     }
   };
 
-  const waHref = `https://wa.me/${normalizeWa(WA_NUMBER)}?text=${encodeURIComponent(WA_GREETING)}`;
+  const handleOpenWA = (e) => {
+    e.preventDefault();
+    window.open(buildWhatsAppUrl(WA_NUMBER, WA_GREETING), "_blank", "noopener,noreferrer");
+  };
 
   return (
     <>
@@ -112,24 +119,42 @@ export default function Home() {
               onChange={(e) => setNomorBerkas(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
+
+            {/* Tombol Cari: kebal override CSS */}
             <button
               onClick={handleSearch}
               disabled={loading}
-              className="rounded-xl px-5 py-3 font-semibold text-white bg-gradient-to-br from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 disabled:opacity-60"
+              className="appearance-none rounded-xl px-5 py-3 font-semibold text-white
+                         !bg-gradient-to-br !from-sky-500 !to-indigo-600
+                         hover:from-sky-600 hover:to-indigo-700
+                         disabled:opacity-60 shadow-md"
             >
               🔍 Cari
             </button>
+
+            {/* Tombol Reset: solid + border */}
             <button
               onClick={handleReset}
-              className="rounded-xl px-5 py-3 font-semibold bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-600"
+              className="appearance-none rounded-xl px-5 py-3 font-semibold 
+                         bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200
+                         border border-slate-300 dark:border-slate-600
+                         hover:bg-slate-300 dark:hover:bg-slate-600 shadow-sm"
             >
               ♻️ Reset
             </button>
           </div>
 
           {/* Alerts */}
-          {warning && <div className="mb-4 p-3 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-lg text-center">{warning}</div>}
-          {error && <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg text-center">{error}</div>}
+          {warning && (
+            <div className="mb-4 p-3 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-lg text-center">
+              {warning}
+            </div>
+          )}
+          {error && (
+            <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg text-center">
+              {error}
+            </div>
+          )}
 
           {/* Loading */}
           {loading && (
@@ -144,10 +169,10 @@ export default function Home() {
             </p>
           )}
 
-          {!loading && data && <DetailCard data={data} />}
+          {!loading && data && <DetailCard data={data} waHref={waHref} onOpenWA={handleOpenWA} />}
 
           {/* WhatsApp Box */}
-          <HotlineBox waHref={waHref} hoursText={WA_HOURS_TXT} />
+          <HotlineBox waHref={waHref} hoursText={WA_HOURS_TXT} onOpenWA={handleOpenWA} />
 
           {/* FAQ */}
           <section className="mt-10">
@@ -167,16 +192,27 @@ function normalizeWa(numRaw) {
   if (!n.startsWith("62")) n = "62" + n;
   return n;
 }
+function buildWhatsAppUrl(numRaw, text) {
+  const n = normalizeWa(numRaw);
+  const encoded = encodeURIComponent(text || "");
+  const ua = typeof navigator !== "undefined" ? navigator.userAgent : "";
+  const isMobile = /Android|iPhone|iPad|iPod|Windows Phone/i.test(ua);
+  return isMobile
+    ? `https://wa.me/${n}?text=${encoded}`
+    : `https://web.whatsapp.com/send?phone=${n}&text=${encoded}`;
+}
 
 /* ===== WhatsApp Hotline ===== */
-function HotlineBox({ waHref, hoursText }) {
+function HotlineBox({ waHref, hoursText, onOpenWA }) {
   return (
     <section className="mt-8">
       <div className="rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm p-5 text-center">
-        <p className="text-[15px] sm:text-base leading-relaxed mb-3">
+        <p className="text-[15px] sm:text-base leading-relaxed mb-3 text-left">
           Jika terdapat <b>berkas yang kurang dan tidak bersifat asli</b>, silakan kirim melalui <b>WhatsApp Hotline</b>.
         </p>
-        <p className="text-[15px] sm:text-base leading-relaxed">Dokumen asli tetap dibawa langsung ke loket pelayanan.</p>
+        <p className="text-[15px] sm:text-base leading-relaxed text-left">
+          Dokumen asli tetap dibawa langsung ke loket pelayanan.
+        </p>
 
         {/* Centered badge + button */}
         <div className="mt-4 flex flex-col items-center gap-3">
@@ -185,13 +221,14 @@ function HotlineBox({ waHref, hoursText }) {
           </div>
 
           <a
-            href={waHref}
+            href={waHref || "#"}
+            onClick={onOpenWA}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-[#25D366] hover:brightness-95 text-white font-semibold shadow-md transition"
             aria-label="Buka WhatsApp Hotline"
           >
-            {/* Ikon WhatsApp (path lengkap) */}
+            {/* Ikon WhatsApp */}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="22" height="22" fill="currentColor" aria-hidden="true">
               <path d="M380.9 97.1C339 55.1 283.2 32 224.5 32 106 32 9.1 128.9 9.1 247.4c0 42.6 11.2 84.1 32.5 120.5L0 480l115.3-40.9c34.8 19 74.1 29 114.1 29h.1c118.5 0 215.4-96.9 215.4-215.4 0-58.6-23.1-114.4-65-156.4zM224.6 438.6h-.1c-35.9 0-71.1-9.6-101.8-27.7l-7.3-4.3-68.4 24.3 23.5-70.2-4.8-7.4C46 321.3 36.6 284.7 36.6 247.4 36.6 146 123 59.6 224.5 59.6c50.3 0 97.6 19.6 133.1 55.1 35.5 35.6 55.1 82.9 55.1 133.1 0 101.5-86.5 190.8-188.1 190.8zm101.6-138.6c-5.6-2.8-33.1-16.3-38.2-18.2-5.1-1.9-8.8-2.8-12.6 2.8s-14.4 18.2-17.7 22c-3.3 3.7-6.5 4.2-12.1 1.4-33.1-16.5-54.8-29.4-76.7-66.7-5.8-10 5.8-9.3 16.5-31 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.6-30.2-17.2-41.3-4.5-10.9-9.1-9.4-12.6-9.6-3.3-.2-7.1-.2-10.9-.2s-10 1.4-15.2 7.1c-5.2 5.6-19.9 19.4-19.9 47.3s20.4 54.8 23.2 58.6c2.8 3.7 40.1 61.4 96.9 86.1 13.5 5.8 24.1 9.3 33 12 13.9 4.4 26.7 3.8 36.8 2.3 11.2-1.7 33.1-13.6 37.8-26.9 4.7-13.1 4.7-24.3 3.3-26.8-1.3-2.4-5.1-3.9-10.7-6.7z" />
             </svg>
@@ -204,13 +241,13 @@ function HotlineBox({ waHref, hoursText }) {
 }
 
 /* ===== Detail Card ===== */
-function DetailCard({ data }) {
-  const isLengkap = !data?.kelengkapan_berkas || String(data.kelengkapan_berkas).trim() === "";
+function DetailCard({ data, waHref, onOpenWA }) {
+  // "Lengkap" jika kolom kelengkapan_berkas kosong (tidak ada kekurangan)
+  const isLengkap =
+    !data?.kelengkapan_berkas || String(data.kelengkapan_berkas).trim() === "";
 
-  const formatTanggal = (tgl) => {
-    if (!tgl) return "-";
-    return new Date(tgl).toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
-  };
+  const formatTanggal = (tgl) =>
+    tgl ? new Date(tgl).toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" }) : "-";
 
   const parseKekurangan = (val) => {
     if (!val) return [];
@@ -246,7 +283,9 @@ function DetailCard({ data }) {
           ) : kekuranganList.length > 1 ? (
             <div className="mt-1">
               <p className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">❌ List dokumen yang kurang:</p>
-              <ol className="list-decimal pl-5 mt-2 space-y-1 text-red-700">{kekuranganList.map((it, i) => <li key={i}>{it}</li>)}</ol>
+              <ol className="list-decimal pl-5 mt-2 space-y-1 text-red-700">
+                {kekuranganList.map((it, i) => <li key={i}>{it}</li>)}
+              </ol>
             </div>
           ) : (
             <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-100 text-red-700 font-semibold">
@@ -259,10 +298,32 @@ function DetailCard({ data }) {
         <p><b>Tanggal Selesai:</b> {formatTanggal(data.tanggal_selesai)}</p>
         <p><b>Tahun Permohonan:</b> {data.tahun_permohonan || "-"}</p>
 
-        {/* Kalimat tambahan: besar, bold, center */}
-        <p className="mt-4 text-center font-bold text-lg text-slate-800 dark:text-slate-200">
-          🕒 Jika berkas Anda sudah lengkap, silakan menunggu proses selanjutnya.
-        </p>
+        {/* Pesan kontekstual */}
+        {isLengkap ? (
+          <p className="mt-4 text-center font-bold text-lg text-slate-800 dark:text-slate-200">
+            🕒 Berkas Anda sudah lengkap. Mohon menunggu proses verifikasi dan tahapan layanan berikutnya. Status akan diperbarui di aplikasi.
+          </p>
+        ) : (
+          <div className="mt-4 text-center">
+            <p className="font-semibold text-slate-800 dark:text-slate-200">
+              ⚠️ Berkas Anda belum lengkap. Silakan lengkapi dokumen sesuai daftar di atas.
+            </p>
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+              Dokumen <b>non-asli</b> dapat dikirim melalui WhatsApp Hotline.
+            </p>
+            {waHref && (
+              <a
+                href={waHref || "#"}
+                onClick={onOpenWA}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#25D366] hover:brightness-95 text-white font-semibold shadow"
+              >
+                Kirim via WhatsApp
+              </a>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -272,8 +333,8 @@ function DetailCard({ data }) {
 function Faq() {
   const items = [
     {
-      q: "Apa itu SiKaBut?",
-      a: "SiKaBut (Sistem Kelengkapan Arsip Buton) adalah aplikasi untuk mengecek status & kelengkapan berkas permohonan di ATR/BPN.",
+      q: "Apa itu SiKABut?",
+      a: "SiKABut (Sistem Kelengkapan Arsip Buton) adalah aplikasi untuk mengecek status & kelengkapan berkas permohonan di ATR/BPN.",
     },
     {
       q: "Bagaimana cara mencari berkas saya?",
