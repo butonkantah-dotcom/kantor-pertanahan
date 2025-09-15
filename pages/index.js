@@ -11,7 +11,6 @@ export default function Home() {
     "Halo Admin Kantor Pertanahan Buton, saya ingin mengirim berkas tambahan (non-asli).";
   const WA_HOURS_TXT = "Layanan buka (08:00–16:00 WITA)";
 
-  const [waHref, setWaHref] = useState("");
   const [nomorBerkas, setNomorBerkas] = useState("");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -20,10 +19,7 @@ export default function Home() {
   const [error, setError] = useState("");
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    inputRef.current?.focus();
-    setWaHref(buildWhatsAppUrl(WA_NUMBER, WA_GREETING));
-  }, [WA_NUMBER, WA_GREETING]);
+  useEffect(() => inputRef.current?.focus(), []);
 
   const handleReset = useCallback(() => {
     setNomorBerkas("");
@@ -72,11 +68,6 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleOpenWA = (e) => {
-    e.preventDefault();
-    window.open(buildWhatsAppUrl(WA_NUMBER, WA_GREETING), "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -169,10 +160,16 @@ export default function Home() {
             </p>
           )}
 
-          {!loading && data && <DetailCard data={data} waHref={waHref} onOpenWA={handleOpenWA} />}
+          {!loading && data && (
+            <DetailCard
+              data={data}
+              number={WA_NUMBER}
+              greeting={WA_GREETING}
+            />
+          )}
 
           {/* WhatsApp Box */}
-          <HotlineBox waHref={waHref} hoursText={WA_HOURS_TXT} onOpenWA={handleOpenWA} />
+          <HotlineBox number={WA_NUMBER} greeting={WA_GREETING} hoursText={WA_HOURS_TXT} />
 
           {/* FAQ */}
           <section className="mt-10">
@@ -202,8 +199,32 @@ function buildWhatsAppUrl(numRaw, text) {
     : `https://web.whatsapp.com/send?phone=${n}&text=${encoded}`;
 }
 
-/* ===== WhatsApp Hotline ===== */
-function HotlineBox({ waHref, hoursText, onOpenWA }) {
+/* ===== Komponen: Satu-satunya tombol WhatsApp Hotline ===== */
+function WhatsAppHotlineButton({ number, greeting, className = "" }) {
+  const handleOpenWA = (e) => {
+    e.preventDefault();
+    const url = buildWhatsAppUrl(number, greeting);
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  return (
+    <a
+      href="#"
+      onClick={handleOpenWA}
+      className={`inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-[#25D366] hover:brightness-95 text-white font-semibold shadow-md transition ${className}`}
+      aria-label="Buka WhatsApp Hotline"
+    >
+      {/* Ikon WhatsApp */}
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="22" height="22" fill="currentColor" aria-hidden="true">
+        <path d="M380.9 97.1C339 55.1 283.2 32 224.5 32 106 32 9.1 128.9 9.1 247.4c0 42.6 11.2 84.1 32.5 120.5L0 480l115.3-40.9c34.8 19 74.1 29 114.1 29h.1c118.5 0 215.4-96.9 215.4-215.4 0-58.6-23.1-114.4-65-156.4zM224.6 438.6h-.1c-35.9 0-71.1-9.6-101.8-27.7l-7.3-4.3-68.4 24.3 23.5-70.2-4.8-7.4C46 321.3 36.6 284.7 36.6 247.4 36.6 146 123 59.6 224.5 59.6c50.3 0 97.6 19.6 133.1 55.1 35.5 35.6 55.1 82.9 55.1 133.1 0 101.5-86.5 190.8-188.1 190.8zm101.6-138.6c-5.6-2.8-33.1-16.3-38.2-18.2-5.1-1.9-8.8-2.8-12.6 2.8s-14.4 18.2-17.7 22c-3.3 3.7-6.5 4.2-12.1 1.4-33.1-16.5-54.8-29.4-76.7-66.7-5.8-10 5.8-9.3 16.5-31 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.6-30.2-17.2-41.3-4.5-10.9-9.1-9.4-12.6-9.6-3.3-.2-7.1-.2-10.9-.2s-10 1.4-15.2 7.1c-5.2 5.6-19.9 19.4-19.9 47.3s20.4 54.8 23.2 58.6c2.8 3.7 40.1 61.4 96.9 86.1 13.5 5.8 24.1 9.3 33 12 13.9 4.4 26.7 3.8 36.8 2.3 11.2-1.7 33.1-13.6 37.8-26.9 4.7-13.1 4.7-24.3 3.3-26.8-1.3-2.4-5.1-3.9-10.7-6.7z" />
+      </svg>
+      <span>WhatsApp Hotline</span>
+    </a>
+  );
+}
+
+/* ===== WhatsApp Hotline Box ===== */
+function HotlineBox({ number, greeting, hoursText }) {
   return (
     <section className="mt-8">
       <div className="rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm p-5 text-center">
@@ -214,26 +235,13 @@ function HotlineBox({ waHref, hoursText, onOpenWA }) {
           Dokumen asli tetap dibawa langsung ke loket pelayanan.
         </p>
 
-        {/* Centered badge + button */}
+        {/* Badge + tombol (satu-satunya tombol WA) */}
         <div className="mt-4 flex flex-col items-center gap-3">
           <div className="px-3 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800">
             <span className="text-emerald-700 dark:text-emerald-300 font-semibold">{hoursText}</span>
           </div>
 
-          <a
-            href={waHref || "#"}
-            onClick={onOpenWA}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-[#25D366] hover:brightness-95 text-white font-semibold shadow-md transition"
-            aria-label="Buka WhatsApp Hotline"
-          >
-            {/* Ikon WhatsApp */}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="22" height="22" fill="currentColor" aria-hidden="true">
-              <path d="M380.9 97.1C339 55.1 283.2 32 224.5 32 106 32 9.1 128.9 9.1 247.4c0 42.6 11.2 84.1 32.5 120.5L0 480l115.3-40.9c34.8 19 74.1 29 114.1 29h.1c118.5 0 215.4-96.9 215.4-215.4 0-58.6-23.1-114.4-65-156.4zM224.6 438.6h-.1c-35.9 0-71.1-9.6-101.8-27.7l-7.3-4.3-68.4 24.3 23.5-70.2-4.8-7.4C46 321.3 36.6 284.7 36.6 247.4 36.6 146 123 59.6 224.5 59.6c50.3 0 97.6 19.6 133.1 55.1 35.5 35.6 55.1 82.9 55.1 133.1 0 101.5-86.5 190.8-188.1 190.8zm101.6-138.6c-5.6-2.8-33.1-16.3-38.2-18.2-5.1-1.9-8.8-2.8-12.6 2.8s-14.4 18.2-17.7 22c-3.3 3.7-6.5 4.2-12.1 1.4-33.1-16.5-54.8-29.4-76.7-66.7-5.8-10 5.8-9.3 16.5-31 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.6-30.2-17.2-41.3-4.5-10.9-9.1-9.4-12.6-9.6-3.3-.2-7.1-.2-10.9-.2s-10 1.4-15.2 7.1c-5.2 5.6-19.9 19.4-19.9 47.3s20.4 54.8 23.2 58.6c2.8 3.7 40.1 61.4 96.9 86.1 13.5 5.8 24.1 9.3 33 12 13.9 4.4 26.7 3.8 36.8 2.3 11.2-1.7 33.1-13.6 37.8-26.9 4.7-13.1 4.7-24.3 3.3-26.8-1.3-2.4-5.1-3.9-10.7-6.7z" />
-            </svg>
-            <span>WhatsApp Hotline</span>
-          </a>
+          <WhatsAppHotlineButton number={number} greeting={greeting} />
         </div>
       </div>
     </section>
@@ -241,7 +249,7 @@ function HotlineBox({ waHref, hoursText, onOpenWA }) {
 }
 
 /* ===== Detail Card ===== */
-function DetailCard({ data, waHref, onOpenWA }) {
+function DetailCard({ data, number, greeting }) {
   // "Lengkap" jika kolom kelengkapan_berkas kosong (tidak ada kekurangan)
   const isLengkap =
     !data?.kelengkapan_berkas || String(data.kelengkapan_berkas).trim() === "";
@@ -311,17 +319,11 @@ function DetailCard({ data, waHref, onOpenWA }) {
             <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
               Dokumen <b>non-asli</b> dapat dikirim melalui WhatsApp Hotline.
             </p>
-            {waHref && (
-              <a
-                href={waHref || "#"}
-                onClick={onOpenWA}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#25D366] hover:brightness-95 text-white font-semibold shadow"
-              >
-                Kirim via WhatsApp
-              </a>
-            )}
+
+            {/* Pakai tombol WA yang sama (satu-satunya) */}
+            <div className="mt-3 flex justify-center">
+              <WhatsAppHotlineButton number={number} greeting={greeting} />
+            </div>
           </div>
         )}
       </div>
