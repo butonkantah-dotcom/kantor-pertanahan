@@ -114,13 +114,10 @@ export default function Home() {
             <button
               onClick={handleSearch}
               disabled={loading}
-              className="appearance-none inline-flex items-center gap-2
-                         rounded-xl px-5 py-3 font-semibold text-white
-                         !bg-gradient-to-br !from-sky-500 !to-indigo-600
-                         hover:from-sky-600 hover:to-indigo-700
-                         border-2 border-black
-                         focus:outline-none focus:ring-4 focus:ring-black/20
-                         disabled:opacity-60 shadow-md"
+              className="appearance-none rounded-xl px-5 py-3 font-semibold text-white 
+                        !bg-gradient-to-br !from-sky-500 !to-indigo-600 
+                        hover:from-sky-600 hover:to-indigo-700 border border-black 
+                        dark:border-slate-600 disabled:opacity-60 shadow-md"
             >
               🔍 Cari
             </button>
