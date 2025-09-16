@@ -221,7 +221,7 @@ function HotlineBox({ number, greeting, hoursText }) {
     <section className="mt-8">
       <div className="rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm p-5 text-center">
         <p className="text-[15px] sm:text-base leading-relaxed mb-3 text-center">
-          Jika <b>berkas yang kurang berupa file <i>fotocopy<i></b>, silakan kirim melalui <b>WhatsApp Hotline</b>.
+          Jika <b>berkas yang kurang berupa file <em>fotocopy<em></b>, silakan kirim melalui <b>WhatsApp Hotline</b>.
         </p>
         <p className="text-[15px] sm:text-base leading-relaxed text-center">
           Dokumen lain yang sifatnya asli tetap dibawa langsung ke loket pelayanan.
