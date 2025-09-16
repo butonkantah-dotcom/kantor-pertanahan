@@ -7,7 +7,7 @@ export default function Home() {
   const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "6285322459918";
   const WA_GREETING =
     process.env.NEXT_PUBLIC_WHATSAPP_GREETING ||
-    "Halo Admin Kantor Pertanahan Buton, saya ingin mengirim berkas tambahan (non-asli).";
+    "Halo Admin Kantor Pertanahan Buton, saya ingin mengirim berkas tambahan berupa file fotocopy.";
   const WA_HOURS_TXT = "Layanan buka (08:00–16:00 WITA)";
 
   const [nomorBerkas, setNomorBerkas] = useState("");
@@ -221,10 +221,10 @@ function HotlineBox({ number, greeting, hoursText }) {
     <section className="mt-8">
       <div className="rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm p-5 text-center">
         <p className="text-[15px] sm:text-base leading-relaxed mb-3 text-center">
-          Jika terdapat <b>berkas yang kurang dan tidak bersifat asli</b>, silakan kirim melalui <b>WhatsApp Hotline</b>.
+          Jika <b>berkas yang kurang berupa file <i>fotocopy<i></b>, silakan kirim melalui <b>WhatsApp Hotline</b>.
         </p>
         <p className="text-[15px] sm:text-base leading-relaxed text-center">
-          Dokumen asli tetap dibawa langsung ke loket pelayanan.
+          Dokumen lain yang sifatnya asli tetap dibawa langsung ke loket pelayanan.
         </p>
         <div className="mt-4 flex flex-col items-center gap-3">
           <div className="px-3 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800">
