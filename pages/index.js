@@ -7,7 +7,7 @@ export default function Home() {
   const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "6285322459918";
   const WA_GREETING =
     process.env.NEXT_PUBLIC_WHATSAPP_GREETING ||
-    "Halo Admin Kantor Pertanahan Buton, saya ingin mengirim berkas tambahan berupa file fotocopy.";
+    "Halo Admin Kantor Pertanahan Buton.";
   const WA_HOURS_TXT = "Layanan buka (08:00–16:00 WITA)";
 
   const [nomorBerkas, setNomorBerkas] = useState("");
@@ -122,7 +122,6 @@ export default function Home() {
               🔍 Cari
             </button>
 
-
             {/* Tombol Reset: abu-abu + border */}
             <button
               onClick={handleReset}
@@ -168,7 +167,7 @@ export default function Home() {
           {/* FAQ */}
           <section className="mt-10">
             <h3 className="text-lg font-bold mb-4 text-slate-800 dark:text-slate-100 text-center">Pertanyaan yang Sering Diajukan</h3>
-            <Faq />
+            <Faq hoursText={WA_HOURS_TXT} />
           </section>
         </main>
       </div>
@@ -314,8 +313,8 @@ function DetailCard({ data }) {
   );
 }
 
-/* ===== FAQ ===== */
-function Faq() {
+/* ===== FAQ (dengan item pengaduan via WA Hotline di atas) ===== */
+function Faq({ hoursText }) {
   const items = [
     {
       q: "Apa itu SiKABut?",
@@ -328,6 +327,12 @@ function Faq() {
     {
       q: "Mengapa data saya tidak ditemukan?",
       a: "Pastikan nomor berkas sudah benar. Jika masih tidak ditemukan, kemungkinan data belum masuk sistem atau sedang diproses manual di kantor.",
+    },
+    {
+      q: "Jika ada pengaduan, saya hubungi ke mana?",
+      a:
+        `Silakan hubungi petugas melalui WhatsApp Hotline di atas pada jam layanan (${hoursText}). ` +
+        "Cantumkan nama, nomor berkas, dan uraian singkat kendala agar diproses lebih cepat.",
     },
   ];
 
