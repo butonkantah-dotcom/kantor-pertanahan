@@ -174,71 +174,61 @@ export default function SyaratBiaya() {
               </div>
             )}
 
-            {filtered.map((d, i) => {
-              const isOpen = openIndex === i;
-              return (
-                <div
-                  key={d.layanan}
-                  className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
-                >
-                  <button
-                    type="button"
-                    onClick={() => setOpenIndex(isOpen ? null : i)}
-                    className="w-full flex items-start justify-between gap-3 p-4 text-left"
-                    aria-expanded={isOpen}
-                  >
-                    <div className="text-base sm:text-lg font-extrabold text-slate-800 dark:text-slate-100">
-                      {d.layanan}
-                    </div>
-                    <div className="text-slate-500 dark:text-slate-400 text-xl leading-none">
-                      {isOpen ? "−" : "+"}
-                    </div>
-                  </button>
-
-                  {isOpen && (
-                         <div className="px-4 pb-4 text-sm sm:text-base text-slate-700 dark:text-slate-200">
-                          <div className="mt-2">
-                            <div className="font-bold">Persyaratan:</div>
-                            <ul className="list-disc pl-5 mt-2 space-y-1">
-                              {d.syarat.map((s, idx) => (
-                                <li key={idx}>{s}</li>
-                              ))}
-                            </ul>
-                          </div>
-      
-                          <div className="mt-4">
-                            <div className="font-bold">Biaya Pelayanan:</div>
-                            <ul className="list-disc pl-5 mt-2 space-y-1">
-                              {d.biaya.map((b, idx) => (
-                                <li key={idx}>{b}</li>
-                              ))}
-                            </ul>
-                          </div>
-      
-                          <div className="mt-4">
-                            <div className="font-bold">Jangka Waktu Penyelesaian:</div>
-                            <ul className="list-disc pl-5 mt-2 space-y-1">
-                               {d.waktu?.map((w, idx) => (
-                                <li key={idx}>{w}</li>
-                              ))}
-                             </ul>
-                          </div>
-                        </div>
-                      )}
-                      </div>
-                  );
-                })}
-              </div>
-                  
-          <div className="mt-6 text-sm text-slate-500 dark:text-slate-400">
-            Jika layanan yang dicari belum ada, silakan gunakan menu <b>Cek Nomor Berkas</b> atau hubungi petugas pada jam layanan.
-          </div>
-        </section>
-      </main>
-    </>
-  );
-}
-                  
+          {filtered.map((d, i) => {
+          const isOpen = openIndex === i;
+        
+          return (
+            <div
+              key={d.layanan}
+              className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
+            >
+              <button
+                type="button"
+                onClick={() => setOpenIndex(isOpen ? null : i)}
+                className="w-full flex items-start justify-between gap-3 p-4 text-left"
+                aria-expanded={isOpen}
+              >
+                <div className="text-base sm:text-lg font-extrabold text-slate-800 dark:text-slate-100">
+                  {d.layanan}
+                </div>
+                <div className="text-slate-500 dark:text-slate-400 text-xl leading-none">
+                  {isOpen ? "−" : "+"}
+                </div>
+              </button>
+        
+              {isOpen && (
+                <div className="px-4 pb-4 text-sm sm:text-base text-slate-700 dark:text-slate-200">
+                  <div className="mt-2">
+                    <div className="font-bold">Persyaratan:</div>
+                    <ul className="list-disc pl-5 mt-2 space-y-1">
+                      {d.syarat.map((s, idx) => (
+                        <li key={idx}>{s}</li>
+                      ))}
+                    </ul>
+                  </div>
+        
+                  <div className="mt-4">
+                    <div className="font-bold">Biaya Pelayanan:</div>
+                    <ul className="list-disc pl-5 mt-2 space-y-1">
+                      {d.biaya.map((b, idx) => (
+                        <li key={idx}>{b}</li>
+                      ))}
+                    </ul>
+                  </div>
+        
+                  <div className="mt-4">
+                    <div className="font-bold">Jangka Waktu Penyelesaian:</div>
+                    <ul className="list-disc pl-5 mt-2 space-y-1">
+                      {d.waktu?.map((w, idx) => (
+                        <li key={idx}>{w}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}              
           <div className="mt-6 text-sm text-slate-500 dark:text-slate-400">
             Jika layanan yang dicari belum ada, silakan gunakan menu <b>Cek Nomor Berkas</b> atau hubungi petugas pada jam layanan.
           </div>
