@@ -4,6 +4,22 @@ import { useMemo, useState } from "react";
 
 const DATA = [
   {
+    layanan: "Formulir Ahli Media",
+    syarat: [
+      "Identitas pemohon dan penerima kuasa (fotocopy KTP)",
+      "Formulir Pendaftaran",
+      "Sertifikat Tanah (Asli)",
+    ],
+    biaya: ["Tarif Pendaftaran : Rp. 50.000",
+           "Tarif Kutipan : Rp. 100.000"],
+    waktu: ["Estimasi 14 (empat belas) hari kerja"],
+  },
+
+
+
+
+  
+  {
     layanan: "Balik Nama",
     syarat: [
       "KTP & KK pemohon",
