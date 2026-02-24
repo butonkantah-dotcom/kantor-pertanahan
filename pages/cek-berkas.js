@@ -78,14 +78,7 @@ export default function Home() {
       </Head>
 
       <div className="min-h-screen flex flex-col items-center bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100">
-        {/* Header */}
-        <header className="w-full flex items-center gap-4 p-5 sm:p-6 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-          <Image src="/logo.png" alt="Logo ATR/BPN" width={56} height={56} priority />
-          <div>
-            <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight">SiKABut</h1>
-            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Sistem Kelengkapan Arsip Buton</p>
-          </div>
-        </header>
+       
 
         <main className="flex-1 w-full max-w-2xl px-4 sm:px-6 py-6">
           {/* Hero */}
