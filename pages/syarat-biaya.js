@@ -135,15 +135,12 @@ export default function SyaratBiaya() {
                       ))}
                     </ul>
                   </div>
-              
                 </div>
               )}
-
-
-                </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
+         </div>
 
           <div className="mt-6 text-sm text-slate-500 dark:text-slate-400">
             Jika layanan yang dicari belum ada, silakan gunakan menu <b>Cek Nomor Berkas</b> atau hubungi petugas pada jam layanan.
