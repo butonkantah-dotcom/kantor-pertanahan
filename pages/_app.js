@@ -28,9 +28,13 @@ function TopNav() {
     <div className="w-full border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-extrabold">
-            S
-          </div>
+          <Image
+            src="/logo.png"
+            alt="Logo ATR/BPN"
+            width={40}
+            height={40}
+            priority
+            />
           <div className="leading-tight">
             <div className="font-extrabold text-slate-800 dark:text-slate-100">
               SiKABut
