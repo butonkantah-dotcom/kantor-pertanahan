@@ -31,8 +31,8 @@ const DATA = [
   },
   {
     layanan: "Pengecekan Sertipikat",
-    syarat: ["Formulir permohonan yang sudah diisi dan ditandatangani pemohon atau kuasanya", "Data sertipikat / dokumen pendukung yang diminta petugas"],
-    biaya: ["PNBP sesuai ketentuan"],
+    syarat: ["Formulir permohonan yang sudah diisi dan ditandatangani pemohon atau kuasanya", "Surat kuasa apabila dikuasakan","Fotocopy identitas pemohon (KTP) dan kuasa apabila dikuasakan","Sertifikat hak atas tanah / Sertifikat HMSRS","Surat pengantar dari PPAT untuk kegiatan peralihan/pembebanan hak dengan Akta PPAT"],
+    biaya: ["Tarif Pendaftaran : Rp. 50.000,-"],
   },
 ];
 
@@ -60,7 +60,7 @@ export default function SyaratBiaya() {
       <main className="mx-auto max-w-5xl px-4 sm:px-6 py-8">
         <section className="rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm p-6">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-slate-100">
-            📋 Syarat & Biaya Layanan
+            📋 Persyaratan, Biaya & Waktu Layanan
           </h1>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
             Ketik nama layanan untuk mencari. Informasi biaya mengikuti ketentuan resmi (PNBP) yang berlaku.
@@ -115,7 +115,7 @@ export default function SyaratBiaya() {
                       </div>
 
                       <div className="mt-4">
-                        <div className="font-bold">Biaya:</div>
+                        <div className="font-bold">Estimasi Biaya:</div>
                         <ul className="list-disc pl-5 mt-2 space-y-1">
                           {d.biaya.map((b, idx) => (
                             <li key={idx}>{b}</li>
