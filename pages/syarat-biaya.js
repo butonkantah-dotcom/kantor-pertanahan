@@ -106,7 +106,7 @@ export default function SyaratBiaya() {
                   {isOpen && (
                     <div className="px-4 pb-4 text-sm sm:text-base text-slate-700 dark:text-slate-200">
                       <div className="mt-2">
-                        <div className="font-bold">Syarat (ringkas):</div>
+                        <div className="font-bold">Syarat:</div>
                         <ul className="list-disc pl-5 mt-2 space-y-1">
                           {d.syarat.map((s, idx) => (
                             <li key={idx}>{s}</li>
