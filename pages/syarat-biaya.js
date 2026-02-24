@@ -31,7 +31,7 @@ const DATA = [
   },
   {
     layanan: "Pengecekan Sertipikat",
-    syarat: ["KTP pemohon", "Data sertipikat / dokumen pendukung yang diminta petugas"],
+    syarat: ["Formulir permohonan yang sudah diisi dan ditandatangani pemohon atau kuasanya", "Data sertipikat / dokumen pendukung yang diminta petugas"],
     biaya: ["PNBP sesuai ketentuan"],
   },
 ];
