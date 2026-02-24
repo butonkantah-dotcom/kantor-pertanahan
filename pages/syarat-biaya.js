@@ -31,8 +31,12 @@ const DATA = [
   },
   {
     layanan: "Pengecekan Sertipikat",
-    syarat: ["Formulir permohonan yang sudah diisi dan ditandatangani pemohon atau kuasanya", "Surat kuasa apabila dikuasakan","Fotocopy identitas pemohon (KTP) dan kuasa apabila dikuasakan","Sertifikat hak atas tanah / Sertifikat HMSRS","Surat pengantar dari PPAT untuk kegiatan peralihan/pembebanan hak dengan Akta PPAT"],
-    biaya: ["Tarif Pendaftaran : Rp. 50.000,-"],
+    syarat: ["Formulir permohonan yang sudah diisi dan ditandatangani pemohon atau kuasanya", 
+             "Surat kuasa apabila dikuasakan","Fotocopy identitas pemohon (KTP) dan kuasa apabila dikuasakan",
+             "Sertifikat hak atas tanah / Sertifikat HMSRS",
+             "Surat pengantar dari PPAT untuk kegiatan peralihan/pembebanan hak dengan Akta PPAT"],
+    biaya: ["Tarif Pendaftaran : Rp. 50.000"],
+    waktu: ["1 (satu) hari kerja"],
   },
 ];
 
@@ -103,31 +107,37 @@ export default function SyaratBiaya() {
                     </div>
                   </button>
 
-                  {isOpen && (
-                    <div className="px-4 pb-4 text-sm sm:text-base text-slate-700 dark:text-slate-200">
-                      <div className="mt-2">
-                        <div className="font-bold">Syarat:</div>
-                        <ul className="list-disc pl-5 mt-2 space-y-1">
-                          {d.syarat.map((s, idx) => (
-                            <li key={idx}>{s}</li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="mt-4">
-                        <div className="font-bold">Estimasi Biaya:</div>
-                        <ul className="list-disc pl-5 mt-2 space-y-1">
-                          {d.biaya.map((b, idx) => (
-                            <li key={idx}>{b}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  )}
+              {isOpen && (
+                <div className="px-4 pb-4 text-sm sm:text-base text-slate-700 dark:text-slate-200">
+                  <div className="mt-2">
+                    <div className="font-bold">Persyaratan:</div>
+                    <ul className="list-disc pl-5 mt-2 space-y-1">
+                      {d.syarat.map((s, idx) => (
+                        <li key={idx}>{s}</li>
+                      ))}
+                    </ul>
+                  </div>
+              
+                  <div className="mt-4">
+                    <div className="font-bold">Biaya Pelayanan:</div>
+                    <ul className="list-disc pl-5 mt-2 space-y-1">
+                      {d.biaya.map((b, idx) => (
+                        <li key={idx}>{b}</li>
+                      ))}
+                    </ul>
+                  </div>
+              
+                  <div className="mt-4">
+                    <div className="font-bold">Jangka Waktu Penyelesaian:</div>
+                    <ul className="list-disc pl-5 mt-2 space-y-1">
+                      {d.waktu?.map((w, idx) => (
+                        <li key={idx}>{w}</li>
+                      ))}
+                    </ul>
+                  </div>
+              
                 </div>
-              );
-            })}
-          </div>
+              )}
 
           <div className="mt-6 text-sm text-slate-500 dark:text-slate-400">
             Jika layanan yang dicari belum ada, silakan gunakan menu <b>Cek Nomor Berkas</b> atau hubungi petugas pada jam layanan.
