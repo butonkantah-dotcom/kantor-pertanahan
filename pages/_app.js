@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 function TopNav() {
   const router = useRouter();
