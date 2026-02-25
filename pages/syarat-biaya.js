@@ -187,7 +187,7 @@ export default function SyaratBiaya() {
                               ))}
                             </ul>
                       
-                            <p className="mt-2 font-semibold">{d.biaya.pendaftaran}</p>
+                            <p className="mt-2">{d.biaya.pendaftaran}</p>
                           </>
                         )}
                       </div>
