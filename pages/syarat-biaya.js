@@ -10,8 +10,8 @@ const DATA = [
       "Formulir Pendaftaran",
       "Sertifikat Tanah (Asli)",
     ],
-    biaya: ["Tarif Pendaftaran : Rp. 50.000",
-           "Tarif Kutipan : Rp. 100.000"],
+    biaya: ["Tarif Pendaftaran : Rp. 50.000,00",
+           "Tarif Kutipan : Rp. 100.000,00"],
     waktu: ["Estimasi 14 (empat belas) hari kerja"],
   },
 
@@ -38,7 +38,7 @@ const DATA = [
         formula: "Tu = (L / 10.000 × HSBKu) + Rp134.000.000,00",
       },
     ],
-    pendaftaran: "Tarif Pendaftaran: Rp50.000,00",
+    pendaftaran: "Tarif Pendaftaran: Rp 50.000,00",
   },
     waktu: ["14 (empat belas) hari kerja"],
   },
@@ -189,7 +189,7 @@ export default function SyaratBiaya() {
                             {d.biaya.rumus.map((item, idx) => (
                               <li key={idx}>
                                 <div className="font-semibold">{item.luas}</div>
-                                <div className="font-mono ml-2">{item.formula}</div>
+                                <div className="ml-2">{item.formula}</div>
                               </li>
                             ))}
                           </ul>
