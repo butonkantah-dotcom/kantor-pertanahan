@@ -23,19 +23,23 @@ const DATA = [
       "FC Sertifikat Tanah",
       ],
     biaya: {
-      keterangan: "Tarif Pelayanan Pengukuran disesuaikan dengan luas tanah",
-      rumus: [
-        "Luas tanah sampai dengan 10 hektar:",
-        "Tu = (L / 500 × HSBKu) + Rp100.000,00",
-    
-        "Luas tanah lebih dari 10 hektar sampai dengan 1.000 hektar:",
-        "Tu = (L / 4.000 × HSBKu) + Rp14.000.000,00",
-    
-        "Luas tanah lebih dari 1.000 hektar:",
-        "Tu = (L / 10.000 × HSBKu) + Rp134.000.000,00",
-      ],
-      pendaftaran: "Tarif Pendaftaran: Rp50.000,00"
-    },
+    keterangan: "Tarif Pelayanan Pengukuran disesuaikan dengan luas tanah",
+    rumus: [
+      {
+        luas: "Luas tanah sampai dengan 10 hektar:",
+        formula: "Tu = (L / 500 × HSBKu) + Rp100.000,00",
+      },
+      {
+        luas: "Luas tanah lebih dari 10 hektar sampai dengan 1.000 hektar:",
+        formula: "Tu = (L / 4.000 × HSBKu) + Rp14.000.000,00",
+      },
+      {
+        luas: "Luas tanah lebih dari 1.000 hektar:",
+        formula: "Tu = (L / 10.000 × HSBKu) + Rp134.000.000,00",
+      },
+    ],
+    pendaftaran: "Tarif Pendaftaran: Rp50.000,00",
+  },
     waktu: ["14 (empat belas) hari kerja"],
   },
 
@@ -168,29 +172,32 @@ export default function SyaratBiaya() {
                         ))}
                       </ul>
 
-                      <div className="mt-4">
-                        <div className="font-bold">Biaya Pelayanan:</div>
-                      
-                        {Array.isArray(d.biaya) ? (
-                          <ul className="list-disc pl-5 mt-2 space-y-1">
-                            {d.biaya.map((b, idx) => (
-                              <li key={idx}>{b}</li>
+                     <div className="mt-4">
+                      <div className="font-bold">Biaya Pelayanan:</div>
+                    
+                      {Array.isArray(d.biaya) ? (
+                        <ul className="list-disc pl-5 mt-2 space-y-1">
+                          {d.biaya.map((b, idx) => (
+                            <li key={idx}>{b}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <>
+                          <p className="mt-2">{d.biaya.keterangan}</p>
+                    
+                          <ul className="list-disc pl-5 mt-2 space-y-3">
+                            {d.biaya.rumus.map((item, idx) => (
+                              <li key={idx}>
+                                <div className="font-semibold">{item.luas}</div>
+                                <div className="font-mono ml-2">{item.formula}</div>
+                              </li>
                             ))}
                           </ul>
-                        ) : (
-                          <>
-                            <p className="mt-2">{d.biaya.keterangan}</p>
-                      
-                            <ul className="list-disc pl-5 mt-2 space-y-1">
-                              {d.biaya.rumus.map((r, idx) => (
-                                <li key={idx}>{r}</li>
-                              ))}
-                            </ul>
-                      
-                            <p className="mt-2">{d.biaya.pendaftaran}</p>
-                          </>
-                        )}
-                      </div>
+                    
+                          <p className="mt-2">{d.biaya.pendaftaran}</p>
+                        </>
+                      )}
+                    </div>
 
                       <div className="mt-4 font-bold">Jangka Waktu Penyelesaian:</div>
                       <ul className="list-disc pl-5 mt-2">
