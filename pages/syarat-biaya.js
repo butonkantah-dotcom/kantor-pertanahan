@@ -17,14 +17,14 @@ const DATA = [
 
   {
     layanan: "Formulir Pemetaan Bidang Tanah",
-    subjudul: "PEMETAAN TANAH PKD",
+    subjudul: "Pemetaan Tanah PKD",
     syarat: [
       "Identitas pemohon dan penerima kuasa (fotocopy KTP)",
       "Formulir Pendaftaran Pemetaan Bidang",
       "FC Sertifikat Tanah",
       ],
     biaya: {
-    keterangan: "Tarif Pelayanan Pengukuran disesuaikan dengan luas tanah",
+    keterangan: "Tarif Pelayanan Pengukuran disesuaikan dengan luas tanah | Biaya Pengukuran",
     rumus: [
       {
         luas: "Luas tanah sampai dengan 10 hektar:",
@@ -44,9 +44,77 @@ const DATA = [
     waktu: ["14 (empat belas) hari kerja"],
   },
 
+  {
+    layanan: "Permohonanan Pengukuran",
+    subjudul: "Pengukuran Standar, Pengembalian Batas / Rekonstruksi, Permohonan Hak Atas Tanah",
+    syarat: [
+      "Surat permohonan (DI 13)",
+      "Tanda bukti hak atas tanah (SertiFikat pipil/Surat Ketetapan Ipeda SPPT. Padol/Surat Jual Beli Tanah sebelum tahun 1962/Berita acara penelitian lapangan obyek P 2 T)",
+      "Tanda bukti pelunasan PBB tahun terakhir",
+      "Surat pernyataan persetujuan para penyanding",
+      "Sketsa tanah",
+      "Surat kuasa tertulis yang sah",
+      "Identitas pemohon dan penerima kuasa (fotocopy KTP)",
+      ],
+    biaya: {
+    keterangan: "Tarif Pelayanan Pengukuran disesuaikan dengan luas tanah | Biaya Pengukuran",
+    rumus: [
+      {
+        luas: "Luas tanah sampai dengan 10 hektar:",
+        formula: "Tu = (L / 500 × HSBKu) + Rp 100.000,00",
+      },
+      {
+        luas: "Luas tanah lebih dari 10 hektar sampai dengan 1.000 hektar:",
+        formula: "Tu = (L / 4.000 × HSBKu) + Rp 14.000.000,00",
+      },
+      {
+        luas: "Luas tanah lebih dari 1.000 hektar:",
+        formula: "Tu = (L / 10.000 × HSBKu) + Rp134.000.000,00",
+      },
+    ],
+    pendaftaran: "Tarif Pendaftaran: Rp 50.000,00",
+  },
+    waktu: ["14 (empat belas) hari kerja"],
+  },
+
+  {
+    layanan: "Permohonanan Pendaftaran Tanah Untuk Pertama Kali",
+    subjudul: "Tanah Belum Terdaftar",
+    syarat: [
+      "Surat permohonan (DI 13)",
+      "Bukti hak lengkap (sesuai PP24/97 Pasal 24 Jo. Peraturan Menteri Negara Agraria/KPBN No. 3 Tahun 1997) (Apabila bukti hak tidak lengkap atau tidak ditambah dengan Surat Pernyataan dari pemohon penguasaan fisik bidang tanah sekurang-kurangnya 20 tahun disaksikan 2 orang saksi diketahui Kades/Lurah dan Apabila bukti hak tidak ada ditambah dengan surat keterangan Kepala Desa/Lurah)",
+      "Fotocopy identitas (KTP, KK) pemohon dan kuasa apabila dikuasakan, yang telah dicocokkan dengan aslinya oleh petugas loket",
+      "Surat kuasa tertulis dan penerima hak apabila yang mengajukan permohonan pendaftaran hak bukan penerima hak",
+      "Akta PPAT sesuai Pasal 103 PMNA/KPBN No. 3 Tahun 1997",
+      ],
+    biaya: {
+    keterangan: "Tarif Pelayanan Pengukuran disesuaikan dengan luas tanah",
+    rumus: [
+      {
+        luas: "Tarif Pengukuran:",
+        formula: "Tu = (L / 500 × HSBKu) + Rp 100.000,00 (A)",
+      },
+      {
+        luas: "Tarif Panitia A:",
+        formula: "Tpa = (L / 500 × HSBKpa) + Rp 350.000,00 (B)",
+      },
+      {
+        luas: "Tarif Pendaftaran Pertama Kali: Rp 50.000,00",
+      },
+      {
+        luas: "Tarif Kutipan Surat Ukur: Rp 100.000,00",
+      },
+    ],
+    pendaftaran: "Total Tarif: A + B + Rp.50.000,00 + Rp. 100.000,00",
+  },
+    waktu: ["98 (sembilan puluh delapan) hari kerja"],
+  },
 
 
 
+
+
+  
 
   
   
