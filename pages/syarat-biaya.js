@@ -169,12 +169,13 @@ export default function SyaratBiaya() {
                       <div className="font-bold">
                         {d.layanan}
                       </div>
-                  
-                      {d.subjudul && (
+
+
+                      {isOpen && d.subjudul && (
                         <div className="text-sm text-slate-600 dark:text-slate-400 mt-1 font-semibold">
                           ({d.subjudul})
                         </div>
-                      )}
+                      )}  
                     </div>
                   
                     <span className="font-bold">
