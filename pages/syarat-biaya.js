@@ -110,9 +110,40 @@ const DATA = [
     waktu: ["98 (sembilan puluh delapan) hari kerja"],
   },
 
+  {
+    layanan: "Pertimbangan Teknis Pertanahan",
+    subjudul: "Persetujuan atau Penolakan Izin Lokasi, Penegasan Status dan Rekomendasi Penguasaan Tanah Timbul, Perubahan Penggunaan dan Pemanfaatan Tanah",
+    syarat: [
+      "Permohonan IPPT",
+      "Fotocopy KTP Akta Pendirian",
+      "Fotocopy bukti pemilikan",
+      "Sketsa dan letak lokasi",
+      "Pernyataan rencana penguunaan dan pemanfaatan tanah serta tahapan kegiatan",
+      "Proposal rencana penggunaan dan pemanfaatan tanah serta tahapan kegiatan",
+      "Rekomendasi dari instansi teknis terkait (6 dan 7 untuk Badan Hukum dan Instansi Pemerintah)",
+      "Surat Kuasa",
+      "Surat-Surat lain",
+      ],
+    biaya: {
+    rumus: [
+      {
+        luas: "Dalam rangka Ijin lokasi:",
+        formula: "Tptil = (L / 500 × HSBKpb) + Rp 5.000.000,00",
+      },
+      {
+        luas: "Dalam rangka penetapan lokasi:",
+        formula: "L / 500 × Tptil",
+      },
+      {
+        luas: "Dalam rangka Ijin perubahan penggunaan:",
+        formula: "L Tptil = (L / 500 x HSBKpb) + Rp. 350.000,00",
+      },
+    ],
+  },
+    waktu: ["14 (empat belas) hari kerja"],
+  },
 
-
-
+  
 
   
 
