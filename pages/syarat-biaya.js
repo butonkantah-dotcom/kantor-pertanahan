@@ -143,7 +143,16 @@ const DATA = [
     waktu: ["14 (empat belas) hari kerja"],
   },
 
-  
+    {
+    layanan: "Pendaftaran Hak Tanggungan",
+    syarat: [
+      "Surat Pengantar dari PPAT",
+      "Surat Permohonan dari Penerima HT (Kreditur)",
+      "Sertifikat Asli",
+    ],
+    biaya: ["PNBP sesuai ketentuan"],
+    waktu: ["Sesuai ketentuan"],
+  },
 
   
 
