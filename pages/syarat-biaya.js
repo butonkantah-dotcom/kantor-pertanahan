@@ -16,7 +16,8 @@ const DATA = [
   },
 
   {
-    layanan: "Formulir Pementaan Bidang Tanah",
+    layanan: "Formulir Pemetaan Bidang Tanah",
+    subjudul: "PEMETAAN TANAH PKD",
     syarat: [
       "Identitas pemohon dan penerima kuasa (fotocopy KTP)",
       "Formulir Pendaftaran Pemetaan Bidang",
@@ -43,6 +44,11 @@ const DATA = [
     waktu: ["14 (empat belas) hari kerja"],
   },
 
+
+
+
+
+  
   
   {
     layanan: "Balik Nama",
@@ -157,10 +163,23 @@ export default function SyaratBiaya() {
                   <button
                     type="button"
                     onClick={() => setOpenIndex(isOpen ? null : i)}
-                    className="w-full flex justify-between p-4 font-bold text-left"
+                    className="w-full flex justify-between p-4 text-left"
                   >
-                    {d.layanan}
-                    <span>{isOpen ? "−" : "+"}</span>
+                    <div>
+                      <div className="font-bold">
+                        {d.layanan}
+                      </div>
+                  
+                      {d.subjudul && (
+                        <div className="text-sm text-slate-600 dark:text-slate-400 mt-1 font-semibold">
+                          ({d.subjudul})
+                        </div>
+                      )}
+                    </div>
+                  
+                    <span className="font-bold">
+                      {isOpen ? "−" : "+"}
+                    </span>
                   </button>
 
                   {isOpen && (
