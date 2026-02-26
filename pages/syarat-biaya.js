@@ -149,12 +149,32 @@ const DATA = [
       "Surat Pengantar dari PPAT",
       "Surat Permohonan dari Penerima HT (Kreditur)",
       "Sertifikat Asli",
+      "Akta Pemberian Hak Tanggungan",
+      "Salinan APHT yang sudah diparaf oleh PPAT yang bersangkutan untuk disahkan sebagai salinan oleh Kepala Kantor untuk pembuatan Sertifikat HT",
+      "Identitas diri pemegang hak, penerima hak dan/atau kuasanya (fotocopi KTP dan KK)",
+      "Surat kuasa, jika permohonannya dikuasakan",
+      "Surat Kuasa Membebankan Hak Tanggungan (SKMHT) apabila Pemberian Hak Tanggungan melalui Kuasa",
     ],
-    biaya: ["PNBP sesuai ketentuan"],
-    waktu: ["Sesuai ketentuan"],
+    judulProsedur: "Sistem, Mekanisme dan Prosedur:",
+    prosedur: [
+      "PPAT menyiapkan dokumen permohonan Hak Tanggungan dan mengunggah semua file dokumen ke aplikasi mitra.atrbpn.go.id sehingga terbit Surat Pengantar Akta (SPA)",
+      "Lembaga Jasa Keuangan memasukkan data yang diperoleh dari PPAT berupa nomor dan kode akta dan nomor dan kode akta yang tertulis pada surat pengantar akta (SPA) ke htel.atrbpn.go.id",
+      "Data yang telah diinput tersebut diperiksa kembali oleh Jasa Keuangan",
+      "Apabila sudah sesuai dan benar, dapat ditindaklanjuti ke pembayaran",
+      "Proses pemeriksaan setelah berkas masuk ke htel.pelaksana.atrbpn.go.id",
+      "Apabila ada perbaikan maka berkas akan ditangguhkan",
+      "Hak Tanggungan Elektronik terbit pada hari ke-7 dari tanggal pembayaran (DI.301)",
+    ],
+      
+    biaya: ["Tarif Pendaftaran: Rp50.000,00"],
+    waktu: ["7 (tujuh) hari kerja"],  
   },
 
   
+
+
+
+
 
   
   
@@ -326,6 +346,17 @@ export default function SyaratBiaya() {
                         </>
                       )}
                     </div>
+
+                      {d.prosedur && (
+                        <div className="mt-4">
+                          <div className="font-bold">{d.judulProsedur}</div>
+                          <ul className="list-disc pl-5 mt-2 space-y-1">
+                            {d.prosedur.map((p, idx) => (
+                              <li key={idx}>{p}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
 
                       <div className="mt-4 font-bold">Jangka Waktu Penyelesaian:</div>
                       <ul className="list-disc pl-5 mt-2">
