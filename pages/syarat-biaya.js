@@ -344,7 +344,6 @@ export default function SyaratBiaya() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-slate-100">
             📋 Persyaratan, Biaya & Waktu Layanan
           </h1>
-          </h1> <p className="mt-2 text-sm text-slate-600 dark:text-slate-300"> Ketik nama layanan untuk mencari. Informasi biaya mengikuti ketentuan resmi (PNBP) yang berlaku. </p>
 
           <div className="mt-5">
             <input
