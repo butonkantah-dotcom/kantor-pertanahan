@@ -109,7 +109,16 @@ export default function App({ Component, pageProps }) {
             >
               TikTok
             </a>
-          </div>
+
+            <a
+            href="https://x.com/kantahkabbuton"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 rounded-lg bg-black hover:bg-gray-800 text-white text-sm font-semibold transition"
+            >
+            X 
+            </a>
+            </div>
 
           <div className="text-sm text-slate-500 dark:text-slate-400">
             © 2025 Kantor Pertanahan Kabupaten Buton
