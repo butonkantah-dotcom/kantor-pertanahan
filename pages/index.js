@@ -5,10 +5,10 @@ import Link from "next/link";
 export default function ProfilKantor() {
   // Silakan isi sesuai data resmi kantor
   const OFFICE_NAME = "Kantor Pertanahan Kabupaten Buton";
-  const OFFICE_ADDRESS = "Jl. ........................................";
+  const OFFICE_ADDRESS = "Jl. Poros Pasarwajo Lasalimu";
   const OFFICE_HOURS = "Senin–Jumat | 08.00–16.00 WITA";
-  const OFFICE_PHONE = "(040x) xxxxxx";
-  const OFFICE_EMAIL = "xxxxx@atrbpn.go.id";
+  const OFFICE_PHONE = "085322459918";
+  const OFFICE_EMAIL = "butonkantah@gmail.com";
 
   return (
     <>
