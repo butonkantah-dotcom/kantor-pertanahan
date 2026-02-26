@@ -36,7 +36,7 @@ export default function ProfilKantor() {
               {/* Foto kiri */}
               <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
                 <img
-                  src="/kantah-buton.jpg"
+                  src="https://drive.google.com/thumbnail?id=13__cgCqrNd-KFR_BWIsLgQyJ-fMMaW3e&sz=w1200"
                   alt="Kantor Pertanahan Kabupaten Buton"
                   className="w-full h-auto object-cover"
                   loading="lazy"
