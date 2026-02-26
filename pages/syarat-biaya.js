@@ -256,7 +256,7 @@ const DATA = [
     "Jadi, tarif yang dikenakan sebesar Rp 160.000,00", 
     "Sebagaimana diatur di dalam Peraturan Menteri Keuangan No. 51/PMK.02/2012 tentang Perubahan atas Peraturan Menteri Keuangan No. 132 /Pmk.02/2010 tentang Indeks dalam Rangka Penghitungan Penetapan Tarif Pelayanan PNBP pada Badan Pertanahan Nasional, bahwa HSBKu adalah Harga Satuan Biaya Khusus kegiatan pengukuran yang berlaku untuk tahun berkenaan, untuk komponen belanja bahan dan honor yang terkait dengan keluaran (output) kegiatan, yang mana HSBKu berfungsi sebagai angka dasar dalam menentukan besaran tarif pelayanan pertanahan sebagaimana dimaksud dalam Peraturan Pemerintah Nomor 13 Tahun 2010 tentang Jenis dan Tarif Atas Jenis Penerimaan Negara Bukan Pajak yang Berlaku pada Badan Pertanahan Nasional.",
   ],
-    pendaftaran: "Biaya Pendaftaran : Rp 50.000,00",
+    biaya: "Tarif Pendaftaran : Rp 50.000,00",
   },
     waktu: ["15 (lima belas) hari kerja"],
   },
