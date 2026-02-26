@@ -216,7 +216,7 @@ const DATA = [
     contoh: [
     "Nilai pasar per m² = Rp1.000.000,00",
     "Luas tanah = 100 m²",
-    "Nilai tanah = Rp100.000.000,00",
+    "Dengan demikian, penghitungan tarif pelayanan pemeliharaan data pendaftaran tanah berupa Pelayanan Pendafataran Pemindahan Peralihan Hak ATas Tanah untuk Perorangan atau Badan Hukum berdasarkan Jual Beli menjadi:",
     "T = (1 ‰ × Rp100.000.000,00) + Rp50.000,00",
     "= Rp150.000,00"
   ],
@@ -224,7 +224,44 @@ const DATA = [
     waktu: ["5 (lima) hari kerja"],
   },
 
-
+{
+    layanan: "Pemecahan / Penggabungan Sertifikat",
+    subjudul: "Jual Beli, Hibah, Akta Pembagian Harta Bersama, Tukar Menukar, Warisan, Lelang / Putusan Pengadilan, Ralat Nama / Ganti Nama",
+    syarat: [
+      "Permohonan yang disertai alasan Pemecahan tersebut",
+      "Identitas diri pemohon dan atau kuasanya (fotocopy KTP)",
+      "Sertifikat Hak Atas Tanah asli",
+      "Site Plan",
+      "Ijin Perubahan Penggunaan Tanah, apabila terjadi perubahan penggunaan tanah",
+      ],
+    biaya: {
+    keterangan: 
+      "Tarif Pelayanan Pengukuran disesuaikan dengan Luas Tanah",
+      "Komponen Biaya Pemisahan/Pemecahan/Penggabungan terdiri dari:",
+    rumus: [
+      {
+        luas: "Biaya Pengukuran luas tanah sampai dengan 10 ha dengan rumus:",
+        formula: "Tu = ( L / 500 x HSBKu ) + Rp100.000,00",
+      },
+    ],
+      penjelasan: [
+    "Tu = Tarif Pelayanan Pengukuran dan Pemetaan Bidang Tanah dalam rangka Penetapan Batas",
+    "L adalah Luas Tanah yang dimohon dalam satuan luas meter persegi (m2)"
+    "HSBKU adalah Harga Satuan Biaya Khusus kegiatan Pengukuran yang berlaku untuk tahun berkenaan, untuk komponen belanja bahan dan honor yang terkait dengan keluaran (output) kegiatan."
+  ],
+    contoh: [
+    "HSBKu untuk tahun 2010 adalah Rp.80.000,00, maka penghitungan tarif Pengukuran dan Pemetaan Batas Bidang Tanah:"
+    "Luas Tanah 300 m2, Non Pertanian",
+    "Tu = (300 / 500 x Rp100.000,00) + Rp100.000,00",
+    "= Rp 60.000,00 + Rp 100.000,00",
+    "= Rp 160.000,00",
+    "Jadi, tarif yang dikenakan sebesar Rp 160.000,00", 
+    "Sebagaimana diatur di dalam Peraturan Menteri Keuangan No. 51/PMK.02/2012 tentang Perubahan atas Peraturan Menteri Keuangan No. 132 /Pmk.02/2010 tentang Indeks dalam Rangka Penghitungan Penetapan Tarif Pelayanan PNBP pada Badan Pertanahan Nasional, bahwa HSBKu adalah Harga Satuan Biaya Khusus kegiatan pengukuran yang berlaku untuk tahun berkenaan, untuk komponen belanja bahan dan honor yang terkait dengan keluaran (output) kegiatan, yang mana HSBKu berfungsi sebagai angka dasar dalam menentukan besaran tarif pelayanan pertanahan sebagaimana dimaksud dalam Peraturan Pemerintah Nomor 13 Tahun 2010 tentang Jenis dan Tarif Atas Jenis Penerimaan Negara Bukan Pajak yang Berlaku pada Badan Pertanahan Nasional.",
+  ],
+        luas: "Biaya Pendaftaran : Rp 50.000,00",
+  },
+    waktu: ["15 (lima belas) hari kerja"],
+  },
 
 
       {
