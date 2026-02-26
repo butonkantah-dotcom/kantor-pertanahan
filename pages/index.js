@@ -36,7 +36,7 @@ export default function ProfilKantor() {
               {/* Foto kiri */}
               <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
                 <img
-                  src="/kantah-buton.jpg"
+                  src="https://drive.google.com/uc?export=view&id=13__cgCqrNd-KFR_BWIsLgQyJ-fMMaW3e"
                   alt="Kantor Pertanahan Kabupaten Buton"
                   className="w-full h-auto object-cover"
                   loading="lazy"
@@ -46,17 +46,10 @@ export default function ProfilKantor() {
               {/* Teks kanan */}
               <div className="text-slate-700 dark:text-slate-200 leading-relaxed space-y-3">
                 <p>
-                  Kantor Pertanahan Kabupaten Buton merupakan unit pelaksana teknis
-                  Kementerian Agraria dan Tata Ruang/Badan Pertanahan Nasional yang
-                  menyelenggarakan pelayanan pertanahan kepada masyarakat.
+                  Kabupaten Buton merupakan salah satu wilayah administrasi di Provinsi Sulawesi Tenggara dengan pusat pemerintahan berada di Kecamatan Pasarwajo. Kecamatan ini berperan sebagai pusat kegiatan pemerintahan, sosial, ekonomi, serta pelayanan publik bagi masyarakat. Secara geografis, Kabupaten Buton terletak di bagian selatan Pulau Sulawesi dan termasuk wilayah pesisir yang memiliki kombinasi daratan dan perairan laut yang luas, sehingga mencerminkan karakteristik wilayah maritim yang kuat. Secara astronomis, Kabupaten Buton berada pada posisi 04°40'–06°00' Lintang Selatan dan 122°00'–123°30' Bujur Timur, dengan kondisi topografi yang beragam meliputi pesisir pantai, dataran rendah, hingga perbukitan. Luas wilayah daratan Kabupaten Buton mencapai ±2.681,22 km², sedangkan wilayah lautnya lebih luas dibandingkan wilayah daratan.
                 </p>
                 <p>
-                  Pelayanan meliputi pendaftaran tanah, pemeliharaan data pertanahan,
-                  pengukuran dan pemetaan, serta layanan pertanahan lainnya sesuai
-                  ketentuan peraturan perundang-undangan yang berlaku.
-                </p>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  *Teks dapat disesuaikan dengan profil resmi kantor.
+                  Kantor Pertanahan Kabupaten Buton beralamat di Jalan Poros Pasarwajo - Lasalimu, Kecamatan Pasarwajo, Kelurahan Wakoko. Wilayah kerja Kantor Pertanahan Kabupaten Buton mencakup 7 kecamatan, yaitu Kecamatan Kapontori, Pasarwajo, Lasalimu, Lasalimu Selatan, Siontapina, Wolowa, dan Wabula. Secara administratif, Kabupaten Buton memiliki total 95 desa/kelurahan yang terdiri dari 83 desa dan 12 kelurahan.
                 </p>
               </div>
             </div>
@@ -102,9 +95,6 @@ export default function ProfilKantor() {
               title="Lokasi Kantor Pertanahan Kabupaten Buton"
             />
           </div>
-          <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-            Jika peta tidak tampil, pastikan link embed Google Maps sudah benar.
-          </p>
         </div>
           <div className="mt-6 flex flex-col sm:flex-row gap-3">
             <Link
