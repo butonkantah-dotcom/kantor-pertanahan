@@ -235,8 +235,7 @@ const DATA = [
       ],
     biaya: {
     keterangan: 
-      "Tarif Pelayanan Pengukuran disesuaikan dengan Luas Tanah",
-      "Komponen Biaya Pemisahan/Pemecahan/Penggabungan terdiri dari:"
+      "Tarif Pelayanan Pengukuran disesuaikan dengan Luas Tanah. Komponen Biaya Pemisahan/Pemecahan/Penggabungan terdiri dari:",
     rumus: [
       {
         luas: "Biaya Pengukuran luas tanah sampai dengan 10 ha dengan rumus:",
