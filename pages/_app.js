@@ -123,7 +123,7 @@ export default function App({ Component, pageProps }) {
           <div className="text-sm text-slate-500 dark:text-slate-400">
             © 2025 Kantor Pertanahan Kabupaten Buton
             <br />
-            Sistem Informasi Layanan Pertanahan (SiKABut)
+            Sistem Kelengkapan Arsip Buton (SiKABut)
           </div>
 
         </div>
