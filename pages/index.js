@@ -26,6 +26,41 @@ export default function ProfilKantor() {
             PROFIL KANTOR
           </h1>
           <p className="mt-2 text-slate-600 dark:text-slate-300">{OFFICE_NAME}</p>
+            {/* Sekilas + Foto */}
+          <div className="mt-8">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight">
+              SEKILAS TENTANG KANTAH BUTON
+            </h2>
+          
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+              {/* Foto kiri */}
+              <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+                <img
+                  src="/kantah-buton.jpg"
+                  alt="Kantor Pertanahan Kabupaten Buton"
+                  className="w-full h-auto object-cover"
+                  loading="lazy"
+                />
+              </div>
+          
+              {/* Teks kanan */}
+              <div className="text-slate-700 dark:text-slate-200 leading-relaxed space-y-3">
+                <p>
+                  Kantor Pertanahan Kabupaten Buton merupakan unit pelaksana teknis
+                  Kementerian Agraria dan Tata Ruang/Badan Pertanahan Nasional yang
+                  menyelenggarakan pelayanan pertanahan kepada masyarakat.
+                </p>
+                <p>
+                  Pelayanan meliputi pendaftaran tanah, pemeliharaan data pertanahan,
+                  pengukuran dan pemetaan, serta layanan pertanahan lainnya sesuai
+                  ketentuan peraturan perundang-undangan yang berlaku.
+                </p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  *Teks dapat disesuaikan dengan profil resmi kantor.
+                </p>
+              </div>
+            </div>
+          </div>
 
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-4">
@@ -53,6 +88,24 @@ export default function ProfilKantor() {
             </div>
           </div>
 
+          <div className="mt-6">
+          <div className="font-bold text-slate-800 dark:text-slate-100 mb-2">🗺️ Lokasi Kantor</div>
+          <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3971.680782199696!2d122.85801097428882!3d-5.465311254472208!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2da40f4190d5af23%3A0x80a6e638b5636093!2sKANTOR%20PERTANAHAN%20KAB.BUTON!5e0!3m2!1sen!2sid!4v1772082014253!5m2!1sen!2sid"
+              width="100%"
+              height="350"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Lokasi Kantor Pertanahan Kabupaten Buton"
+            />
+          </div>
+          <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+            Jika peta tidak tampil, pastikan link embed Google Maps sudah benar.
+          </p>
+        </div>
           <div className="mt-6 flex flex-col sm:flex-row gap-3">
             <Link
               href="/cek-berkas"
