@@ -48,7 +48,7 @@ export default function ProfilKantor() {
               <div className="font-bold">ℹ️ Tentang SiKABut</div>
               <p className="mt-1 text-slate-700 dark:text-slate-200 leading-relaxed">
                 SiKABut digunakan untuk mengecek status & kelengkapan berkas permohonan serta melihat
-                syarat dan informasi biaya layanan secara ringkas.
+                syarat dan informasi biaya layanan.
               </p>
             </div>
           </div>
