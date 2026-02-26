@@ -128,6 +128,16 @@ export default function ProfilKantor() {
           </p>
         </section>
       </main>
+        <footer className="mt-12 border-t border-slate-200 dark:border-slate-700 py-6 text-center text-sm text-slate-600 dark:text-slate-400">
+    <div className="mb-3">
+      <a href="https://instagram.com/kantahkabbuton" target="_blank" className="mx-2 hover:underline">Instagram</a>
+      <a href="https://facebook.com/Kantahkab Buton" target="_blank" className="mx-2 hover:underline">Facebook</a>
+      <a href="https://youtube.com/KantahKabButon" target="_blank" className="mx-2 hover:underline">YouTube</a>
+    </div>
+    <div>
+    © {new Date().getFullYear()} Kantor Pertanahan Kabupaten Buton
+  </div>
+</footer>
     </>
   );
 }
