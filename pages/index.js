@@ -27,7 +27,6 @@ export default function ProfilKantor() {
           </h1>
           <p className="mt-2 text-slate-600 dark:text-slate-300">{OFFICE_NAME}</p>
             {/* Sekilas + Foto */}
-          {/* Sekilas + Foto */}
           <div className="mt-8">
             <h2 className="text-xl sm:text-2xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight">
               SEKILAS TENTANG KANTAH BUTON
@@ -88,7 +87,6 @@ export default function ProfilKantor() {
               </p>
             </div>
           </div>
-         </div>
 
           <div className="mt-6">
           <div className="font-bold text-slate-800 dark:text-slate-100 mb-2">🗺️ Lokasi Kantor</div>
