@@ -87,6 +87,7 @@ export default function ProfilKantor() {
               </p>
             </div>
           </div>
+         </div>
 
           <div className="mt-6">
           <div className="font-bold text-slate-800 dark:text-slate-100 mb-2">🗺️ Lokasi Kantor</div>
