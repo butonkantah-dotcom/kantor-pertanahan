@@ -226,7 +226,6 @@ const DATA = [
 
 {
     layanan: "Pemecahan / Penggabungan Sertifikat",
-    subjudul: "Jual Beli, Hibah, Akta Pembagian Harta Bersama, Tukar Menukar, Warisan, Lelang / Putusan Pengadilan, Ralat Nama / Ganti Nama",
     syarat: [
       "Permohonan yang disertai alasan Pemecahan tersebut",
       "Identitas diri pemohon dan atau kuasanya (fotocopy KTP)",
@@ -236,7 +235,7 @@ const DATA = [
       ],
     biaya: {
     keterangan: 
-      "Tarif Pelayanan Pengukuran disesuaikan dengan Luas Tanah",
+      "Tarif Pelayanan Pengukuran disesuaikan dengan Luas Tanah"
       "Komponen Biaya Pemisahan/Pemecahan/Penggabungan terdiri dari:",
     rumus: [
       {
@@ -251,7 +250,7 @@ const DATA = [
   ],
     contoh: [
     "HSBKu untuk tahun 2010 adalah Rp.80.000,00, maka penghitungan tarif Pengukuran dan Pemetaan Batas Bidang Tanah:"
-    "Luas Tanah 300 m2, Non Pertanian",
+    "Luas Tanah 300 m2 (Non Pertanian)",
     "Tu = (300 / 500 x Rp100.000,00) + Rp100.000,00",
     "= Rp 60.000,00 + Rp 100.000,00",
     "= Rp 160.000,00",
