@@ -34,7 +34,7 @@ function TopNav() {
             width={40}
             height={40}
             priority
-            />
+          />
           <div className="leading-tight">
             <div className="font-extrabold text-slate-800 dark:text-slate-100">
               SiKABut
@@ -57,9 +57,68 @@ function TopNav() {
 
 export default function App({ Component, pageProps }) {
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-900">
       <TopNav />
-      <Component {...pageProps} />
+
+      {/* Konten Halaman */}
+      <div className="flex-grow">
+        <Component {...pageProps} />
+      </div>
+
+      {/* Footer Global */}
+      <footer className="border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 py-8 text-center">
+
+          <div className="font-semibold text-slate-800 dark:text-slate-100 mb-4">
+            Media Sosial Resmi
+          </div>
+
+          <div className="flex justify-center flex-wrap gap-3 mb-6">
+            <a
+              href="https://instagram.com/username_kantah"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-lg bg-pink-500 hover:bg-pink-600 text-white text-sm font-semibold transition"
+            >
+              Instagram
+            </a>
+
+            <a
+              href="https://facebook.com/username_kantah"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition"
+            >
+              Facebook
+            </a>
+
+            <a
+              href="https://youtube.com/@username_kantah"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-semibold transition"
+            >
+              YouTube
+            </a>
+
+            <a
+              href="https://tiktok.com/@username_kantah"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-lg bg-black hover:bg-gray-800 text-white text-sm font-semibold transition"
+            >
+              TikTok
+            </a>
+          </div>
+
+          <div className="text-sm text-slate-500 dark:text-slate-400">
+            © 2025 Kantor Pertanahan Kabupaten Buton
+            <br />
+            Sistem Informasi Layanan Pertanahan (SiKABut)
+          </div>
+
+        </div>
+      </footer>
     </div>
   );
 }
