@@ -75,7 +75,7 @@ export default function App({ Component, pageProps }) {
 
           <div className="flex justify-center flex-wrap gap-3 mb-6">
             <a
-              href="https://instagram.com/username_kantah"
+              href="https://instagram.com/kantahkabbuton"
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 rounded-lg bg-pink-500 hover:bg-pink-600 text-white text-sm font-semibold transition"
@@ -84,7 +84,7 @@ export default function App({ Component, pageProps }) {
             </a>
 
             <a
-              href="https://facebook.com/username_kantah"
+              href="https://facebook.com/Kantahkab Buton"
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition"
@@ -93,7 +93,7 @@ export default function App({ Component, pageProps }) {
             </a>
 
             <a
-              href="https://youtube.com/@username_kantah"
+              href="https://youtube.com/@KantahKabButon"
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-semibold transition"
@@ -102,7 +102,7 @@ export default function App({ Component, pageProps }) {
             </a>
 
             <a
-              href="https://tiktok.com/@username_kantah"
+              href="https://tiktok.com/@KantahButon1"
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 rounded-lg bg-black hover:bg-gray-800 text-white text-sm font-semibold transition"
