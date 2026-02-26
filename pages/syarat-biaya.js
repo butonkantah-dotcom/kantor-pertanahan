@@ -246,7 +246,7 @@ const DATA = [
       penjelasan: [
     "Tu = Tarif Pelayanan Pengukuran dan Pemetaan Bidang Tanah dalam rangka Penetapan Batas",
     "L adalah Luas Tanah yang dimohon dalam satuan luas meter persegi (m2)",
-    "HSBKU adalah Harga Satuan Biaya Khusus kegiatan Pengukuran yang berlaku untuk tahun berkenaan, untuk komponen belanja bahan dan honor yang terkait dengan keluaran (output) kegiatan.",
+    "HSBKU adalah Harga Satuan Biaya Khusus kegiatan Pengukuran yang berlaku untuk tahun berkenaan, untuk komponen belanja bahan dan honor yang terkait dengan keluaran (output) kegiatan."
   ],
     contoh: [
     "HSBKu untuk tahun 2010 adalah Rp.80.000,00, maka penghitungan tarif Pengukuran dan Pemetaan Batas Bidang Tanah:",
