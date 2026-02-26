@@ -170,12 +170,129 @@ const DATA = [
     waktu: ["7 (tujuh) hari kerja"],  
   },
 
+  {
+    layanan: "Roya",
+    syarat: [
+      "Surat Permohonan dari pemegang hak atau kuasanya",
+      "Identitas diri pemegang hak atau kuasanya (fotocopy KTP dan KK)",
+      "Sertifikat Hak Atas Tanah",
+      "Sertifikat HT",
+      "Concent Roya di hadapan Notaris atau keterangan kehilangan dari kepolisian, apabila tidak diserahkan sertifikat HT",
+      "Surat keterangan tentang hapusnya HT yang dibuktikan dengan Pernyataan dari kreditor bahwa hutangnya telah lunas, atau Risalah lelang, atau Pembersihan HT berdasarkan penetapan peringkat oleh Ketua Pengadilan, atau Hapusnya hak atas tanah yang dibebani HT",
+    ],
+    biaya: ["Tarif Pendaftaran : Rp. 50.000,00"],
+    waktu: ["5 (lima) hari kerja"],
+  },
+
+  {
+    layanan: "Peralihan Hak",
+    subjudul: "Jual Beli, Hibah, Akta Pembagian Harta Bersama, Tukar Menukar, Warisan, Lelang / Putusan Pengadilan, Ralat Nama / Ganti Nama",
+    syarat: [
+      "Formulir permohonan yang sudah diisi dan ditandatangani pemohon atau kuasanya di atas materai cukup)",
+      "Surat Kuasa apabila dikuasakan",
+      "Surat Pengantar dari PPAT",
+      "Surat Permohonan",
+      "Sertifikat asli",
+      "Akta Jual Beli dari PPAT",
+      "Identitas diri pemegang hak, penerima hak dan atau kuasanya (fotocopy KTP)",
+      "Surat kuasa, jika permohonannya dikuasakan",
+      "Bukti pelunasan SSB BPHTB",
+      "Bukti pelunasan SSP PPh Final",
+      "SPPT PBB tahun berjalan atau tahun terakhir, kalau belum ada SPPT perlu keterangan Lurah/Kepala Desa",
+      "Ijin Pemindahan Hak (Pemindahan hak atas tanah atau hak milik atas rumah susun yang di dalam sertifikatnya dicantumkan tanda yang menyatakan bahwa hak tersebut hanya boleh dipindahtangankan apabila telah diperoleh izin dari instansi yang berwenang atau Pemindahan hak pakai atas tanah Negara)",
+      "Surat Pernyataan calon penerima hak, yang menyatakan Bahwa yang bersangkutan dengan pemindahan hak tersebut tidak menjadi pemegang hak atas tanah yang melebihi ketentuan maksimum penguasaan tanah menurut ketentuan peraturan perundang-undangan yang berlaku, Bahwa yang bersangkutan dengan pemindahan hak tersebut tidak menjadi pemegang hak atas tanah absentee (guntai) menurut ketentuan perundang-undangan yang berlaku, Bahwa yang bersagkutan menyadari bahwa apabila pernyataan sebagaimana dimaksud pada 11a dan 11b tersebut tidak benar maka tanah kelebihan atau tanah absentee tersebut menjadi obyek landreform, Bahwa yang bersangkutan bersedia menanggung semua akibat hukumnya",
+      ],
+    biaya: {
+    keterangan: "Tarif layanan ini dihitung berdasarkan rumus :",
+    rumus: [
+      {
+        formula: "T = (1 ‰ x Nilai Tanah ) + Rp.50.000,00",
+      },
+    ],
+      penjelasan: [
+    "T = Tarif",
+    "Nilai Tanah adalah Nilai pasar (market value) yang ditetapkan oleh Kementerian Agraria dan Tata Ruang/Badan Pertanahan Nasional dalam peta zona nilai tanah yang disahkan oleh Kepala Kantor Pertanahan untuk tahun berkenaan dan untuk wilayah yang belum tersedia peta zona nilai tanah digunakan Nilai Jual Objek Pajak atas tanah pada tahun berkenaan."
+  ],
+    contoh: [
+    "Nilai pasar per m² = Rp1.000.000,00",
+    "Luas tanah = 100 m²",
+    "Nilai tanah = Rp100.000.000,00",
+    "T = (1 ‰ × Rp100.000.000,00) + Rp50.000,00",
+    "= Rp150.000,00"
+  ],
+  },
+    waktu: ["5 (lima) hari kerja"],
+  },
+
+
+
+
+      {
+      layanan: "Sertifikat Pengganti Karena Rusak / Lama / Hilang",
+      syarat: [
+        "Surat Permohonan",
+        "Surat Kuasa bermaterai cukup, jika permohonannya dikuasakan",
+        "Fotocopy identitas (KTP, KK) pemohon dan kuasa apabila dikuasakan, yang telah dicocokkan dengan aslinya oleh petugas loket",
+        "Surat Pernyataan dibawah sumpah oleh pemegang hak / yang menghilangkan",
+        "Surat pernyataan tidak ada perubahan fisik bidang tanah/sengketa",
+      ],
+      biaya: ["Tarif Pendaftaran : Rp. 50.000,00",
+             "Tarif Kutipan : Rp. 100.000,00"],
+      waktu: ["19 (sembilan belas) hari kerja"],
+    },
+    
+    {
+        layanan: "Pengecekan Sertipikat",
+        syarat: [
+          "Formulir permohonan yang sudah diisi dan ditandatangani pemohon atau kuasanya",
+          "Surat kuasa apabila dikuasakan",
+          "Fotocopy identitas pemohon (KTP) dan kuasa apabila dikuasakan",
+          "Sertifikat hak atas tanah / Sertifikat HMSRS",
+          "Surat pengantar dari PPAT untuk kegiatan peralihan/pembebanan hak dengan Akta PPAT",
+        ],
+        biaya: ["Tarif Pendaftaran : Rp. 50.000,00"],
+        waktu: ["1 (satu) hari kerja"],
+      },
   
+    {
+        layanan: "Surat Keterangan Pendaftaran Tanah (SKPT)",
+        syarat: [
+          "Formulir permohonan yang sudah diisi dan ditandatangani pemohon atau kuasanya",
+          "Surat kuasa apabila dikuasakan",
+          "Fotocopy identitas pemohon (KTP) dan kuasa apabila dikuasakan",
+          "Bukti hubungan hukum antara subjek dan objek hak",
+        ],
+        biaya: ["Tarif Pendaftaran : Rp. 50.000,00"],
+        waktu: ["4 (empat) hari kerja"],
+      },
+
+    {
+        layanan: "Pencatatan Blokir, Sita, Pengangkatan Sita",
+        syarat: [
+          "Formulir permohonan yang sudah diisi dengan disertai alasan pemblokiran dan/atau salinan surat gugatan dan ditandatangani pemohon atau kuasanya di atas materai cukup",
+          "Surat kuasa apabila dikuasakan",
+          "Fotocopy identitas pemohon (KTP) dan kuasa apabila dikuasakan",
+          "Bagi badan hukum fotocopy akta pendirian dan pengesahan badan hukum",
+          "Untuk Blokir dilengkapi dengan dokumen pendukung pemblokiran (permintaan Peradilan dan/atau permintaan aparat penegak hukum, perorangan atau badan hukum yang menunjukkan bukti kepemilikan berupa Sertipikat asli dan/atau bukti kepemilikan lainnya)",
+          "Untuk Sita dilengkapi dengan Surat Permintaan dari Pengadilan, Kejaksaan, Kepolisian, Komisi Pemberantasan Korupsi, Kantor Pelayanan Pajak, atau Kantor Lelang dan Berita Acara Penetapan Sita Jaminan dari Pengadilan",
+          "Untuk Pengangkatan Sita dilengkapi dengan Salinan resmi Berita Acara Pengangkatan Sita dari Lembaga Peradilan",
+        ],
+        biaya: ["Tarif Pendaftaran : Rp. 50.000,00"],
+        waktu: ["7 (tujuh) hari kerja"],
+      },
 
 
 
 
 
+
+
+
+
+
+
+
+  
   
   
   {
@@ -333,16 +450,36 @@ export default function SyaratBiaya() {
                         <>
                           <p className="mt-2">{d.biaya.keterangan}</p>
                     
-                          <ul className="list-disc pl-5 mt-2 space-y-3">
-                            {d.biaya.rumus.map((item, idx) => (
-                              <li key={idx}>
-                                <div className="font-semibold">{item.luas}</div>
-                                <div className="ml-2">{item.formula}</div>
-                              </li>
-                            ))}
-                          </ul>
+                          {d.biaya.rumus && (
+                            <div className="mt-2 space-y-2">
+                              {d.biaya.rumus.map((item, idx) => (
+                                <div key={idx} className="font-semibold">
+                                  {item.formula}
+                                </div>
+                              ))}
+                            </div>
+                          )}
                     
-                          <p className="mt-2">{d.biaya.pendaftaran}</p>
+                          {d.biaya.penjelasan && (
+                            <div className="mt-3 space-y-1 text-sm">
+                              {d.biaya.penjelasan.map((p, idx) => (
+                                <div key={idx}>{p}</div>
+                              ))}
+                            </div>
+                          )}
+                    
+                          {d.biaya.contoh && (
+                            <div className="mt-4 space-y-1 text-sm">
+                              <div className="font-semibold">Contoh Perhitungan:</div>
+                              {d.biaya.contoh.map((c, idx) => (
+                                <div key={idx}>{c}</div>
+                              ))}
+                            </div>
+                          )}
+                    
+                          {d.biaya.pendaftaran && (
+                            <p className="mt-2 font-semibold">{d.biaya.pendaftaran}</p>
+                          )}
                         </>
                       )}
                     </div>
